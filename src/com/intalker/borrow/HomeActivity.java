@@ -9,18 +9,24 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class HomeActivity extends Activity {
+	
+	private LinearLayout mMainLayout = null;
+	private LinearLayout mFriendsNavigationLayout = null;
+	private LinearLayout mBooksNavigationLayout = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.activity_home);
-		setContentView(createHomeUI());
+		createHomeUI();
+		setContentView(mMainLayout);
 	}
 
 	@Override
@@ -29,45 +35,72 @@ public class HomeActivity extends Activity {
 		return true;
 	}
 
-	private View createHomeUI() {
-		LinearLayout mainLayout = new LinearLayout(this);
-		mainLayout.setOrientation(LinearLayout.HORIZONTAL);
-
+	private void createHomeUI() {
+		mMainLayout = new LinearLayout(this);
+		mMainLayout.setOrientation(LinearLayout.HORIZONTAL);
+		mMainLayout.setBackgroundColor(Color.GRAY);	
+		
+		mMainLayout.addView(createFriendsNavigation());
+		mMainLayout.addView(createBooksNavigation());
+	}
+	
+	private View createFriendsNavigation()
+	{
 		LinearLayout navigationBar = new LinearLayout(this);
-		navigationBar.setOrientation(LinearLayout.VERTICAL);
+		navigationBar.setOrientation(LinearLayout.VERTICAL);	
 		LinearLayout.LayoutParams navigationBarLP = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.FILL_PARENT);
-		// navigationBarLP.width =
-		// DensityAdaptor.getDensityIndependentValue(200);
+		navigationBar.setLayoutParams(navigationBarLP);
+		navigationBar.setBackgroundColor(Color.DKGRAY);
+		
+		navigationBar.addView(createLoginButton());
 
 		for (int i = 0; i < 10; ++i) {
 			navigationBar.addView(createTestFriendItemUI());
 		}
-
-		mainLayout.addView(navigationBar, navigationBarLP);
-
-		// Test settings
-		mainLayout.setBackgroundColor(Color.GRAY);
+		
+		return navigationBar;
+	}
+	
+	private View createLoginButton()
+	{
+		Button login = new Button(this);
+		login.setText("Login");
+		LinearLayout.LayoutParams navigationBarLP = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		login.setLayoutParams(navigationBarLP);
+		
+		return login;
+	}
+	
+	private View createBooksNavigation()
+	{
+		LinearLayout navigationBar = new LinearLayout(this);
+		navigationBar.setOrientation(LinearLayout.VERTICAL);	
+		LinearLayout.LayoutParams navigationBarLP = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		navigationBar.setLayoutParams(navigationBarLP);
 		navigationBar.setBackgroundColor(Color.DKGRAY);
-		return mainLayout;
+		
+		return navigationBar;
 	}
 
 	private View createTestFriendItemUI() {
-		RelativeLayout item = new RelativeLayout(this);
+//		RelativeLayout item = new RelativeLayout(this);
+//
+//		LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
+//				LinearLayout.LayoutParams.WRAP_CONTENT,
+//				LinearLayout.LayoutParams.WRAP_CONTENT);
+//		itemLP.width = DensityAdaptor.getDensityIndependentValue(240);
+//		itemLP.height = DensityAdaptor.getDensityIndependentValue(64);
+//		
+//		item.setBackgroundColor(ColorUtil.generateRandomColor());
+//		item.setLayoutParams(itemLP);
 
-		LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT,
-				LinearLayout.LayoutParams.WRAP_CONTENT);
-		itemLP.width = DensityAdaptor.getDensityIndependentValue(240);
-		itemLP.height = DensityAdaptor.getDensityIndependentValue(64);
-		
-		item.setBackgroundColor(ColorUtil.generateRandomColor());
-		item.setLayoutParams(itemLP);
-
-		TextView t = new TextView(this);
-		t.setText("Test");
-		item.addView(t);
+	
 		
 		ImageView avatar = new ImageView(this);
 		avatar.setImageResource(R.drawable.avatar);
@@ -79,7 +112,7 @@ public class HomeActivity extends Activity {
 		avatarLP.addRule(RelativeLayout.CENTER_VERTICAL);
 		avatarLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		avatarLP.rightMargin = DensityAdaptor.getDensityIndependentValue(8);
-		item.addView(avatar, avatarLP);
-		return item;
+		avatar.setLayoutParams(avatarLP);
+		return avatar;
 	}
 }
