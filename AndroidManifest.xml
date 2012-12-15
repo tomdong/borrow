@@ -2,7 +2,9 @@
     package="com.intalker.borrow"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="15" />
@@ -20,6 +22,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity android:name="com.tencent.tauth.TAuthView" 
+            android:launchMode="singleTask" 
+            android:configChanges="keyboardHidden|navigation|orientation">
+		    <intent-filter>  
+		        <action android:name="android.intent.action.VIEW" />  
+		        <category android:name="android.intent.category.DEFAULT" />
+		        <category android:name="android.intent.category.BROWSABLE" />
+		        <data android:scheme="auth"/>  		
+		    </intent-filter>  
+		</activity>
     </application>
 
 </manifest>

@@ -1,14 +1,16 @@
 package com.intalker.borrow;
 
+import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 
-import android.R.color;
 import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -38,6 +40,20 @@ public class HomeActivity extends Activity {
 		LinearLayout.LayoutParams navigationBarLP = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.FILL_PARENT);
+		
+		Button btn = new Button(this);
+		btn.setText("Login via QQ");
+		btn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		navigationBar.addView(btn);
 		// navigationBarLP.width =
 		// DensityAdaptor.getDensityIndependentValue(200);
 
@@ -47,6 +63,13 @@ public class HomeActivity extends Activity {
 
 		mainLayout.addView(navigationBar, navigationBarLP);
 
+		// book gallery ui
+		BookGallery bookGallery = new BookGallery(this);
+		LinearLayout.LayoutParams bookGalleryLP = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams.FILL_PARENT);
+		mainLayout.addView(bookGallery, bookGalleryLP);
+		
 		// Test settings
 		mainLayout.setBackgroundColor(Color.GRAY);
 		navigationBar.setBackgroundColor(Color.DKGRAY);
