@@ -2,9 +2,9 @@ package com.intalker.borrow.ui.book;
 
 import com.intalker.borrow.R;
 import com.intalker.borrow.util.DensityAdaptor;
+import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -18,22 +18,30 @@ public class BookShelfRow extends RelativeLayout {
 
 	private void createUI()
 	{
-//		View v1 = new View(this.getContext());
-//		RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(
-//				RelativeLayout.LayoutParams.FILL_PARENT,
-//				RelativeLayout.LayoutParams.WRAP_CONTENT);
-//		lp1.height = DensityAdaptor.getDensityIndependentValue(10);
-//		lp1.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-//		v1.setBackgroundColor(Color.GREEN);
-//		this.addView(v1, lp1);
-		
-		View v2 = new View(this.getContext());
-		RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(
+		View board = new View(this.getContext());
+		RelativeLayout.LayoutParams boardLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		lp2.height = DensityAdaptor.getDensityIndependentValue(80);
-		lp2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		v2.setBackgroundResource(R.drawable.bookshelf_row);
-		this.addView(v2, lp2);
+		boardLP.height = LayoutUtil.getShelfBoardHeight();
+		boardLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		board.setBackgroundResource(R.drawable.bookshelf_row);
+		this.addView(board, boardLP);
+		
+		// add book test items
+		int bookItemWidth = LayoutUtil.getShelfBookItemWidth();
+		int bookItemHeight = LayoutUtil.getShelfBookItemHeight();
+		int bookItemGap = LayoutUtil.getShelfBookGap();
+		for (int i = 0; i < 4; ++i)
+		{
+			BookShelfItem bookShelfItem = new BookShelfItem(this.getContext());
+			RelativeLayout.LayoutParams bookLP = new RelativeLayout.LayoutParams(
+					RelativeLayout.LayoutParams.WRAP_CONTENT,
+					RelativeLayout.LayoutParams.WRAP_CONTENT);
+			bookLP.width = bookItemWidth;
+			bookLP.height = bookItemHeight;
+			bookLP.leftMargin = (bookItemGap + bookItemWidth) * i + bookItemGap;
+			bookLP.topMargin = LayoutUtil.getShelfBookTopMargin();
+			this.addView(bookShelfItem, bookLP);
+		}
 	}
 }

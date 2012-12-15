@@ -3,6 +3,7 @@ package com.intalker.borrow;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
+import com.intalker.borrow.util.LayoutUtil;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -22,6 +23,7 @@ public class HomeActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.activity_home);
+		DensityAdaptor.init(this);
 		setContentView(createHomeUI());
 	}
 
@@ -82,7 +84,7 @@ public class HomeActivity extends Activity {
 		LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
-		itemLP.width = DensityAdaptor.getDensityIndependentValue(240);
+		itemLP.width = LayoutUtil.getNavigationPanelWidth();
 		itemLP.height = DensityAdaptor.getDensityIndependentValue(64);
 		
 		item.setBackgroundColor(ColorUtil.generateRandomColor());
