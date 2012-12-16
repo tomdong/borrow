@@ -25,7 +25,23 @@ public class BookShelfItem extends RelativeLayout{
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.FILL_PARENT);
 		mCoverImageView.setScaleType(ScaleType.FIT_END);
-		mCoverImageView.setImageResource(R.drawable.bookcover_test);
+		double random = Math.random();
+		
+		int resId = 0;
+		if(random < 0.3)
+		{
+			resId = R.drawable.bookcover_test;
+		}
+		else if(random < 0.7)
+		{
+			resId = R.drawable.bookcover_test1;
+		}
+		else
+		{
+			resId = R.drawable.bookcover_test2;
+		}
+		mCoverImageView.setImageResource(resId);
+		
 		coverImgaeViewLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		coverImgaeViewLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		this.addView(mCoverImageView, coverImgaeViewLP);

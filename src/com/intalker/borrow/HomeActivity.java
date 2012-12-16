@@ -1,12 +1,24 @@
 package com.intalker.borrow;
 
+import java.util.List;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
+import com.intalker.borrow.util.ScanUtil;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
@@ -16,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class HomeActivity extends Activity {
 
@@ -49,10 +62,8 @@ public class HomeActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
+				ScanUtil.scanBarCode(HomeActivity.this);
 			}
-			
 		});
 		
 		navigationBar.addView(btn);
@@ -107,4 +118,28 @@ public class HomeActivity extends Activity {
 		item.addView(avatar, avatarLP);
 		return item;
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (requestCode == ResultCode.SCAN_RESULT_CODE)
+		{
+			switch (resultCode)
+			{
+			case RESULT_OK:
+				String contents = data.getStringExtra("SCAN_RESULT");
+				String format = data.getStringExtra("SCAN_RESULT_FORMAT");
+				Toast.makeText(this, contents, Toast.LENGTH_LONG).show();
+				break;
+			case RESULT_CANCELED:
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+
 }
