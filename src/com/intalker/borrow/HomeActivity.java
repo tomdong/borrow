@@ -9,6 +9,7 @@ import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.ScanUtil;
+import com.intalker.borrow.util.WebUtil;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -131,7 +132,8 @@ public class HomeActivity extends Activity {
 			case RESULT_OK:
 				String contents = data.getStringExtra("SCAN_RESULT");
 				String format = data.getStringExtra("SCAN_RESULT_FORMAT");
-				Toast.makeText(this, contents, Toast.LENGTH_LONG).show();
+				//Toast.makeText(this, contents, Toast.LENGTH_LONG).show();
+				WebUtil.getInstance().getBookInfoByISBN(HomeActivity.this, contents);
 				break;
 			case RESULT_CANCELED:
 				break;
