@@ -1,25 +1,17 @@
 package com.intalker.borrow;
 
-import java.util.List;
-
-import com.google.zxing.integration.android.IntentIntegrator;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.ui.book.BookGallery;
+import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.ScanUtil;
 import com.intalker.borrow.util.WebUtil;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
@@ -29,15 +21,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class HomeActivity extends Activity {
-
+	BookGallery mBookGallery = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.activity_home);
 		DensityAdaptor.init(this);
+		
+		BookShelfItem.lastBookForTest = null;
 		setContentView(createHomeUI());
 	}
 
@@ -63,13 +56,34 @@ public class HomeActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				ScanUtil.scanBarCode(HomeActivity.this);
 			}
 		});
 		
 		navigationBar.addView(btn);
-		// navigationBarLP.width =
-		// DensityAdaptor.getDensityIndependentValue(200);
+		
+		Button btn1 = new Button(this);
+		btn1.setText("Scan book");
+		btn1.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				ScanUtil.scanBarCode(HomeActivity.this);
+			}
+		});
+		
+		navigationBar.addView(btn1);
+		
+		Button btn2 = new Button(this);
+		btn2.setText("Clear Gallery");
+		btn2.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				mBookGallery.clearBooks();
+			}
+		});
+		
+		navigationBar.addView(btn2);
 
 		for (int i = 0; i < 10; ++i) {
 			navigationBar.addView(createTestFriendItemUI());
@@ -78,11 +92,11 @@ public class HomeActivity extends Activity {
 		mainLayout.addView(navigationBar, navigationBarLP);
 
 		// book gallery ui
-		BookGallery bookGallery = new BookGallery(this);
+		mBookGallery = new BookGallery(this);
 		LinearLayout.LayoutParams bookGalleryLP = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT,
 				LinearLayout.LayoutParams.FILL_PARENT);
-		mainLayout.addView(bookGallery, bookGalleryLP);
+		mainLayout.addView(mBookGallery, bookGalleryLP);
 		
 		// Test settings
 		mainLayout.setBackgroundColor(Color.GRAY);

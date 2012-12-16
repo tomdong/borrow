@@ -1,21 +1,25 @@
 package com.intalker.borrow.ui.book;
 
 import com.intalker.borrow.R;
-import com.intalker.borrow.util.ColorUtil;
-
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
 public class BookShelfItem extends RelativeLayout{
-
+	public static BookShelfItem lastBookForTest = null;
 	private ImageView mCoverImageView = null;
 	public BookShelfItem(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		createUI();
+	}
+	
+	public void setCoverImage(Bitmap coverImage)
+	{
+		mCoverImageView.setImageBitmap(coverImage);
 	}
 
 	private void createUI()
@@ -45,6 +49,14 @@ public class BookShelfItem extends RelativeLayout{
 		coverImgaeViewLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		coverImgaeViewLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		this.addView(mCoverImageView, coverImgaeViewLP);
-		//this.setBackgroundColor(ColorUtil.generateRandomColor());
+	}
+
+	public void hideBeforeLoaded() {
+		this.setVisibility(View.GONE);
+		lastBookForTest = this;
+	}
+	
+	public void show() {
+		this.setVisibility(View.VISIBLE);
 	}
 }

@@ -1,50 +1,65 @@
 package com.intalker.borrow.ui.book;
 
+import java.util.ArrayList;
 import com.intalker.borrow.R;
-import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 public class BookShelfView extends ScrollView {
+	private LinearLayout mScrollContent = null;
+	private ArrayList<BookShelfRow> mBookShelfRows = new ArrayList<BookShelfRow>();
+	private static BookShelfView instance = null;
 	
-	public BookShelfView(Context context) {
-		super(context);
-		
-		initializeUI();
-		//this.setVerticalScrollBarEnabled(true);
-		this.setBackgroundResource(R.drawable.bookshelf_bg);
+	public static BookShelfView getInstance()
+	{
+		return instance;
 	}
 
-	private void initializeUI()
-	{
-//		TextView tv = new TextView(this.getContext());
-//		tv.setText("Create");
-//		this.addView(tv);
-		
-		LinearLayout mScrollContent = new LinearLayout(this.getContext());
+	public BookShelfView(Context context) {
+		super(context);
+
+		initializeUI();
+		this.setBackgroundResource(R.drawable.bookshelf_bg);
+		instance = this;
+	}
+
+	private void initializeUI() {
+		mScrollContent = new LinearLayout(this.getContext());
 		mScrollContent.setOrientation(LinearLayout.VERTICAL);
-		for (int i = 0; i < 10; ++i)
-		{
-			BookShelfRow row = new BookShelfRow(this.getContext());
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-					LinearLayout.LayoutParams.FILL_PARENT,
-					LinearLayout.LayoutParams.WRAP_CONTENT);
-			lp.height = LayoutUtil.getShelfRowHeight();
-			mScrollContent.addView(row, lp);
-			
-//			TextView tv = new TextView(this.getContext());
-//			tv.setText("Create");
-//			mScrollContent.addView(tv);
+		for (int i = 0; i < 10; ++i) {
+			addRow(true);
 		}
-//		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-//				LinearLayout.LayoutParams.FILL_PARENT,
-//				LinearLayout.LayoutParams.WRAP_CONTENT);
-//		mScrollContent.setLayoutParams(lp);
 		this.addView(mScrollContent);
+	}
+
+	public void addBookForLoading() {
+		BookShelfRow lastRow = mBookShelfRows.get(mBookShelfRows.size() - 1);
+		if(lastRow.isFull())
+		{
+			lastRow = addRow(false);
+		}
+		lastRow.addBook(false);
+	}
+	
+	public void clearShelfRows() {
+		for (BookShelfRow row : mBookShelfRows) {
+			mScrollContent.removeView(row);
+		}
+		mBookShelfRows.clear();
+		addRow(false);
+	}
+	
+	private BookShelfRow addRow(boolean createRandomBooks) {
+		BookShelfRow row = new BookShelfRow(this.getContext(), createRandomBooks);
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		lp.height = LayoutUtil.getShelfRowHeight();
+		mScrollContent.addView(row, lp);
+		mBookShelfRows.add(row);
+		return row;
 	}
 }

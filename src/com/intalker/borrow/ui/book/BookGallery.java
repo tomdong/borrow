@@ -21,8 +21,14 @@ public class BookGallery extends RelativeLayout {
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.FILL_PARENT);
 		this.addView(mShelfView, shelfViewLP);
-		
-//		BookShelfRow row = new BookShelfRow(this.getContext());
-//		this.addView(row);
+	}
+	
+	public void clearBooks()
+	{
+		mShelfView.clearShelfRows();
+	}
+	
+	public void addBook(BookShelfItem bookItem)
+	{
 	}
 }

@@ -7,10 +7,14 @@ public class LayoutUtil {
 	private static int shelfBookItemWidth = -1;
 	private static int shelfBookItemHeight = -1;
 	private static int shelfRowBoardHeight = -1;
-	private static int bookCountRow = 4;
+	private static int rowBookCount = 4;
 	private static int shelfBookGap = -1;
 	private static int shelfWidth = -1;
 	private static int shelfBookTopMargin = -1;
+	
+	public static int getRowBookCount() {
+		return rowBookCount;
+	}
 
 	public static int getNavigationPanelWidth() {
 		if (navigationPanelWidth < 0) {
@@ -50,8 +54,8 @@ public class LayoutUtil {
 	public static int getShelfBookGap() {
 		if (shelfBookGap < 0) {
 			shelfBookGap = (getShelfWidth() - getShelfBookItemWidth()
-					* bookCountRow)
-					/ (bookCountRow + 1);
+					* rowBookCount)
+					/ (rowBookCount + 1);
 		}
 		return shelfBookGap;
 	}
