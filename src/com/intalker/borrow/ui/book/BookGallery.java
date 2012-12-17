@@ -28,6 +28,18 @@ public class BookGallery extends RelativeLayout {
 		mShelfView.clearShelfRows();
 	}
 	
+	public void resetBookShelf()
+	{
+		mShelfView.initializeShelfRows();
+	}
+	
+	// for test
+	public void fillWithRandomBooks()
+	{
+		mShelfView.clearShelfRows();
+		mShelfView.addRandomBooks();
+	}
+	
 	public void addBook(BookShelfItem bookItem)
 	{
 	}

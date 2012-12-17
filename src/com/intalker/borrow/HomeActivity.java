@@ -51,7 +51,7 @@ public class HomeActivity extends Activity {
 				LinearLayout.LayoutParams.FILL_PARENT);
 		
 		Button btn = new Button(this);
-		btn.setText("Login via QQ");
+		btn.setText("Login");
 		btn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -62,7 +62,7 @@ public class HomeActivity extends Activity {
 		navigationBar.addView(btn);
 		
 		Button btn1 = new Button(this);
-		btn1.setText("Scan book");
+		btn1.setText("Scan");
 		btn1.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -74,16 +74,28 @@ public class HomeActivity extends Activity {
 		navigationBar.addView(btn1);
 		
 		Button btn2 = new Button(this);
-		btn2.setText("Clear Gallery");
+		btn2.setText("Clear");
 		btn2.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
-				mBookGallery.clearBooks();
+				mBookGallery.resetBookShelf();
 			}
 		});
 		
 		navigationBar.addView(btn2);
+		
+		Button btn3 = new Button(this);
+		btn3.setText("Random");
+		btn3.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				mBookGallery.fillWithRandomBooks();
+			}
+		});
+		
+		navigationBar.addView(btn3);
 
 		for (int i = 0; i < 10; ++i) {
 			navigationBar.addView(createTestFriendItemUI());

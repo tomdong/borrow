@@ -22,6 +22,9 @@ public class BookShelfView extends ScrollView {
 		super(context);
 
 		initializeUI();
+		
+		addRow(false);
+		
 		this.setBackgroundResource(R.drawable.bookshelf_bg);
 		instance = this;
 	}
@@ -29,9 +32,9 @@ public class BookShelfView extends ScrollView {
 	private void initializeUI() {
 		mScrollContent = new LinearLayout(this.getContext());
 		mScrollContent.setOrientation(LinearLayout.VERTICAL);
-		for (int i = 0; i < 10; ++i) {
-			addRow(true);
-		}
+//		for (int i = 0; i < 10; ++i) {
+//			addRow(true);
+//		}
 		this.addView(mScrollContent);
 	}
 
@@ -49,6 +52,13 @@ public class BookShelfView extends ScrollView {
 			mScrollContent.removeView(row);
 		}
 		mBookShelfRows.clear();
+	}
+	
+	public void initializeShelfRows() {
+		for (BookShelfRow row : mBookShelfRows) {
+			mScrollContent.removeView(row);
+		}
+		mBookShelfRows.clear();
 		addRow(false);
 	}
 	
@@ -61,5 +71,13 @@ public class BookShelfView extends ScrollView {
 		mScrollContent.addView(row, lp);
 		mBookShelfRows.add(row);
 		return row;
+	}
+	
+	// for test
+	public void addRandomBooks()
+	{
+		for (int i = 0; i < 10; ++i) {
+			addRow(true);
+		}
 	}
 }
