@@ -26,9 +26,10 @@ public class BookShelfItem extends RelativeLayout{
 	{
 		mCoverImageView = new ImageView(this.getContext());
 		RelativeLayout.LayoutParams coverImgaeViewLP = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.FILL_PARENT,
-				RelativeLayout.LayoutParams.FILL_PARENT);
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		mCoverImageView.setScaleType(ScaleType.FIT_END);
+
 		double random = Math.random();
 		
 		int resId = 0;

@@ -37,23 +37,23 @@ public class LayoutUtil {
 		return shelfRowBoardHeight;
 	}
 
-	public static int getShelfBookItemWidth() {
+	public static int getBookShelfItemWidth() {
 		if (shelfBookItemWidth < 0) {
-			shelfBookItemWidth = getShelfRowHeight() * 2 / 5;
+			shelfBookItemWidth = getShelfRowHeight() / 2;
 		}
 		return shelfBookItemWidth;
 	}
 	
-	public static int getShelfBookItemHeight() {
+	public static int getBookShelfItemHeight() {
 		if (shelfBookItemHeight < 0) {
-			shelfBookItemHeight = getShelfRowHeight() * 2 / 3;
+			shelfBookItemHeight = getShelfRowHeight() * 3 / 5;
 		}
 		return shelfBookItemHeight;
 	}
 	
 	public static int getShelfBookGap() {
 		if (shelfBookGap < 0) {
-			shelfBookGap = (getShelfWidth() - getShelfBookItemWidth()
+			shelfBookGap = (getShelfWidth() - getBookShelfItemWidth()
 					* rowBookCount)
 					/ (rowBookCount + 1);
 		}
@@ -71,7 +71,7 @@ public class LayoutUtil {
 	public static int getShelfBookTopMargin() {
 		if (shelfBookTopMargin < 0) {
 			shelfBookTopMargin = getShelfRowHeight() - getShelfBoardHeight()
-					* 4 / 5 - getShelfBookItemHeight();
+					* 4 / 5 - getBookShelfItemHeight();
 		}
 		return shelfBookTopMargin;
 	}

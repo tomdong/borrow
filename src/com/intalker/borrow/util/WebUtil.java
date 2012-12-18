@@ -14,6 +14,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.intalker.borrow.HomeActivity;
+import com.intalker.borrow.R;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.book.BookShelfView;
 
@@ -24,6 +26,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 public class WebUtil {
+	private final static String ISBN_SEARCHURL_DOUBAN = "http://api.douban.com/book/subject/isbn/";
 	private static WebUtil instance = null;
 
 	public static WebUtil getInstance() {
@@ -57,7 +60,6 @@ public class WebUtil {
 				}
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return imageURL;
@@ -84,7 +86,8 @@ public class WebUtil {
 			mISBN = isbn;
 			mProgressDialog = new ProgressDialog(app);
 			mProgressDialog.setCancelable(false);
-			mProgressDialog.setTitle("Pulling data");
+			mProgressDialog.setTitle(HomeActivity.getApp().getString(R.string.please_wait));
+			mProgressDialog.setMessage(HomeActivity.getApp().getString(R.string.searching_book_info));
 			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			mProgressDialog.show();
 		}
@@ -100,7 +103,7 @@ public class WebUtil {
 		@Override
 		protected InputStream doInBackground(String... params) {
 
-			String url = "http://api.douban.com/book/subject/isbn/" + mISBN;
+			String url = ISBN_SEARCHURL_DOUBAN + mISBN;
 			HttpGet get = new HttpGet(url);
 			HttpClient client = new DefaultHttpClient();
 			InputStream inputStream = null;

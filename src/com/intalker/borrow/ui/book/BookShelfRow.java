@@ -34,15 +34,15 @@ public class BookShelfRow extends RelativeLayout {
 		this.addView(board, boardLP);
 		if (createRandomBooks) {
 			// add book test items
-			for (int i = 0; i < 4; ++i) {
+			for (int i = 0; i < LayoutUtil.getRowBookCount(); ++i) {
 				addBook(true);
 			}
 		}
 	}
 	
 	public void addBook(boolean showAtOnce) {
-		int bookItemWidth = LayoutUtil.getShelfBookItemWidth();
-		int bookItemHeight = LayoutUtil.getShelfBookItemHeight();
+		int bookItemWidth = LayoutUtil.getBookShelfItemWidth();
+		int bookItemHeight = LayoutUtil.getBookShelfItemHeight();
 		int bookItemGap = LayoutUtil.getShelfBookGap();
 		
 		BookShelfItem bookShelfItem = new BookShelfItem(

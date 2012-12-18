@@ -23,11 +23,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class HomeActivity extends Activity {
-	BookGallery mBookGallery = null;
+	private static HomeActivity app = null;
+	private BookGallery mBookGallery = null;
+	
+	public static HomeActivity getApp() {
+		return app;
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.activity_home);
+		app = this;
 		DensityAdaptor.init(this);
 		
 		BookShelfItem.lastBookForTest = null;
@@ -49,6 +55,8 @@ public class HomeActivity extends Activity {
 		LinearLayout.LayoutParams navigationBarLP = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.FILL_PARENT);
+		
+		navigationBarLP.width = LayoutUtil.getNavigationPanelWidth();
 		
 		Button btn = new Button(this);
 		btn.setText("Login");
@@ -97,9 +105,9 @@ public class HomeActivity extends Activity {
 		
 		navigationBar.addView(btn3);
 
-		for (int i = 0; i < 10; ++i) {
-			navigationBar.addView(createTestFriendItemUI());
-		}
+//		for (int i = 0; i < 10; ++i) {
+//			navigationBar.addView(createTestFriendItemUI());
+//		}
 
 		mainLayout.addView(navigationBar, navigationBarLP);
 
