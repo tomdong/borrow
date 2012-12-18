@@ -21,6 +21,11 @@ public class BookShelfItem extends RelativeLayout{
 	{
 		mCoverImageView.setImageBitmap(coverImage);
 	}
+	
+	public void setCoverAsUnknown()
+	{
+		mCoverImageView.setImageResource(R.drawable.bookcover_unknown);
+	}
 
 	private void createUI()
 	{

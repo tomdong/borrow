@@ -129,6 +129,15 @@ public class WebUtil {
 					lastBook.show();
 				}
 			}
+			else
+			{
+				BookShelfItem lastBook = BookShelfItem.lastBookForTest;
+				if(null != lastBook)
+				{
+					lastBook.setCoverAsUnknown();
+					lastBook.show();
+				}
+			}
 		}
 	}
 }
