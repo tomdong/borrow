@@ -2,6 +2,7 @@ package com.intalker.borrow;
 
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
+import com.intalker.tencentinterface.TencentConnection;
 import com.tencent.tauth.TencentOpenAPI;
 import com.tencent.tauth.TencentOpenAPI2;
 import com.tencent.tauth.TencentOpenHost;
@@ -29,25 +30,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class HomeActivity extends Activity {
-	private static final String CALLBACK = "auth://tauth.qq.com/";
-	private static final String mAppID = "100347785"; //"222222";
-	
-	private String scope = "get_user_info,get_user_profile,add_share,add_topic,list_album,upload_pic,add_album";//ÊéàÊùÉËåÉÂõ¥
-	private String mOpenID="";
-	
 	private LinearLayout mMainLayout = null;
 	private LinearLayout mFriendsNavigationLayout = null;
 	private LinearLayout mBooksNavigationLayout = null;
+	private TencentConnection mTencentConnection= null;
 	
-	private String mAccessToken;
-
-	private Object mTencentOpenAPI;
-	private BroadcastReceiver receiver;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.activity_home);
+		mTencentConnection = new TencentConnection(this);
 		createHomeUI();
 		setContentView(mMainLayout);
 	}
@@ -95,30 +87,13 @@ public class HomeActivity extends Activity {
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		loginBtn.setLayoutParams(navigationBarLP);
 		
-		 //登录大按钮
-		 loginBtn.setImageDrawable(TencentOpenRes.getBigLoginBtn(getAssets()));	
-		 //登录中按钮 
-		 //loginBtn.setImageDrawable(TencentOpenRes.getLoginBtn(getAssets()));
-		 //登录小按钮
-		 //loginBtn.setImageDrawable(TencentOpenRes.getSmallLoginBtn(getAssets()));
-//		 
-//		 ImageView logoutBtn = (ImageView) findViewById(R.id.logout);
-//		 //退出中按钮
-//		 loginBtn.setImageDrawable(TencentOpenRes.getLogoutBtn(getAssets()));
-//		 //退出小按钮
-//		 loginBtn.setImageDrawable(TencentOpenRes.getSmallLogoutBtn(getAssets()));
-		 
-		 loginBtn.setOnClickListener(new View.OnClickListener() {
-				
+		 loginBtn.setImageDrawable(mTencentConnection.getLoginButton(0));	
+		 loginBtn.setOnClickListener(new View.OnClickListener() {				
 				@Override
 				public void onClick(View v) {
-					//TencentOpenAPI2.logIn(getApplicationContext(), mOpenID, scope, mAppID, "_self", CALLBACK, null, null);
-					auth(mAppID,"_self");
+					mTencentConnection.populateLogin();
 				}
-			});
-		 
-		 registerIntentReceivers();
-		
+			});		
 		return loginBtn;
 	}
 	
@@ -162,79 +137,4 @@ public class HomeActivity extends Activity {
 		avatar.setLayoutParams(avatarLP);
 		return avatar;
 	}
-	
-	private void auth(String clientId, String target) 
-	   {
-	       Intent intent = new Intent(HomeActivity.this, com.tencent.tauth.TAuthView.class);	
-	       intent.putExtra(TencentOpenHost.CLIENT_ID, clientId);	
-	       intent.putExtra(TencentOpenHost.SCOPE, scope);	
-	       intent.putExtra(TencentOpenHost.TARGET, target);	
-	       intent.putExtra(TencentOpenHost.CALLBACK, CALLBACK);			
-	       startActivity(intent);		
-	   }
-	
-	 public class AuthReceiver extends BroadcastReceiver 
-	   {
-	      private static final String TAG="AuthReceiver";
-	      @Override
-	      public void onReceive(Context context, Intent intent)
-	      {
-	         Bundle exts = intent.getExtras();
-	         String raw =  exts.getString("raw");
-	         String access_token =  exts.getString("access_token");
-	         String expires_in =  exts.getString("expires_in");
-	         Log.i(TAG, String.format("raw: %s, access_token:%s, expires_in:%s", raw, access_token, expires_in));
-	         if (access_token != null) 
-	         {
-	          //获取到access token
-	          mAccessToken = access_token;
-	         // ((TextView)findViewById(R.id.access_token)).setText(access_token);
-	          TDebug.msg("正在获取OpenID...", getApplicationContext());
-	          //用access token 来获取open id
-	          TencentOpenAPI.openid(access_token, new Callback() {
-	        	  @Override
-	        	  public void onSuccess(final Object obj) 
-	        	  {
-	        	     runOnUiThread(new Runnable() 
-	        	     {
-	        	         @Override
-	        	         public void run() 
-	        	         {
-	        	              //setOpenIdText(((OpenId)obj).getOpenId());
-	        	         }
-	        	      });
-	        	   }
-
-	        	   @Override
-	        	   public void onFail(int ret, final String msg)
-	        	   {
-	        	      runOnUiThread(new Runnable() 
-	        	      {
-	        	         @Override
-	        	         public void run() 
-	        	         {
-	        	            TDebug.msg(msg, getApplicationContext());
-	        	          }
-	        	       });
-	        	    }
-
-	        	    @Override
-	        	    public void onCancel(int flag)
-	        	    {
-	        	    }
-
-	        	});
-	         }
-	      }
-	   }
-	 private void registerIntentReceivers() {
-			receiver = new AuthReceiver();
-	        IntentFilter filter = new IntentFilter();
-	        filter.addAction(TencentOpenHost.AUTH_BROADCAST);
-			registerReceiver(receiver, filter);
-		}
-		
-		private void unregisterIntentReceivers() {
-			unregisterReceiver(receiver);
-		}
 }
