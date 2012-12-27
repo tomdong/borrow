@@ -1,6 +1,7 @@
 package com.intalker.borrow;
 
 import com.intalker.borrow.config.ResultCode;
+import com.intalker.borrow.friends.FriendsNavigationVertical;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.util.ColorUtil;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 public class HomeActivity extends Activity {
 	private static HomeActivity app = null;
 	private BookGallery mBookGallery = null;
+	private FriendsNavigationVertical mFriendsNavigation = null; // it also contains self info and action button!
 
 	public static HomeActivity getApp() {
 		return app;
@@ -37,6 +39,7 @@ public class HomeActivity extends Activity {
 		DensityAdaptor.init(this);
 
 		BookShelfItem.lastBookForTest = null;
+		mFriendsNavigation = new FriendsNavigationVertical(this);
 		setContentView(createHomeUI());
 	}
 
@@ -104,6 +107,8 @@ public class HomeActivity extends Activity {
 		});
 
 		navigationBar.addView(btn3);
+		
+		navigationBar.addView(mFriendsNavigation.createFriendsNavigationUI());
 
 //		for (int i = 0; i < 10; ++i) {
 //			navigationBar.addView(createTestFriendItemUI());
