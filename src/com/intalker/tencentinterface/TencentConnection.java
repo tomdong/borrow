@@ -1,5 +1,7 @@
 package com.intalker.tencentinterface;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -49,7 +51,7 @@ public class TencentConnection {
 	private UserProfile mUserProfile= null;
 
 	// TODO: add support for multiple handler!
-	private Handler mTencentEventHandler = null;
+	private ArrayList<Handler> mTencentEventHandlers = new ArrayList<Handler>();
 
 	public TencentConnection(Activity parent) {
 		mAccessToken = "";
@@ -60,9 +62,13 @@ public class TencentConnection {
 		mParent = parent;
 		loadCacheToken();
 	}
-	public void setEventHandler(Handler h)
+	public void regEventHandler(Handler h)
 	{
-		mTencentEventHandler = h;
+		mTencentEventHandlers.add(h);
+	}
+	public void unRegEventHandler(Handler h)
+	{
+		mTencentEventHandlers.remove(h);
 	}
 
 	public boolean containsValidCacheToken() {
@@ -234,8 +240,10 @@ public class TencentConnection {
 	}
 
 	private void sendMessage(int what) {
-		if (null != mTencentEventHandler)
-			mTencentEventHandler.sendEmptyMessage(what);
+		for(Handler h: mTencentEventHandlers)
+		{
+			h.sendEmptyMessage(what);
+		}
 	}
 
 	private class AuthReceiver extends BroadcastReceiver {
