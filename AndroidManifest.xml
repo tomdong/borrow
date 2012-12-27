@@ -2,18 +2,12 @@
     package="com.intalker.borrow"
     android:versionCode="1"
     android:versionName="1.0" >
-<<<<<<< HEAD
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-	<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="15"/>
-=======
     
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 	
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
->>>>>>> 266767c17a2929e2477bb50663dc39df312b76a1
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -29,19 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-        <activity
-            android:name="com.tencent.tauth.TAuthView"
-            android:configChanges="keyboardHidden|navigation|orientation"
-            android:launchMode="singleTask" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="auth" />
-            </intent-filter>
-        </activity>
-=======
         
         <activity android:name="com.tencent.tauth.TAuthView" 
             android:launchMode="singleTask" 
@@ -53,7 +34,6 @@
 		        <data android:scheme="auth"/>  		
 		    </intent-filter>  
 		</activity>
->>>>>>> 266767c17a2929e2477bb50663dc39df312b76a1
     </application>
 
 </manifest>
