@@ -72,7 +72,7 @@ public class TencentConnection {
 	}
 
 	public boolean containsValidCacheToken() {
-		if (mAccessToken == null || mAccessToken.isEmpty())
+		if (mAccessToken == null || mAccessToken.length() == 0)
 			return false;
 
 		// TODO: Check the validation of the cache token
@@ -128,7 +128,7 @@ public class TencentConnection {
 	}
 
 	public void requestOpenId() {
-		if (mOpenId != null && !mOpenId.isEmpty()) {
+		if (mOpenId != null && (mOpenId.length() > 0)) {
 			sendMessage(TENCENT_LOGIN_SUCC);
 			return;
 		}
@@ -159,7 +159,7 @@ public class TencentConnection {
 	}
 	
 	public void requestUserInfo() {
-		if (mOpenId == null || mOpenId.isEmpty() || mAccessToken== null||mAccessToken.isEmpty()) {
+		if (mOpenId == null || (mOpenId.length() == 0) || mAccessToken== null|| (mAccessToken.length() == 0)) {
 			sendMessage(TENCENT_GETUSERINFO_FAIL);
 			return;
 		}
@@ -190,7 +190,7 @@ public class TencentConnection {
 	}
 	
 	public void requestUserProfile() {
-		if (mOpenId == null || mOpenId.isEmpty() || mAccessToken== null||mAccessToken.isEmpty()) {
+		if (mOpenId == null || (mOpenId.length() == 0) || mAccessToken== null|| (mAccessToken.length() == 0)) {
 			sendMessage(TENCENT_GETUSERINFO_FAIL);
 			return;
 		}
@@ -258,7 +258,7 @@ public class TencentConnection {
 			Log.i(TAG, String.format("raw: %s, access_token:%s, expires_in:%s",
 					mRaw, mAccessToken, mExpireInfo));
 
-			if (null != mErrorReturn && !mErrorReturn.isEmpty()) {
+			if (null != mErrorReturn && (mErrorReturn.length() > 0)) {
 				// TODO: warning the error
 				populateLogin(false); // relogin again!
 			} else {
