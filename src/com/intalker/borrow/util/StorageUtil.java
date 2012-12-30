@@ -24,6 +24,7 @@ public class StorageUtil {
 	public final static String CachePath = DataPath + "/cache";
 	public final static String CacheImagePath = CachePath + "/image";
 	public final static String CacheXmlPath = CachePath + "/xml";
+	public final static String CacheBookIndexPath = CacheXmlPath + "/book.xml";
 
 	public static void initialize() {
 		checkPath(CacheImagePath);
@@ -61,7 +62,7 @@ public class StorageUtil {
 	public static void saveCachedBooks() {
 		//Save text info
 		try {
-			File file = new File(CacheXmlPath + "/test.txt");
+			File file = new File(CacheBookIndexPath);
 			FileWriter fw = new FileWriter(file, false);
 			fw.write(XmlUtil.serializeCachedBooks(AppData.getInstance().getBooks()));
 			fw.close();

@@ -1,16 +1,11 @@
 package com.intalker.borrow.util;
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -21,12 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xmlpull.v1.XmlSerializer;
-
 import com.intalker.borrow.data.BookInfo;
-
-import android.database.CursorJoiner.Result;
-import android.util.Xml;
 
 public class XmlUtil {
 	private static final String Encoding = "utf-8";
@@ -62,9 +52,7 @@ public class XmlUtil {
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			File cachedXmlFilePath = new File(StorageUtil.CacheXmlPath
-					+ "/test.txt");
-			// builder.parse(cachedXmlFilePath)
+			File cachedXmlFilePath = new File(StorageUtil.CacheBookIndexPath);
 			Document doc = builder.parse(cachedXmlFilePath);
 			Element rootElement = doc.getDocumentElement();
 			NodeList items = rootElement.getElementsByTagName(BookNodeName);
@@ -111,7 +99,7 @@ public class XmlUtil {
         
         TransformerFactory transFactory = TransformerFactory.newInstance();
         Transformer transformer = transFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty(OutputKeys.ENCODING, Encoding);
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
         
