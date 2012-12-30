@@ -1,5 +1,10 @@
 package com.intalker.borrow.ui.book;
 
+import java.util.ArrayList;
+
+import com.intalker.borrow.data.AppData;
+import com.intalker.borrow.data.BookInfo;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.widget.RelativeLayout;
@@ -31,6 +36,7 @@ public class BookGallery extends RelativeLayout {
 	public void resetBookShelf()
 	{
 		mShelfView.initializeShelfRows();
+		AppData.getInstance().clearBooks();
 	}
 	
 	// for test
@@ -42,5 +48,15 @@ public class BookGallery extends RelativeLayout {
 	
 	public void addBook(BookShelfItem bookItem)
 	{
+	}
+	
+	public void initialWithCachedData()
+	{
+		//mShelfView.clearShelfRows();
+		ArrayList<BookInfo> books = AppData.getInstance().getBooks();
+		for(BookInfo bookInfo : books)
+		{
+			mShelfView.addBookForCachedBook(bookInfo);
+		}
 	}
 }

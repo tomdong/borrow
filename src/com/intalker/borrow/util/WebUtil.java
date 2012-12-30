@@ -98,6 +98,11 @@ public class WebUtil {
 			
 			//TODO: should change to use BookGallery later.
 			BookShelfView.getInstance().addBookForLoading();
+			BookShelfItem lastBook = BookShelfItem.lastBookForTest;
+			if(null != lastBook)
+			{
+				lastBook.setISBN(mISBN);
+			}
 		}
 
 		@Override
@@ -121,22 +126,16 @@ public class WebUtil {
 		protected void onPostExecute(InputStream result) {
 			super.onPostExecute(result);
 			mProgressDialog.hide();
-			if (null != mCoverImage) {
-				BookShelfItem lastBook = BookShelfItem.lastBookForTest;
-				if(null != lastBook)
-				{
-					lastBook.setCoverImage(mCoverImage);
-					lastBook.show();
-				}
-			}
-			else
+			BookShelfItem lastBook = BookShelfItem.lastBookForTest;
+			if(null != lastBook)
 			{
-				BookShelfItem lastBook = BookShelfItem.lastBookForTest;
-				if(null != lastBook)
-				{
-					lastBook.setCoverAsUnknown();
-					lastBook.show();
+				if (null != mCoverImage) {
+					lastBook.setCoverImage(mCoverImage);
 				}
+				else {
+					lastBook.setCoverAsUnknown();
+				}
+				lastBook.show();
 			}
 		}
 	}

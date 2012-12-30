@@ -2,6 +2,7 @@ package com.intalker.borrow.ui.book;
 
 import java.util.ArrayList;
 import com.intalker.borrow.R;
+import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;
@@ -44,7 +45,7 @@ public class BookShelfView extends ScrollView {
 		{
 			lastRow = addRow(false);
 		}
-		lastRow.addBook(false);
+		lastRow.addBook(false, null);
 	}
 	
 	public void clearShelfRows() {
@@ -79,5 +80,14 @@ public class BookShelfView extends ScrollView {
 		for (int i = 0; i < 10; ++i) {
 			addRow(true);
 		}
+	}
+	
+	public void addBookForCachedBook(BookInfo bookInfo) {
+		BookShelfRow lastRow = mBookShelfRows.get(mBookShelfRows.size() - 1);
+		if(lastRow.isFull())
+		{
+			lastRow = addRow(false);
+		}
+		lastRow.addBook(true, bookInfo);
 	}
 }

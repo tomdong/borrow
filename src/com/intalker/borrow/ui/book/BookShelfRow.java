@@ -3,6 +3,7 @@ package com.intalker.borrow.ui.book;
 import java.util.ArrayList;
 
 import com.intalker.borrow.R;
+import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;
@@ -35,18 +36,18 @@ public class BookShelfRow extends RelativeLayout {
 		if (createRandomBooks) {
 			// add book test items
 			for (int i = 0; i < LayoutUtil.getRowBookCount(); ++i) {
-				addBook(true);
+				addBook(true, null);
 			}
 		}
 	}
 	
-	public void addBook(boolean showAtOnce) {
+	public void addBook(boolean showAtOnce, BookInfo bookInfo) {
 		int bookItemWidth = LayoutUtil.getBookShelfItemWidth();
 		int bookItemHeight = LayoutUtil.getBookShelfItemHeight();
 		int bookItemGap = LayoutUtil.getShelfBookGap();
 		
 		BookShelfItem bookShelfItem = new BookShelfItem(
-				this.getContext());
+				this.getContext(), bookInfo);
 		RelativeLayout.LayoutParams bookLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);

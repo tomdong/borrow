@@ -1,12 +1,15 @@
 package com.intalker.borrow;
 
 import com.intalker.borrow.config.ResultCode;
+import com.intalker.borrow.data.AppData;
+import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.friends.FriendsNavigationVertical;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
+import com.intalker.borrow.util.StorageUtil;
 import com.intalker.borrow.util.ScanUtil;
 import com.intalker.borrow.util.WebUtil;
 
@@ -37,10 +40,15 @@ public class HomeActivity extends Activity {
 		// setContentView(R.layout.activity_home);
 		app = this;
 		DensityAdaptor.init(this);
+		StorageUtil.initialize();
+		
+		StorageUtil.loadCachedBooks();
 
 		BookShelfItem.lastBookForTest = null;
 		mFriendsNavigation = new FriendsNavigationVertical(this);
 		setContentView(createHomeUI());
+		
+		this.mBookGallery.initialWithCachedData();
 	}
 
 	@Override
@@ -169,10 +177,10 @@ public class HomeActivity extends Activity {
 			switch (resultCode)
 			{
 			case RESULT_OK:
-				String contents = data.getStringExtra("SCAN_RESULT");
-				String format = data.getStringExtra("SCAN_RESULT_FORMAT");
+				String isbn = data.getStringExtra("SCAN_RESULT");
+				//String format = data.getStringExtra("SCAN_RESULT_FORMAT");
 				//Toast.makeText(this, contents, Toast.LENGTH_LONG).show();
-				WebUtil.getInstance().getBookInfoByISBN(HomeActivity.this, contents);
+				WebUtil.getInstance().getBookInfoByISBN(HomeActivity.this, isbn);
 				break;
 			case RESULT_CANCELED:
 				break;
@@ -181,6 +189,10 @@ public class HomeActivity extends Activity {
 			}
 		}
 	}
-
-
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		StorageUtil.saveCachedBooks();
+	}
 }
