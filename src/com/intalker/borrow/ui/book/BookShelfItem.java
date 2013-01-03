@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 public class BookShelfItem extends RelativeLayout {
 	public static BookShelfItem lastBookForTest = null;
+	private static BookDetailDialog detailDialog = null;
 	private ImageView mCoverImageView = null;
 	private BookInfo mInfo = null;
 
@@ -34,6 +35,24 @@ public class BookShelfItem extends RelativeLayout {
 			mInfo = new BookInfo();
 			AppData.getInstance().addBook(mInfo);
 		}
+		
+		this.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				BookShelfItem item = (BookShelfItem) arg0;
+				if(null != item)
+				{
+					if(null == detailDialog)
+					{
+						detailDialog = new BookDetailDialog(arg0.getContext());
+					}
+					detailDialog.setInfo(item.mInfo);
+					detailDialog.show();
+				}
+			}
+			
+		});
 	}
 
 	public void setCoverImage(Bitmap coverImage) {
