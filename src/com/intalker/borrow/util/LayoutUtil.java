@@ -12,6 +12,9 @@ public class LayoutUtil {
 	private static int shelfWidth = -1;
 	private static int shelfBookTopMargin = -1;
 	
+	private static int detailDialogWidth = -1;
+	private static int detailDialogHeight = -1;
+	
 	public static int getRowBookCount() {
 		return rowBookCount;
 	}
@@ -74,5 +77,19 @@ public class LayoutUtil {
 					* 4 / 5 - getBookShelfItemHeight();
 		}
 		return shelfBookTopMargin;
+	}
+	
+	public static int getDetailDialogWidth() {
+		if(detailDialogWidth < 0) {
+			detailDialogWidth = DensityAdaptor.getScreenWidth() * 4 / 5;
+		}
+		return detailDialogWidth;
+	}
+	
+	public static int getDetailDialogHeight() {
+		if(detailDialogHeight < 0) {
+			detailDialogHeight = getDetailDialogWidth() * 3 / 2;
+		}
+		return detailDialogHeight;
 	}
 }
