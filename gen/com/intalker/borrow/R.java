@@ -18,8 +18,9 @@ public final class R {
         public static final int bookcover_unknown=0x7f020004;
         public static final int bookshelf_bg=0x7f020005;
         public static final int bookshelf_row=0x7f020006;
-        public static final int ic_action_search=0x7f020007;
-        public static final int ic_launcher=0x7f020008;
+        public static final int detail_bk=0x7f020007;
+        public static final int ic_action_search=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
     }
     public static final class id {
         public static final int menu_settings=0x7f070000;
@@ -32,9 +33,14 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f040000;
+        public static final int author=0x7f040007;
+        public static final int book_name=0x7f040006;
         public static final int hello_world=0x7f040001;
+        public static final int isbn=0x7f04000a;
         public static final int menu_settings=0x7f040002;
+        public static final int page_count=0x7f040009;
         public static final int please_wait=0x7f040004;
+        public static final int publisher=0x7f040008;
         public static final int searching_book_info=0x7f040005;
         public static final int title_activity_home=0x7f040003;
     }

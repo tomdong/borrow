@@ -15,6 +15,10 @@ public class LayoutUtil {
 	private static int detailDialogWidth = -1;
 	private static int detailDialogHeight = -1;
 	
+	private static int detailDialogBoundMargin = -1;
+	
+	private static int detailInfoLineHeight = -1;
+	
 	public static int getRowBookCount() {
 		return rowBookCount;
 	}
@@ -91,5 +95,19 @@ public class LayoutUtil {
 			detailDialogHeight = getDetailDialogWidth() * 3 / 2;
 		}
 		return detailDialogHeight;
+	}
+	
+	public static int getDetailDialogBoundMargin() {
+		if(detailDialogBoundMargin < 0) {
+			detailDialogBoundMargin = DensityAdaptor.getDensityIndependentValue(10);
+		}
+		return detailDialogBoundMargin;
+	}
+	
+	public static int getDetailInfoLineHeight() {
+		if(detailInfoLineHeight < 0) {
+			detailInfoLineHeight = DensityAdaptor.getDensityIndependentValue(16);
+		}
+		return detailInfoLineHeight;
 	}
 }
