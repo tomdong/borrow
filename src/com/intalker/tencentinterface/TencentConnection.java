@@ -12,8 +12,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.tencent.tauth.TAuthView;
 import com.tencent.tauth.TencentOpenAPI;
-import com.tencent.tauth.TencentOpenAPI2;
 import com.tencent.tauth.TencentOpenHost;
 import com.tencent.tauth.TencentOpenRes;
 import com.tencent.tauth.bean.OpenId;
@@ -165,9 +165,6 @@ public class TencentConnection {
 		}
 
 		TencentOpenAPI.userInfo(mAccessToken, mAppid, mOpenId, new Callback() {
-			@Override
-			public void onCancel(int flag) {
-			}
 
 			@Override
 			public void onSuccess(final Object obj) {
@@ -196,9 +193,6 @@ public class TencentConnection {
 		}
 
 		TencentOpenAPI.userProfile(mAccessToken, mAppid, mOpenId, new Callback() {
-			@Override
-			public void onCancel(int flag) {
-			}
 
 			@Override
 			public void onSuccess(final Object obj) {
@@ -216,10 +210,23 @@ public class TencentConnection {
 	}
 
 	private void populateLogin(boolean reg) {
-		TencentOpenAPI2.logIn(mParent.getApplicationContext(), mOpenId, mScope,
-				mAppid, "_self", null, null, null);
+		auth();
 		if (reg)
 			registerIntentReceivers();
+	}
+	
+	private void auth() {
+//		TencentOpenAPI2.logIn(mParent.getApplicationContext(), mOpenId, mScope,
+//		mAppid, "_self", null, null, null);
+		
+		
+		Intent intent = new Intent(mParent.getApplicationContext(), com.tencent.tauth.TAuthView.class);
+		
+		intent.putExtra(TAuthView.CLIENT_ID, mAppid);
+		intent.putExtra(TAuthView.SCOPE, mScope);
+		intent.putExtra(TAuthView.TARGET, "_self");
+		
+		mParent.startActivity(intent);		
 	}
 
 	private void loadCacheToken() {
@@ -230,7 +237,7 @@ public class TencentConnection {
 		Log.i(TAG, "REG");
 		mReceiver = new AuthReceiver();
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(TencentOpenHost.AUTH_BROADCAST);
+		filter.addAction(TAuthView.AUTH_BROADCAST);
 		mParent.registerReceiver(mReceiver, filter);
 	}
 
@@ -251,10 +258,10 @@ public class TencentConnection {
 		public void onReceive(Context context, Intent intent) {
 			Bundle exts = intent.getExtras();
 			mRaw = exts.getString("raw");
-			mAccessToken = exts.getString(TencentOpenHost.ACCESS_TOKEN);
-			mExpireInfo = exts.getString(TencentOpenHost.EXPIRES_IN);
-			mErrorReturn = exts.getString(TencentOpenHost.ERROR_RET);
-			mErrorDes = exts.getString(TencentOpenHost.ERROR_DES);
+			mAccessToken = exts.getString(TAuthView.ACCESS_TOKEN);
+			mExpireInfo = exts.getString(TAuthView.EXPIRES_IN);
+			mErrorReturn = exts.getString(TAuthView.ERROR_RET);
+			mErrorDes = exts.getString(TAuthView.ERROR_DES);
 			Log.i(TAG, String.format("raw: %s, access_token:%s, expires_in:%s",
 					mRaw, mAccessToken, mExpireInfo));
 
