@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.intalker.borrow.util.OBDebug;
 import com.tencent.tauth.TAuthView;
 import com.tencent.tauth.TencentOpenAPI;
 import com.tencent.tauth.TencentOpenHost;
@@ -146,7 +147,7 @@ public class TencentConnection {
 
 			@Override
 			public void onFail(int ret, final String msg) {
-				TDebug.msg(msg, mParent.getApplicationContext());
+				OBDebug.toast(mParent, msg);
 				mErrorReturn = msg;
 				sendMessage(TENCENT_LOGIN_FAIL);
 			}
@@ -174,7 +175,7 @@ public class TencentConnection {
 
 			@Override
 			public void onFail(int ret, final String msg) {
-				TDebug.msg(msg, mParent.getApplicationContext());
+				OBDebug.toast(mParent, msg);
 				mErrorReturn = msg;
 				sendMessage(TENCENT_GETUSERINFO_FAIL);
 			}
@@ -202,7 +203,7 @@ public class TencentConnection {
 
 			@Override
 			public void onFail(int ret, final String msg) {
-				TDebug.msg(msg, mParent.getApplicationContext());
+				OBDebug.toast(mParent, msg);
 				mErrorReturn = msg;
 				sendMessage(TENCENT_GETUSERINFO_FAIL);
 			}
