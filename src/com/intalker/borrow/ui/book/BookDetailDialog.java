@@ -80,10 +80,22 @@ public class BookDetailDialog extends Dialog {
 		RelativeLayout.LayoutParams labelLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		
-		labelLP.topMargin = LayoutUtil.getDetailInfoLineHeight() * index * 2;
+		int lineHeight = LayoutUtil.getDetailInfoLineHeight();
+		int topMargin = lineHeight * index * 5 / 2;
+		labelLP.topMargin = topMargin;
 		
 		mDetailInfoPanel.addView(label, labelLP);
+		
+		TextView valueText = new TextView(context);
+		valueText.setText("???");
+		
+		RelativeLayout.LayoutParams valueTextLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		
+		valueTextLP.topMargin = topMargin + lineHeight;
+		valueTextLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		mDetailInfoPanel.addView(valueText, valueTextLP);
 	}
 	
 	public void setInfo(BookInfo bookInfo)

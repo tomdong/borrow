@@ -85,7 +85,7 @@ public class LayoutUtil {
 	
 	public static int getDetailDialogWidth() {
 		if(detailDialogWidth < 0) {
-			detailDialogWidth = DensityAdaptor.getScreenWidth() * 4 / 5;
+			detailDialogWidth = DensityAdaptor.getDensityIndependentValue(280);//.getScreenWidth() * 4 / 5;
 		}
 		return detailDialogWidth;
 	}

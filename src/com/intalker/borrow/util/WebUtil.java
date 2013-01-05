@@ -80,6 +80,10 @@ public class WebUtil {
 		private String mISBN = null;
 		private ProgressDialog mProgressDialog = null;
 		private Bitmap mCoverImage = null;
+		private String mDescription = "";
+		private String mAuthor = "";
+		private String mPublisher = "";
+		private String mPageCount = "";
 
 		public GetBookInfoTask(Activity app, String isbn) {
 			super();
