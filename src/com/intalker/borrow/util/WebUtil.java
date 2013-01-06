@@ -41,30 +41,6 @@ public class WebUtil {
 		task.execute();
 	}
 
-	private String parseDoubanXML(InputStream inputStream) {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		String imageURL = "";
-		try {
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document doc = builder.parse(inputStream);
-			NodeList nodes = doc.getElementsByTagName("link");
-			int length = nodes.getLength();
-			for (int i = 0; i < length; ++i) {
-				Node node = nodes.item(i);
-				NamedNodeMap attrs = node.getAttributes();
-				Node relAttr = attrs.getNamedItem("rel");
-				if (relAttr.getNodeValue().compareTo("image") == 0) {
-					imageURL = attrs.getNamedItem("href").getNodeValue();
-					imageURL = imageURL.replace("spic", "lpic");
-					break;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return imageURL;
-	}
-
 	public static Bitmap getImage(String strUrl) {
 		Bitmap bmp = null;
 		try {
@@ -80,6 +56,7 @@ public class WebUtil {
 		private String mISBN = null;
 		private ProgressDialog mProgressDialog = null;
 		private Bitmap mCoverImage = null;
+		private String mBookName = "";
 		private String mDescription = "";
 		private String mAuthor = "";
 		private String mPublisher = "";
@@ -113,17 +90,17 @@ public class WebUtil {
 		protected InputStream doInBackground(String... params) {
 
 			String url = ISBN_SEARCHURL_DOUBAN + mISBN;
-			HttpGet get = new HttpGet(url);
-			HttpClient client = new DefaultHttpClient();
-			InputStream inputStream = null;
-			try {
-				HttpResponse response = client.execute(get);
-				inputStream = response.getEntity().getContent();
-			} catch (Exception e) {
-			}
-			String imageURL = parseDoubanXML(inputStream);
+//			HttpGet get = new HttpGet(url);
+//			HttpClient client = new DefaultHttpClient();
+//			InputStream inputStream = null;
+//			try {
+//				HttpResponse response = client.execute(get);
+//				inputStream = response.getEntity().getContent();
+//			} catch (Exception e) {
+//			}
+			String imageURL = parseDoubanXML(url);
 			mCoverImage = getImage(imageURL);
-			return inputStream;
+			return null;
 		}
 
 		@Override
@@ -135,12 +112,57 @@ public class WebUtil {
 			{
 				if (null != mCoverImage) {
 					lastBook.setCoverImage(mCoverImage);
+					lastBook.setDetailInfo(mBookName, mAuthor, mPublisher, mPageCount, mDescription);
 				}
 				else {
 					lastBook.setCoverAsUnknown();
 				}
 				lastBook.show();
 			}
+		}
+		
+		private String parseDoubanXML(String url) {
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			String imageURL = "";
+			try {
+				DocumentBuilder builder = factory.newDocumentBuilder();
+				//builder.parse(url);
+				Document doc = builder.parse(url);
+				
+				//Get preview image (cover image)
+				NodeList nodes = doc.getElementsByTagName("link");
+				int length = nodes.getLength();
+				for (int i = 0; i < length; ++i) {
+					Node node = nodes.item(i);
+					NamedNodeMap attrs = node.getAttributes();
+					Node relAttr = attrs.getNamedItem("rel");
+					if (relAttr.getNodeValue().compareTo("image") == 0) {
+						imageURL = attrs.getNamedItem("href").getNodeValue();
+						imageURL = imageURL.replace("spic", "lpic");
+						break;
+					}
+				}
+				
+				//Get title text
+				nodes = doc.getElementsByTagName("title");
+				if(nodes.getLength() > 0)
+				{
+					Node summaryNode = nodes.item(0);
+					mBookName = summaryNode.getTextContent();
+					//mBookName = summaryNode.getNodeValue();
+				}
+				
+				//Get summary text
+				nodes = doc.getElementsByTagName("summary");
+				if(nodes.getLength() > 0)
+				{
+					Node summaryNode = nodes.item(0);
+					mDescription = summaryNode.getTextContent();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return imageURL;
 		}
 	}
 }

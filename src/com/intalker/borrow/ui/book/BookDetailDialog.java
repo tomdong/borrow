@@ -20,6 +20,12 @@ public class BookDetailDialog extends Dialog {
 	private ImageView mCoverImage = null;
 	private RelativeLayout mDetailInfoPanel = null;
 	
+	private TextView mNameTextView = null;
+	private TextView mAuthorTextView = null;
+	private TextView mPublisherTextView = null;
+	private TextView mPageCountTextView = null;
+	private TextView mISBNTextView = null;
+	
 	public BookDetailDialog(Context context) {
 		super(context, R.style.Theme_TransparentDialog);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -64,14 +70,14 @@ public class BookDetailDialog extends Dialog {
 		detailInfoPanelLP.rightMargin = boundMargin;
 		mLayout.addView(mDetailInfoPanel, detailInfoPanelLP);
 		
-		addInfo(R.string.book_name, 0);
-		addInfo(R.string.author, 1);
-		addInfo(R.string.publisher, 2);
-		addInfo(R.string.page_count, 3);
-		addInfo(R.string.isbn, 4);
+		mNameTextView = addInfoTextView(R.string.book_name, 0);
+		mAuthorTextView = addInfoTextView(R.string.author, 1);
+		mPublisherTextView = addInfoTextView(R.string.publisher, 2);
+		mPageCountTextView = addInfoTextView(R.string.page_count, 3);
+		mISBNTextView = addInfoTextView(R.string.isbn, 4);
 	}
 	
-	private void addInfo(int textResId, int index)
+	private TextView addInfoTextView(int textResId, int index)
 	{
 		Context context = this.getContext();
 		TextView label = new TextView(context);
@@ -96,6 +102,8 @@ public class BookDetailDialog extends Dialog {
 		valueTextLP.topMargin = topMargin + lineHeight;
 		valueTextLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		mDetailInfoPanel.addView(valueText, valueTextLP);
+		
+		return valueText;
 	}
 	
 	public void setInfo(BookInfo bookInfo)
@@ -103,6 +111,11 @@ public class BookDetailDialog extends Dialog {
 		if(null != bookInfo)
 		{
 			mCoverImage.setImageBitmap(bookInfo.getCoverImage());
+			mNameTextView.setText(bookInfo.getName());
+			mAuthorTextView.setText(bookInfo.getAuthor());
+			mPublisherTextView.setText(bookInfo.getPublisher());
+			mPageCountTextView.setText(bookInfo.getPageCount());
+			mISBNTextView.setText(bookInfo.getISBN());
 		}
 	}
 

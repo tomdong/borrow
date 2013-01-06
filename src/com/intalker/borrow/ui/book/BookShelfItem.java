@@ -100,4 +100,13 @@ public class BookShelfItem extends RelativeLayout {
 	public void show() {
 		this.setVisibility(View.VISIBLE);
 	}
+	
+	public void setDetailInfo(String name, String author, String publisher,
+			String pageCount, String description) {
+		mInfo.setName(name);
+		mInfo.setAuthor(author);
+		mInfo.setPublisher(publisher);
+		mInfo.setPageCount(pageCount);
+		mInfo.setDescription(description);
+	}
 }
