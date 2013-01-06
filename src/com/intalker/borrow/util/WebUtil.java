@@ -159,6 +159,27 @@ public class WebUtil {
 					Node summaryNode = nodes.item(0);
 					mDescription = summaryNode.getTextContent();
 				}
+				
+				nodes = doc.getElementsByTagName("db:attribute");
+				length = nodes.getLength();
+				for (int i = 0; i < length; ++i) {
+					Node node = nodes.item(i);
+					NamedNodeMap attrs = node.getAttributes();
+					Node relAttr = attrs.getNamedItem("name");
+					
+					if (relAttr.getNodeValue().compareTo("isbn13") == 0) {
+						mISBN = node.getTextContent();
+					}
+					else if (relAttr.getNodeValue().compareTo("pages") == 0) {
+						mPageCount = node.getTextContent();
+					}
+					else if (relAttr.getNodeValue().compareTo("author") == 0) {
+						mAuthor = node.getTextContent();
+					}
+					else if (relAttr.getNodeValue().compareTo("publisher") == 0) {
+						mPublisher = node.getTextContent();
+					}
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
