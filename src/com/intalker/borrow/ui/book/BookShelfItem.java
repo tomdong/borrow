@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 
 public class BookShelfItem extends RelativeLayout {
 	public static BookShelfItem lastBookForTest = null;
-	private static BookDetailDialog detailDialog = null;
+	private BookDetailDialog detailDialog = null;
 	private ImageView mCoverImageView = null;
 	private BookInfo mInfo = null;
 
