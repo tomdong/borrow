@@ -7,10 +7,13 @@ import com.intalker.borrow.util.LayoutUtil;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class BookDetailDialog extends Dialog {
@@ -25,6 +28,7 @@ public class BookDetailDialog extends Dialog {
 	private TextView mPublisherTextView = null;
 	private TextView mPageCountTextView = null;
 	private TextView mISBNTextView = null;
+	private TextView mDescriptionTextView = null;
 	
 	public BookDetailDialog(Context context) {
 		super(context, R.style.Theme_TransparentDialog);
@@ -53,12 +57,13 @@ public class BookDetailDialog extends Dialog {
 		coverImageLP.leftMargin = boundMargin;
 		coverImageLP.topMargin = boundMargin;
 		mCoverImage.setImageResource(R.drawable.bookcover_unknown);
-		mCoverImage.setScaleType(ScaleType.FIT_START);
-		mCoverImage.setBackgroundColor(Color.BLUE);
+		//mCoverImage.setScaleType(ScaleType.FIT_START);
+		mCoverImage.setScaleType(ScaleType.FIT_CENTER);
+		//mCoverImage.setBackgroundColor(Color.BLUE);
 		mLayout.addView(mCoverImage, coverImageLP);
 		
 		mDetailInfoPanel = new RelativeLayout(context);
-		mDetailInfoPanel.setBackgroundColor(Color.WHITE);
+		//mDetailInfoPanel.setBackgroundColor(Color.WHITE);
 		RelativeLayout.LayoutParams detailInfoPanelLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -75,6 +80,13 @@ public class BookDetailDialog extends Dialog {
 		mPublisherTextView = addInfoTextView(R.string.publisher, 2);
 		mPageCountTextView = addInfoTextView(R.string.page_count, 3);
 		mISBNTextView = addInfoTextView(R.string.isbn, 4);
+		
+		int separatorY = boundMargin + LayoutUtil.getDetailDialogHeight() / 2;
+		mLayout.addView(createSeparator(separatorY));
+		
+		int descriptionHeight = LayoutUtil.getDetailDialogHeight() / 3;
+		mLayout.addView(createDescriptionPanel(descriptionHeight));
+		mLayout.addView(createSeparator(separatorY + descriptionHeight + boundMargin));
 	}
 	
 	private TextView addInfoTextView(int textResId, int index)
@@ -87,13 +99,15 @@ public class BookDetailDialog extends Dialog {
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		int lineHeight = LayoutUtil.getDetailInfoLineHeight();
-		int topMargin = lineHeight * index * 5 / 2;
+		int topMargin = lineHeight * index * 5 / 2 + lineHeight;
 		labelLP.topMargin = topMargin;
 		
 		mDetailInfoPanel.addView(label, labelLP);
 		
 		TextView valueText = new TextView(context);
 		valueText.setText("???");
+		valueText.setTextSize(12.0f);
+		valueText.setTextColor(Color.BLACK);
 		
 		RelativeLayout.LayoutParams valueTextLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -102,8 +116,53 @@ public class BookDetailDialog extends Dialog {
 		valueTextLP.topMargin = topMargin + lineHeight;
 		valueTextLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		mDetailInfoPanel.addView(valueText, valueTextLP);
-		
+
 		return valueText;
+	}
+	
+	private View createSeparator(int y)
+	{
+		ImageView v = new ImageView(this.getContext());
+		v.setImageResource(R.drawable.hori_separator);
+		v.setScaleType(ScaleType.FIT_XY);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.FILL_PARENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+		lp.topMargin = y;
+		lp.width = LayoutUtil.getDetailDialogWidth();
+		
+		v.setLayoutParams(lp);
+		return v;
+	}
+	
+	private ScrollView createDescriptionPanel(int height)
+	{
+		ScrollView scrollView = new ScrollView(this.getContext());
+		
+		LinearLayout scrollContent = new LinearLayout(this.getContext());
+		scrollContent.setOrientation(LinearLayout.VERTICAL);
+		scrollView.addView(scrollContent);
+		
+		mDescriptionTextView = new TextView(this.getContext());
+		mDescriptionTextView.setText("???");
+		mDescriptionTextView.setTextColor(Color.BLACK);
+		scrollContent.addView(mDescriptionTextView);
+		
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		
+		int margin = LayoutUtil.getDetailDialogBoundMargin();
+		lp.leftMargin = margin;
+		lp.rightMargin = margin;
+		lp.topMargin = margin * 2 + LayoutUtil.getDetailDialogHeight() / 2;
+		lp.width = LayoutUtil.getDetailDialogWidth() - margin * 2;
+		lp.height = height;
+		
+		scrollView.setLayoutParams(lp);
+		
+		return scrollView;
 	}
 	
 	public void setInfo(BookInfo bookInfo)
@@ -116,6 +175,7 @@ public class BookDetailDialog extends Dialog {
 			mPublisherTextView.setText(bookInfo.getPublisher());
 			mPageCountTextView.setText(bookInfo.getPageCount());
 			mISBNTextView.setText(bookInfo.getISBN());
+			mDescriptionTextView.setText(bookInfo.getDescription());
 		}
 	}
 

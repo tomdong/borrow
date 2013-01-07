@@ -78,4 +78,8 @@ public class BookInfo {
 	public String getPageCount() {
 		return mPageCount;
 	}
+	
+	public String getDescription() {
+		return mDescription;
+	}
 }
