@@ -116,22 +116,6 @@ public class XmlUtil {
 						book.setDescription(description);
 					}
 				}
-//				Element authorElement = doc.createElement(AuthorNodeName);
-//				nameElement.setTextContent(book.getAuthor());
-//				bookElement.appendChild(authorElement);
-//				
-//				Element publisherElement = doc.createElement(PublisherNodeName);
-//				nameElement.setTextContent(book.getPublisher());
-//				bookElement.appendChild(publisherElement);
-//				
-//				Element pageCountElement = doc.createElement(PageCountNodeName);
-//				nameElement.setTextContent(book.getPageCount());
-//				bookElement.appendChild(pageCountElement);
-//				
-//				Element descriptionElement = doc.createElement(DescriptionNodeName);
-//				nameElement.setTextContent(book.getDescription());
-//				bookElement.appendChild(descriptionElement);
-
 				books.add(book);
 			}
 		} catch (Exception ex) {
@@ -149,13 +133,7 @@ public class XmlUtil {
 		for (BookInfo book : books) {
 			Element bookElement = doc.createElement(BookNodeName);
 			bookElement.setAttribute(ISBNAttributeName, book.getISBN());
-			
-//			private static final String BookNameNodeName = "name";
-//			private static final String AuthorNodeName = "author";
-//			private static final String PublisherNodeName = "publisher";
-//			private static final String PageCountNodeName = "pagecount";
-//			private static final String DescriptionNodeName = "description";
-			
+
 			Element nameElement = doc.createElement(BookNameNodeName);
 			nameElement.setTextContent(book.getName());
 			bookElement.appendChild(nameElement);
@@ -175,14 +153,6 @@ public class XmlUtil {
 			Element descriptionElement = doc.createElement(DescriptionNodeName);
 			descriptionElement.setTextContent(book.getDescription());
 			bookElement.appendChild(descriptionElement);
-			
-//			Element nameElement = doc.createElement("name");
-//			nameElement.setTextContent(book.getName());
-//			bookElement.appendChild(nameElement);
-//			
-//			Element priceElement = doc.createElement("price");
-//			priceElement.setTextContent(book.getPrice() + "");
-//			bookElement.appendChild(priceElement);
 			
 			rootElement.appendChild(bookElement);
 		}

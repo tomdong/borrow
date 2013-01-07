@@ -1,14 +1,18 @@
 package com.intalker.borrow.ui.book;
 
 import com.intalker.borrow.R;
+import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -23,6 +27,8 @@ public class BookDetailDialog extends Dialog {
 	private ImageView mCoverImage = null;
 	private RelativeLayout mDetailInfoPanel = null;
 	
+	private BookShelfItem mBookItem = null;
+	
 	private TextView mNameTextView = null;
 	private TextView mAuthorTextView = null;
 	private TextView mPublisherTextView = null;
@@ -30,8 +36,13 @@ public class BookDetailDialog extends Dialog {
 	private TextView mISBNTextView = null;
 	private TextView mDescriptionTextView = null;
 	
+	private Button mDeleteButton = null;
+	private BookDetailDialog mDialog = null;
+	
 	public BookDetailDialog(Context context) {
 		super(context, R.style.Theme_TransparentDialog);
+		mDialog = this;
+		
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setCanceledOnTouchOutside(true);
 
@@ -84,9 +95,33 @@ public class BookDetailDialog extends Dialog {
 		int separatorY = boundMargin + LayoutUtil.getDetailDialogHeight() / 2;
 		mLayout.addView(createSeparator(separatorY));
 		
-		int descriptionHeight = LayoutUtil.getDetailDialogHeight() / 3;
+		int descriptionHeight = LayoutUtil.getDetailDialogHeight() * 3 / 10;
 		mLayout.addView(createDescriptionPanel(descriptionHeight));
-		mLayout.addView(createSeparator(separatorY + descriptionHeight + boundMargin));
+		mLayout.addView(createSeparator(separatorY + descriptionHeight + boundMargin - DensityAdaptor.getDensityIndependentValue(8)));
+		
+		// Buttons
+		mDeleteButton = new Button(context);
+		mDeleteButton.setText(R.string.delete);
+		mDeleteButton.setOnClickListener(new View.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				AppData.getInstance().removeBook(mBookItem.getInfo());
+				mBookItem.setVisibility(View.GONE);
+				mDialog.dismiss();
+			}
+		});
+		
+		RelativeLayout.LayoutParams deleteBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		deleteBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		deleteBtnLP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		deleteBtnLP.leftMargin = boundMargin;
+		deleteBtnLP.bottomMargin = boundMargin;
+		
+		mLayout.addView(mDeleteButton, deleteBtnLP);
 	}
 	
 	private TextView addInfoTextView(int textResId, int index)
@@ -156,7 +191,7 @@ public class BookDetailDialog extends Dialog {
 		int margin = LayoutUtil.getDetailDialogBoundMargin();
 		lp.leftMargin = margin;
 		lp.rightMargin = margin;
-		lp.topMargin = margin * 2 + LayoutUtil.getDetailDialogHeight() / 2;
+		lp.topMargin = margin * 2 + LayoutUtil.getDetailDialogHeight() / 2 - DensityAdaptor.getDensityIndependentValue(6);
 		lp.width = LayoutUtil.getDetailDialogWidth() - margin * 2;
 		lp.height = height;
 		
@@ -165,17 +200,19 @@ public class BookDetailDialog extends Dialog {
 		return scrollView;
 	}
 	
-	public void setInfo(BookInfo bookInfo)
-	{
-		if(null != bookInfo)
-		{
-			mCoverImage.setImageBitmap(bookInfo.getCoverImage());
-			mNameTextView.setText(bookInfo.getName());
-			mAuthorTextView.setText(bookInfo.getAuthor());
-			mPublisherTextView.setText(bookInfo.getPublisher());
-			mPageCountTextView.setText(bookInfo.getPageCount());
-			mISBNTextView.setText(bookInfo.getISBN());
-			mDescriptionTextView.setText(bookInfo.getDescription());
+	public void setInfo(BookShelfItem bookItem) {
+		if (null != bookItem) {
+			mBookItem = bookItem;
+			BookInfo bookInfo = bookItem.getInfo();
+			if (null != bookInfo) {
+				mCoverImage.setImageBitmap(bookInfo.getCoverImage());
+				mNameTextView.setText(bookInfo.getName());
+				mAuthorTextView.setText(bookInfo.getAuthor());
+				mPublisherTextView.setText(bookInfo.getPublisher());
+				mPageCountTextView.setText(bookInfo.getPageCount());
+				mISBNTextView.setText(bookInfo.getISBN());
+				mDescriptionTextView.setText(bookInfo.getDescription());
+			}
 		}
 	}
 

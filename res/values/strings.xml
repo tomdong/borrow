@@ -11,5 +11,6 @@
     <string name="publisher">Publisher</string>
     <string name="page_count">Page Count</string>
     <string name="isbn">ISBN</string>
+    <string name="delete">Delete</string>
 
 </resources>

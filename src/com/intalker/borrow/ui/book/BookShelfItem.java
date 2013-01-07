@@ -47,7 +47,7 @@ public class BookShelfItem extends RelativeLayout {
 					{
 						detailDialog = new BookDetailDialog(arg0.getContext());
 					}
-					detailDialog.setInfo(item.mInfo);
+					detailDialog.setInfo(item);
 					detailDialog.show();
 				}
 			}
@@ -108,5 +108,9 @@ public class BookShelfItem extends RelativeLayout {
 		mInfo.setPublisher(publisher);
 		mInfo.setPageCount(pageCount);
 		mInfo.setDescription(description);
+	}
+	
+	public BookInfo getInfo() {
+		return mInfo;
 	}
 }
