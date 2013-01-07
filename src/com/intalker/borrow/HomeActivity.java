@@ -69,16 +69,16 @@ public class HomeActivity extends Activity {
 
 		navigationBarLP.width = LayoutUtil.getNavigationPanelWidth();
 
-		Button btn = new Button(this);
-		btn.setText("Login");
-		btn.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-			}
-		});
-
-		navigationBar.addView(btn);
+//		Button btn = new Button(this);
+//		btn.setText("Login");
+//		btn.setOnClickListener(new OnClickListener(){
+//
+//			@Override
+//			public void onClick(View v) {
+//			}
+//		});
+//
+//		navigationBar.addView(btn);
 
 		Button btn1 = new Button(this);
 		btn1.setText("Scan");
@@ -103,18 +103,18 @@ public class HomeActivity extends Activity {
 		});
 
 		navigationBar.addView(btn2);
-
-		Button btn3 = new Button(this);
-		btn3.setText("Random");
-		btn3.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				mBookGallery.fillWithRandomBooks();
-			}
-		});
-
-		navigationBar.addView(btn3);
+//
+//		Button btn3 = new Button(this);
+//		btn3.setText("Random");
+//		btn3.setOnClickListener(new OnClickListener(){
+//
+//			@Override
+//			public void onClick(View v) {
+//				mBookGallery.fillWithRandomBooks();
+//			}
+//		});
+//
+//		navigationBar.addView(btn3);
 		
 		navigationBar.addView(mFriendsNavigation.createFriendsNavigationUI());
 

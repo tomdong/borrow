@@ -6,7 +6,6 @@ import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.widget.RelativeLayout;
 
 public class BookGallery extends RelativeLayout {
