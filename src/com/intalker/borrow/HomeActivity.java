@@ -72,6 +72,41 @@ public class HomeActivity extends Activity {
 
 		navigationBarLP.width = LayoutUtil.getNavigationPanelWidth();
 
+		//Sign up test
+		Button btn0 = new Button(this);
+		btn0.setText("Reg");
+		btn0.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// Login API test
+				v.setEnabled(false);
+				String email = "abc1@openlib.com";
+				String pwd = "test1";
+				String nickName = "newUser2";
+				if (CloudApi.signUp(email, pwd, nickName)) {
+					Toast.makeText(v.getContext(),
+							"Sign up successful!\nNow logging in...",
+							Toast.LENGTH_SHORT).show();
+					if (CloudApi.login(email, pwd)) {
+						Toast.makeText(v.getContext(),
+								UserInfo.getCurLoginUser().toString(),
+								Toast.LENGTH_SHORT).show();
+					} else {
+						Toast.makeText(v.getContext(),
+								"Login failed, report bug.", Toast.LENGTH_SHORT)
+								.show();
+					}
+				} else {
+					Toast.makeText(v.getContext(), "User name occupied.",
+							Toast.LENGTH_SHORT).show();
+				}
+				v.setEnabled(true);
+			}
+		});
+
+		navigationBar.addView(btn0);
+		
 		Button btn = new Button(this);
 		btn.setText("Login");
 		btn.setOnClickListener(new OnClickListener(){

@@ -58,10 +58,10 @@ public class UserInfo {
 
 	@Override
 	public String toString() {
-		return "ID: " + mId.toString()
-				+ "\nNickName: " + mNickName
-				+ "\nEmail: " + mEmail
-				+ "\nRegTime: " + mRegTime
-				+ "\nPermission: " + mPermission;
+		return "ID         : " + mId.toString()
+				+ "\nNickName   : " + mNickName
+				+ "\nEmail      : " + mEmail
+				+ "\nRegTime    : " + mRegTime
+				+ "\nPermission : " + mPermission;
 	}
 }

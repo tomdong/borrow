@@ -15,8 +15,10 @@ public class CloudApi {
 	
 	//API keys
 	public final static String API_Login = "Login";
+	public final static String API_SignUp = "SignUp";
 	public final static String API_Email = "&email=";
 	public final static String API_LocalPwd = "&localpwd=";
+	public final static String API_NickName = "&nickname=";
 	
 	//Parse keys
 	public final static String Parse_User_Id = "id";
@@ -24,6 +26,9 @@ public class CloudApi {
 	public final static String Parse_User_Email = "email";
 	public final static String Parse_User_RegTime = "registertime";
 	public final static String Parse_User_Permission = "permission";
+	
+	//Return code
+	public final static String ReturnCode_Successful = "SUCCESSFUL";
 	
 	public static String md5(String val) {
 		MessageDigest messageDigest = null;
@@ -97,5 +102,35 @@ public class CloudApi {
 	public static boolean isLoggedIn()
 	{
 		return null != UserInfo.getCurLoginUser();
+	}
+	
+	public static boolean signUp(String email, String pwd, String nickName)
+	{
+		String encryptedPwd = md5(pwd);
+		String url = API_BaseURL + API_SignUp + API_Email + email
+				+ API_LocalPwd + encryptedPwd + API_NickName + nickName;
+		HttpGet getReq = new HttpGet(url);
+		try 
+        { 
+          HttpResponse httpResponse = new DefaultHttpClient().execute(getReq); 
+          if(httpResponse.getStatusLine().getStatusCode() == 200)  
+          { 
+            String strResult = EntityUtils.toString(httpResponse.getEntity());
+            
+            if(strResult.compareTo(ReturnCode_Successful) == 0)
+            {
+            	return true;
+            }
+          }
+          else 
+          {
+        	  //Network error.
+          } 
+        } 
+        catch (Exception e) 
+        {
+        	//Check result string for more info.
+        } 
+		return false;
 	}
 }
