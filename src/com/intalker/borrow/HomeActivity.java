@@ -1,8 +1,10 @@
 package com.intalker.borrow;
 
+import com.intalker.borrow.cloud.CloudApi;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.friends.FriendsNavigationVertical;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
@@ -25,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class HomeActivity extends Activity {
 	private static HomeActivity app = null;
@@ -69,16 +72,25 @@ public class HomeActivity extends Activity {
 
 		navigationBarLP.width = LayoutUtil.getNavigationPanelWidth();
 
-//		Button btn = new Button(this);
-//		btn.setText("Login");
-//		btn.setOnClickListener(new OnClickListener(){
-//
-//			@Override
-//			public void onClick(View v) {
-//			}
-//		});
-//
-//		navigationBar.addView(btn);
+		Button btn = new Button(this);
+		btn.setText("Login");
+		btn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				//Login API test
+				if(CloudApi.login("ryan.shao@openlib.com", "shao"))
+				{
+					Toast.makeText(v.getContext(), UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT).show();
+				}
+				else
+				{
+					Toast.makeText(v.getContext(), "Wrong username or pwd.", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+
+		navigationBar.addView(btn);
 
 		Button btn1 = new Button(this);
 		btn1.setText("Scan");
