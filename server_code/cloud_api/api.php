@@ -16,7 +16,7 @@ if(!isset($_GET["op"]))
 $op = $_GET["op"];
 switch($op)
 {
-	case "GetUserInfo":
+	case "GetUserInfoById":
 		$con = connectDB();
 		$uid = getValueFromRequest(DB_USER_ID);
 		if(NULL != $uid)
@@ -25,6 +25,24 @@ switch($op)
 			//echo "Hi! " . $user_info[DB_USER_NICKNAME];
 			echo encodeUserInfo($user_info);
 			//showQueryResult($user_info);
+		}
+		disconnectDB($con);
+		break;
+	case "GetUserInfoBySession":
+		$con = connectDB();
+		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+		if(NULL != $sessionId)
+		{
+			$uid = getUserIdBySession($sessionId);
+			$user_info = getUserInfoByUserId($uid);
+			if(NULL != $user_info)
+			{
+				echo encodeUserInfo($user_info);
+			}
+			else
+			{
+				echo "Fail";
+			}
 		}
 		disconnectDB($con);
 		break;
@@ -77,10 +95,10 @@ switch($op)
         if((NULL != $email) && (NULL != $local_pwd))
         {
             $con = connectDB();
-            $user_info = login($email, $local_pwd);
-            if(NULL != $user_info)
+            $sessionid = login($email, $local_pwd);
+            if(NULL != $sessionid)
             {
-                echo encodeUserInfo(login($email, $local_pwd));
+                echo $sessionid;
             }
             else
             {
@@ -88,6 +106,41 @@ switch($op)
             }
             disconnectDB($con);
         }
+        break;
+        
+    case "LoginBySession":
+        $sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+        if(NULL != $sessionId)
+        {
+            $con = connectDB();
+            $uid = getUserIdBySession($sessionId);
+            //var_dump($uid);
+            if(NULL != $uid)
+            {
+            	$user_info = getUserInfoById($uid);
+            	//var_dump($user_info);
+            	if(NULL != $user_info)
+            	{
+            		echo encodeUserInfo($user_info);
+            	}
+            	else
+            	{
+            		echo "Fail";
+            	}
+            }
+            else
+            {
+                echo "Fail";
+            }
+            disconnectDB($con);
+        }
+        break;
+        
+    case "AddSessionForTest":
+            $con = connectDB();
+            $uid = 1;
+            createSessionForUser($uid);
+            disconnectDB($con);
         break;
 
 	case "SignUp":
@@ -102,17 +155,23 @@ switch($op)
         	
             $con = connectDB();
             $result = signUp($newUserData);
-            echo $result;
-            /*
-            if(SIGN_UP_SUCCESSFUL == $result)
+            
+            if(SUCCESSFUL == $result)
             {
-                echo encodeUserInfo(login($email, $local_pwd));
+            	$sessionid = login($email, $local_pwd);
+	            if(NULL != $sessionid)
+	            {
+	                echo $sessionid;
+	            }
+	            else
+	            {
+	                echo "Fail";
+	            }
             }
             else
             {
-                echo $result;
+            	echo $result;
             }
-            */
             disconnectDB($con);
         }
 		break;

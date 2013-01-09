@@ -12,24 +12,28 @@ import com.intalker.borrow.data.UserInfo;
 
 public class CloudApi {
 	public final static String API_BaseURL = "http://services.sketchbook.cn/openlib/service_test/api.php?op=";
-	
-	//API keys
+
+	// API keys
 	public final static String API_Login = "Login";
 	public final static String API_SignUp = "SignUp";
+	public final static String API_GetUserInfo = "GetUserInfoBySession";
 	public final static String API_Email = "&email=";
 	public final static String API_LocalPwd = "&localpwd=";
 	public final static String API_NickName = "&nickname=";
-	
-	//Parse keys
+	public final static String API_TOKEN = "&sessionid=";
+
+	// Parse keys
 	public final static String Parse_User_Id = "id";
 	public final static String Parse_User_NickName = "nickname";
 	public final static String Parse_User_Email = "email";
 	public final static String Parse_User_RegTime = "registertime";
 	public final static String Parse_User_Permission = "permission";
-	
-	//Return code
+
+	// Return code
 	public final static String ReturnCode_Successful = "SUCCESSFUL";
-	
+
+	public static String CloudToken = "";
+
 	public static String md5(String val) {
 		MessageDigest messageDigest = null;
 		try {
@@ -49,7 +53,7 @@ public class CloudApi {
 		}
 		return md5StrBuff.toString();
 	}
-	
+
 	private static UserInfo getUserInfoFromJSON(String str) {
 		try {
 			JSONObject jsonObject = new JSONObject(str);
@@ -59,78 +63,90 @@ public class CloudApi {
 			String email = jsonObject.getString(Parse_User_Email);
 			String regTime = jsonObject.getString(Parse_User_RegTime);
 			String permission = jsonObject.getString(Parse_User_Permission);
-			
-			UserInfo userInfo = new UserInfo(id, nickName, email, regTime, permission);
-			
+
+			UserInfo userInfo = new UserInfo(id, nickName, email, regTime,
+					permission);
+
 			return userInfo;
 		} catch (Exception ex) {
 		}
 		return null;
 	}
-	
-	public static boolean login(String email, String pwd)
-	{
-		String encryptedPwd = md5(pwd);
-		String url = API_BaseURL + API_Login + API_Email + email + API_LocalPwd + encryptedPwd;
-		HttpGet getReq = new HttpGet(url);
-		try 
-        { 
-          HttpResponse httpResponse = new DefaultHttpClient().execute(getReq); 
-          if(httpResponse.getStatusLine().getStatusCode() == 200)  
-          { 
-            String strResult = EntityUtils.toString(httpResponse.getEntity());
-            UserInfo userInfo = getUserInfoFromJSON(strResult);
 
-            if(null != userInfo)
-            {
-            	UserInfo.setCurLoginUser(userInfo);
-            	return true;
-            }
-          }
-          else 
-          {
-        	  //Network error.
-          } 
-        } 
-        catch (Exception e) 
-        {
-        	//Check result string for more info.
-        } 
+	public static boolean login(String email, String pwd) {
+		String encryptedPwd = md5(pwd);
+		String url = API_BaseURL + API_Login + API_Email + email + API_LocalPwd
+				+ encryptedPwd;
+		HttpGet getReq = new HttpGet(url);
+		try {
+			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+				return setAccessToken(strResult);
+			} else {
+				// Network error.
+			}
+		} catch (Exception e) {
+			// Check result string for more info.
+		}
 		return false;
 	}
-	
-	public static boolean isLoggedIn()
-	{
+
+	public static boolean isLoggedIn() {
 		return null != UserInfo.getCurLoginUser();
 	}
-	
-	public static boolean signUp(String email, String pwd, String nickName)
-	{
+
+	public static boolean setAccessToken(String token) {
+		if (token.length() == 36) {
+			CloudToken = token;
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean signUp(String email, String pwd, String nickName) {
 		String encryptedPwd = md5(pwd);
 		String url = API_BaseURL + API_SignUp + API_Email + email
 				+ API_LocalPwd + encryptedPwd + API_NickName + nickName;
 		HttpGet getReq = new HttpGet(url);
-		try 
-        { 
-          HttpResponse httpResponse = new DefaultHttpClient().execute(getReq); 
-          if(httpResponse.getStatusLine().getStatusCode() == 200)  
-          { 
-            String strResult = EntityUtils.toString(httpResponse.getEntity());
-            
-            if(strResult.compareTo(ReturnCode_Successful) == 0)
-            {
-            	return true;
-            }
-          }
-          else 
-          {
-        	  //Network error.
-          } 
-        } 
-        catch (Exception e) 
-        {
-        	//Check result string for more info.
-        } 
+		try {
+			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+
+				return setAccessToken(strResult);
+			} else {
+				// Network error.
+			}
+		} catch (Exception e) {
+			// Check result string for more info.
+		}
+		return false;
+	}
+	
+	public static boolean UpdateLoggedInUserInfo() {
+		String url = API_BaseURL + API_GetUserInfo + API_TOKEN + CloudToken;
+		HttpGet getReq = new HttpGet(url);
+		try {
+			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+
+				UserInfo userInfo = getUserInfoFromJSON(strResult);
+
+				if (null != userInfo) {
+					UserInfo.setCurLoginUser(userInfo);
+					return true;
+				}
+			} else {
+				// Network error.
+			}
+		} catch (Exception e) {
+			// Check result string for more info.
+		}
 		return false;
 	}
 }

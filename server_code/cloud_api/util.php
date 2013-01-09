@@ -149,7 +149,11 @@ function login($email, $local_pwd)
     {
         if(NULL != $row)
         {
-            return $row;
+            $uid = $row[DB_USER_ID];
+            if(NULL != $uid)
+            {
+            	return createSessionForUser($uid);
+            }
         }
     }
     return NULL;
@@ -163,7 +167,50 @@ function signUp($newUser)
         return USERNAME_OCCUPIED;
     }
     insertRecord(DB_TABLE_USER, $newUser);
+    
     return SUCCESSFUL;
+}
+
+function createSessionForUser($userId)
+{
+	if(NULL != $userId && $userId > 0)
+	{
+		$sid = guid();
+	    $sessionRecord[DB_SESSION_ID] = $sid;
+        $sessionRecord[DB_SESSION_UID] = $userId;
+        insertRecord(DB_TABLE_SESSION, $sessionRecord);
+        return $sid;
+	}
+	return "";
+}
+
+function getUserIdBySession($sessionId)
+{
+	//$sql = "select " . DB_SESSION_UID . " from " . DB_TABLE_SESSION . " where " . DB_SESSION_ID . "=" . wrapStr($sessionId);
+	$sql = "select * from " . DB_TABLE_SESSION . " where " . DB_SESSION_ID . "=" . wrapStr($sessionId);
+    $result = mysql_query($sql);
+    while($row = mysql_fetch_array($result))
+    {
+        if(NULL != $row)
+        {
+            return $row[DB_SESSION_UID];
+        }
+    }
+    return NULL;
+}
+
+function getUserInfoById($uid)
+{
+    $sql = "select * from " . DB_TABLE_USER . " where " . DB_USER_ID . "=" . wrapStr($uid);
+    $result = mysql_query($sql);
+    while($row = mysql_fetch_array($result))
+    {
+        if(NULL != $row)
+        {
+            return $row;
+        }
+    }
+    return NULL;
 }
 
 function getUserInfoByEmail($email)
@@ -395,6 +442,7 @@ function checkSession($sessionId)
 //    return $loginName;
 //}
 
+/*
 function getUserIdBySession($sessionId)
 {
     $sql = "select * from " . DB_SESSIONS . " where " . DB_SESSIONS_ID . "=" . wrapStr($sessionId);
@@ -408,6 +456,7 @@ function getUserIdBySession($sessionId)
     //mysql_free_result($result);
     return $uid;
 }
+*/
 
 //function getUserInfoBySession($sessionId)
 //{

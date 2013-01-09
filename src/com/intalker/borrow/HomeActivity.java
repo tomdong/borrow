@@ -81,21 +81,20 @@ public class HomeActivity extends Activity {
 			public void onClick(View v) {
 				// Login API test
 				v.setEnabled(false);
-				String email = "abc1@openlib.com";
+				String email = "abc104@openlib.com";
 				String pwd = "test1";
 				String nickName = "newUser2";
 				if (CloudApi.signUp(email, pwd, nickName)) {
 					Toast.makeText(v.getContext(),
 							"Sign up successful!\nNow logging in...",
 							Toast.LENGTH_SHORT).show();
-					if (CloudApi.login(email, pwd)) {
-						Toast.makeText(v.getContext(),
-								UserInfo.getCurLoginUser().toString(),
-								Toast.LENGTH_SHORT).show();
-					} else {
-						Toast.makeText(v.getContext(),
-								"Login failed, report bug.", Toast.LENGTH_SHORT)
-								.show();
+					if(CloudApi.UpdateLoggedInUserInfo())
+					{
+						Toast.makeText(v.getContext(), UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT).show();
+					}
+					else
+					{
+						Toast.makeText(v.getContext(), "Fail.", Toast.LENGTH_SHORT).show();
 					}
 				} else {
 					Toast.makeText(v.getContext(), "User name occupied.",
@@ -108,7 +107,7 @@ public class HomeActivity extends Activity {
 		navigationBar.addView(btn0);
 		
 		Button btn = new Button(this);
-		btn.setText("Login");
+		btn.setText("Login as Ryan");
 		btn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -116,7 +115,14 @@ public class HomeActivity extends Activity {
 				//Login API test
 				if(CloudApi.login("ryan.shao@openlib.com", "shao"))
 				{
-					Toast.makeText(v.getContext(), UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT).show();
+					if(CloudApi.UpdateLoggedInUserInfo())
+					{
+						Toast.makeText(v.getContext(), UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT).show();
+					}
+					else
+					{
+						Toast.makeText(v.getContext(), "Fail.", Toast.LENGTH_SHORT).show();
+					}
 				}
 				else
 				{
@@ -124,8 +130,29 @@ public class HomeActivity extends Activity {
 				}
 			}
 		});
-
 		navigationBar.addView(btn);
+		
+		Button btn_loginbysession = new Button(this);
+		btn_loginbysession.setText("Login by test token");
+		btn_loginbysession.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				//Login API test
+				String testToken = "7a3cf000-0662-715b-a6a8-89feb8466014";
+				CloudApi.setAccessToken(testToken);
+				if(CloudApi.UpdateLoggedInUserInfo())
+				{
+					Toast.makeText(v.getContext(), UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT).show();
+				}
+				else
+				{
+					Toast.makeText(v.getContext(), "Fail.", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+
+		navigationBar.addView(btn_loginbysession);
 
 		Button btn1 = new Button(this);
 		btn1.setText("Scan");

@@ -58,6 +58,16 @@ define("DB_BOOKINFO_LANGUAGE", "language");
 define("DB_BOOKINFO_REFLINK", "reflink");
 define("DB_BOOKINFO_REMARK", "remark");
 
+// Session
+define("DB_TABLE_SESSION", "session");
+
+define("DB_SESSION_ID", "id");
+define("DB_SESSION_UID", "uid");
+define("DB_SESSION_DATETIME", "datetime");
+
+// GET/POST param keys
+define("PARAM_KEY_SESSIONID", "sessionid");
+
 /*
 define("DB_MAILS", "mails");
 define("DB_SESSIONS", "sessions");
