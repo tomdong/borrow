@@ -8,6 +8,7 @@ import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.friends.FriendsNavigationVertical;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
+import com.intalker.borrow.ui.login.OBLoginDialog;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -107,27 +108,30 @@ public class HomeActivity extends Activity {
 		navigationBar.addView(btn0);
 		
 		Button btn = new Button(this);
-		btn.setText("Login as Ryan");
+		btn.setText("Login");
 		btn.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
+				// TODO: it is possible to add annimation to shown an dialog ?
+				OBLoginDialog loginDialog = new OBLoginDialog(v.getContext());
+				loginDialog.show();
 				//Login API test
-				if(CloudApi.login("ryan.shao@openlib.com", "shao"))
-				{
-					if(CloudApi.UpdateLoggedInUserInfo())
-					{
-						Toast.makeText(v.getContext(), UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT).show();
-					}
-					else
-					{
-						Toast.makeText(v.getContext(), "Fail.", Toast.LENGTH_SHORT).show();
-					}
-				}
-				else
-				{
-					Toast.makeText(v.getContext(), "Wrong username or pwd.", Toast.LENGTH_SHORT).show();
-				}
+//				if(CloudApi.login("ryan.shao@openlib.com", "shao"))
+//				{
+//					if(CloudApi.UpdateLoggedInUserInfo())
+//					{
+//						Toast.makeText(v.getContext(), UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT).show();
+//					}
+//					else
+//					{
+//						Toast.makeText(v.getContext(), "Fail.", Toast.LENGTH_SHORT).show();
+//					}
+//				}
+//				else
+//				{
+//					Toast.makeText(v.getContext(), "Wrong username or pwd.", Toast.LENGTH_SHORT).show();
+//				}
 			}
 		});
 		navigationBar.addView(btn);
