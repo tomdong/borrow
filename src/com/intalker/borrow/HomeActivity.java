@@ -2,8 +2,6 @@ package com.intalker.borrow;
 
 import com.intalker.borrow.cloud.CloudApi;
 import com.intalker.borrow.config.ResultCode;
-import com.intalker.borrow.data.AppData;
-import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.friends.FriendsNavigationVertical;
 import com.intalker.borrow.ui.book.BookGallery;
@@ -24,6 +22,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,11 +32,18 @@ import android.widget.Toast;
 public class HomeActivity extends Activity {
 	private static HomeActivity app = null;
 	private BookGallery mBookGallery = null;
-	private FriendsNavigationVertical mFriendsNavigation = null; // it also contains self info and action button!
+	private FriendsNavigationVertical mFriendsNavigation = null; // it also
+																	// contains
+																	// self info
+																	// and
+																	// action
+																	// button!
+	public boolean isUIDebugMode = false;
 
 	public static HomeActivity getApp() {
 		return app;
 	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,13 +51,13 @@ public class HomeActivity extends Activity {
 		app = this;
 		DensityAdaptor.init(this);
 		StorageUtil.initialize();
-		
+
 		StorageUtil.loadCachedBooks();
 
 		BookShelfItem.lastBookForTest = null;
 		mFriendsNavigation = new FriendsNavigationVertical(this);
 		setContentView(createHomeUI());
-		
+
 		this.mBookGallery.initialWithCachedData();
 	}
 
@@ -73,10 +79,11 @@ public class HomeActivity extends Activity {
 
 		navigationBarLP.width = LayoutUtil.getNavigationPanelWidth();
 
-		//Sign up test
-		Button btn0 = new Button(this);
-		btn0.setText("Reg");
-		btn0.setOnClickListener(new OnClickListener(){
+		// Sign up test
+		ImageButton btn0 = new ImageButton(this);
+		// btn0.setText("Reg");
+		btn0.setImageResource(R.drawable.register);
+		btn0.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -89,13 +96,13 @@ public class HomeActivity extends Activity {
 					Toast.makeText(v.getContext(),
 							"Sign up successful!\nNow logging in...",
 							Toast.LENGTH_SHORT).show();
-					if(CloudApi.UpdateLoggedInUserInfo())
-					{
-						Toast.makeText(v.getContext(), UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT).show();
-					}
-					else
-					{
-						Toast.makeText(v.getContext(), "Fail.", Toast.LENGTH_SHORT).show();
+					if (CloudApi.UpdateLoggedInUserInfo()) {
+						Toast.makeText(v.getContext(),
+								UserInfo.getCurLoginUser().toString(),
+								Toast.LENGTH_SHORT).show();
+					} else {
+						Toast.makeText(v.getContext(), "Fail.",
+								Toast.LENGTH_SHORT).show();
 					}
 				} else {
 					Toast.makeText(v.getContext(), "User name occupied.",
@@ -106,61 +113,69 @@ public class HomeActivity extends Activity {
 		});
 
 		navigationBar.addView(btn0);
-		
-		Button btn = new Button(this);
-		btn.setText("Login");
-		btn.setOnClickListener(new OnClickListener(){
+
+		ImageButton btn = new ImageButton(this);
+		// btn.setText("Login");
+		btn.setImageResource(R.drawable.login);
+		btn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO: it is possible to add annimation to shown an dialog ?
 				LoginDialog loginDialog = new LoginDialog(v.getContext());
 				loginDialog.show();
-				//Login API test
-//				if(CloudApi.login("ryan.shao@openlib.com", "shao"))
-//				{
-//					if(CloudApi.UpdateLoggedInUserInfo())
-//					{
-//						Toast.makeText(v.getContext(), UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT).show();
-//					}
-//					else
-//					{
-//						Toast.makeText(v.getContext(), "Fail.", Toast.LENGTH_SHORT).show();
-//					}
-//				}
-//				else
-//				{
-//					Toast.makeText(v.getContext(), "Wrong username or pwd.", Toast.LENGTH_SHORT).show();
-//				}
+				// Login API test
+				// if(CloudApi.login("ryan.shao@openlib.com", "shao"))
+				// {
+				// if(CloudApi.UpdateLoggedInUserInfo())
+				// {
+				// Toast.makeText(v.getContext(),
+				// UserInfo.getCurLoginUser().toString(),
+				// Toast.LENGTH_SHORT).show();
+				// }
+				// else
+				// {
+				// Toast.makeText(v.getContext(), "Fail.",
+				// Toast.LENGTH_SHORT).show();
+				// }
+				// }
+				// else
+				// {
+				// Toast.makeText(v.getContext(), "Wrong username or pwd.",
+				// Toast.LENGTH_SHORT).show();
+				// }
 			}
 		});
 		navigationBar.addView(btn);
-		
-		Button btn_loginbysession = new Button(this);
-		btn_loginbysession.setText("Login by test token");
-		btn_loginbysession.setOnClickListener(new OnClickListener(){
 
-			@Override
-			public void onClick(View v) {
-				//Login API test
-				String testToken = "7a3cf000-0662-715b-a6a8-89feb8466014";
-				CloudApi.setAccessToken(testToken);
-				if(CloudApi.UpdateLoggedInUserInfo())
-				{
-					Toast.makeText(v.getContext(), UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT).show();
+		if (isUIDebugMode) {
+			Button btn_loginbysession = new Button(this);
+			btn_loginbysession.setText("Login by test token");
+			btn_loginbysession.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// Login API test
+					String testToken = "7a3cf000-0662-715b-a6a8-89feb8466014";
+					CloudApi.setAccessToken(testToken);
+					if (CloudApi.UpdateLoggedInUserInfo()) {
+						Toast.makeText(v.getContext(),
+								UserInfo.getCurLoginUser().toString(),
+								Toast.LENGTH_SHORT).show();
+					} else {
+						Toast.makeText(v.getContext(), "Fail.",
+								Toast.LENGTH_SHORT).show();
+					}
 				}
-				else
-				{
-					Toast.makeText(v.getContext(), "Fail.", Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
+			});
 
-		navigationBar.addView(btn_loginbysession);
+			navigationBar.addView(btn_loginbysession);
+		}
 
-		Button btn1 = new Button(this);
-		btn1.setText("Scan");
-		btn1.setOnClickListener(new OnClickListener(){
+		ImageButton btn1 = new ImageButton(this);
+		// btn1.setText("Scan");
+		btn1.setImageResource(R.drawable.scan);
+		btn1.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -170,35 +185,37 @@ public class HomeActivity extends Activity {
 
 		navigationBar.addView(btn1);
 
-		Button btn2 = new Button(this);
-		btn2.setText("Clear");
-		btn2.setOnClickListener(new OnClickListener(){
+		if (isUIDebugMode) {
+			Button btn2 = new Button(this);
+			btn2.setText("Clear");
+			btn2.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				mBookGallery.resetBookShelf();
-			}
-		});
+				@Override
+				public void onClick(View v) {
+					mBookGallery.resetBookShelf();
+				}
+			});
 
-		navigationBar.addView(btn2);
-//
-//		Button btn3 = new Button(this);
-//		btn3.setText("Random");
-//		btn3.setOnClickListener(new OnClickListener(){
-//
-//			@Override
-//			public void onClick(View v) {
-//				mBookGallery.fillWithRandomBooks();
-//			}
-//		});
-//
-//		navigationBar.addView(btn3);
-		
+			navigationBar.addView(btn2);
+		}
+		//
+		// Button btn3 = new Button(this);
+		// btn3.setText("Random");
+		// btn3.setOnClickListener(new OnClickListener(){
+		//
+		// @Override
+		// public void onClick(View v) {
+		// mBookGallery.fillWithRandomBooks();
+		// }
+		// });
+		//
+		// navigationBar.addView(btn3);
+
 		navigationBar.addView(mFriendsNavigation.createFriendsNavigationUI());
 
-//		for (int i = 0; i < 10; ++i) {
-//			navigationBar.addView(createTestFriendItemUI());
-//		}
+		// for (int i = 0; i < 10; ++i) {
+		// navigationBar.addView(createTestFriendItemUI());
+		// }
 
 		mainLayout.addView(navigationBar, navigationBarLP);
 
@@ -250,15 +267,14 @@ public class HomeActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == ResultCode.SCAN_RESULT_CODE)
-		{
-			switch (resultCode)
-			{
+		if (requestCode == ResultCode.SCAN_RESULT_CODE) {
+			switch (resultCode) {
 			case RESULT_OK:
 				String isbn = data.getStringExtra("SCAN_RESULT");
-				//String format = data.getStringExtra("SCAN_RESULT_FORMAT");
-				//Toast.makeText(this, contents, Toast.LENGTH_LONG).show();
-				WebUtil.getInstance().getBookInfoByISBN(HomeActivity.this, isbn);
+				// String format = data.getStringExtra("SCAN_RESULT_FORMAT");
+				// Toast.makeText(this, contents, Toast.LENGTH_LONG).show();
+				WebUtil.getInstance()
+						.getBookInfoByISBN(HomeActivity.this, isbn);
 				break;
 			case RESULT_CANCELED:
 				break;
@@ -267,6 +283,7 @@ public class HomeActivity extends Activity {
 			}
 		}
 	}
+
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
