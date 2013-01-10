@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,7 +21,7 @@ public class FriendsNavigationVertical {
 	private LinearLayout mFriendsNavigationLayout = null;
 	private LinearLayout mSelfNavigationLayout = null;	
 	
-	private ImageView mLoginBtn = null;
+	private ImageButton mLoginBtn = null;
 	private LinearLayout mSelfInfoPanel = null;
 	private ImageView mProfileImg = null;
 	private TextView mProfileNick = null;
@@ -73,14 +74,17 @@ public class FriendsNavigationVertical {
 	}
 
 	private View createLoginButton() {
-		mLoginBtn = new ImageView(mParentOwner);
+		mLoginBtn = new ImageButton(mParentOwner);
 		// loginBtn.setText("Login");
 		LinearLayout.LayoutParams navigationBarLP = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		mLoginBtn.setLayoutParams(navigationBarLP);
 
-		mLoginBtn.setImageDrawable(mTencentConnection.getLoginButton(0));
+		//mLoginBtn.setImageDrawable(mTencentConnection.getLoginButton(0));
+		//Use a bigger button for test, easy to hit :)
+		mLoginBtn.setImageResource(R.drawable.tencent);
+		
 		mLoginBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
