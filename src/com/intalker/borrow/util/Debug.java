@@ -3,7 +3,7 @@ package com.intalker.borrow.util;
 import android.app.Activity;
 import android.widget.Toast;
 
-public class OBDebug {	
+public class Debug {	
 	public static void toast(Activity container, String message)
 	{
 		container.runOnUiThread(new ToastHelper(container,message));

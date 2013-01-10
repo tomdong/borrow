@@ -14,10 +14,11 @@ public class LayoutUtil {
 	
 	private static int detailDialogWidth = -1;
 	private static int detailDialogHeight = -1;
-	
 	private static int detailDialogBoundMargin = -1;
-	
 	private static int detailInfoLineHeight = -1;
+	
+	private static int loginDialogMargin = -1;
+	private static int loginDialogInputWidth = -1;
 	
 	public static int getRowBookCount() {
 		return rowBookCount;
@@ -111,55 +112,17 @@ public class LayoutUtil {
 		return detailInfoLineHeight;
 	}
 	
-	private static int loginHBackgroundW = -1;
-	public static int getLoginHBackgroundW()
-	{
-		if(loginHBackgroundW<0)
-			loginHBackgroundW = DensityAdaptor.getScreenWidth();
-		
-		return loginHBackgroundW;
+	public static int getLoginDialogMargin() {
+		if(loginDialogMargin < 0) {
+			loginDialogMargin = DensityAdaptor.getDensityIndependentValue(20);
+		}
+		return loginDialogMargin;
 	}
 	
-	private static int loginHNameInputW = -1;
-	public static int getloginHNameInputW() {
-		if(loginHNameInputW < 0) {
-			loginHNameInputW = DensityAdaptor.getDensityIndependentValue(20);
+	public static int getLoginDialogInputWidth() {
+		if(loginDialogInputWidth < 0) {
+			loginDialogInputWidth = DensityAdaptor.getDensityIndependentValue(150);
 		}
-		return loginHNameInputW;
-	}
-	private static int loginHPasswordInputW = -1;
-	public static int getloginHPasswordInputW() {
-		if(loginHPasswordInputW < 0) {
-			loginHPasswordInputW = DensityAdaptor.getDensityIndependentValue(20);
-		}
-		return loginHPasswordInputW;
-	}
-	private static int loginHStaticLabelW = -1;
-	public static int getloginHStaticLabelW() {
-		if(loginHStaticLabelW < 0) {
-			loginHStaticLabelW = DensityAdaptor.getDensityIndependentValue(10);
-		}
-		return loginHStaticLabelW;
-	}
-	private static int loginHButtonW = -1;
-	public static int getloginHButtonW() {
-		if(loginHButtonW < 0) {
-			loginHButtonW = (int) (DensityAdaptor.getScreenWidth()*0.5);
-		}
-		return loginHButtonW;
-	}
-	private static int loginHRegButtonW = -1;
-	public static int getloginHRegButtonW() {
-		if(loginHRegButtonW < 0) {
-			loginHRegButtonW = (int) (DensityAdaptor.getScreenWidth()*0.3);
-		}
-		return loginHRegButtonW;
-	}
-	private static int loginHReturnButtonW = -1;
-	public static int getloginHReturnButtonW() {
-		if(loginHReturnButtonW < 0) {
-			loginHReturnButtonW = (int) (DensityAdaptor.getScreenWidth()*0.2);
-		}
-		return loginHReturnButtonW;
+		return loginDialogInputWidth;
 	}
 }

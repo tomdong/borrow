@@ -8,7 +8,7 @@ import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.friends.FriendsNavigationVertical;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
-import com.intalker.borrow.ui.login.OBLoginDialog;
+import com.intalker.borrow.ui.login.LoginDialog;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -114,7 +114,7 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO: it is possible to add annimation to shown an dialog ?
-				OBLoginDialog loginDialog = new OBLoginDialog(v.getContext());
+				LoginDialog loginDialog = new LoginDialog(v.getContext());
 				loginDialog.show();
 				//Login API test
 //				if(CloudApi.login("ryan.shao@openlib.com", "shao"))
