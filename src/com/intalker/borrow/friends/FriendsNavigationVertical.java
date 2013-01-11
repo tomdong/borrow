@@ -42,10 +42,9 @@ public class FriendsNavigationVertical {
 		mFriendsNavigationLayout = new LinearLayout(mParentOwner);
 		mFriendsNavigationLayout.setOrientation(LinearLayout.VERTICAL);
 		LinearLayout.LayoutParams navigationBarLP = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.FILL_PARENT,
 				LinearLayout.LayoutParams.FILL_PARENT);
 		mFriendsNavigationLayout.setLayoutParams(navigationBarLP);
-		mFriendsNavigationLayout.setBackgroundColor(Color.DKGRAY);
 
 		mFriendsNavigationLayout.addView(createSelfNavigation());
 
@@ -60,10 +59,9 @@ public class FriendsNavigationVertical {
 		mSelfNavigationLayout = new LinearLayout(mParentOwner);
 		mSelfNavigationLayout.setOrientation(LinearLayout.VERTICAL);
 		LinearLayout.LayoutParams navigationBarLP = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.FILL_PARENT,
 				LinearLayout.LayoutParams.FILL_PARENT);
 		mSelfNavigationLayout.setLayoutParams(navigationBarLP);
-		mSelfNavigationLayout.setBackgroundColor(Color.DKGRAY);
 
 		if (!mTencentConnection.containsValidCacheToken())
 			mSelfNavigationLayout.addView(createLoginButton());
@@ -77,7 +75,7 @@ public class FriendsNavigationVertical {
 		mLoginBtn = new ImageButton(mParentOwner);
 		// loginBtn.setText("Login");
 		LinearLayout.LayoutParams navigationBarLP = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.MATCH_PARENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		mLoginBtn.setLayoutParams(navigationBarLP);
 
