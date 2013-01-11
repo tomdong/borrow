@@ -6,6 +6,7 @@ import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +14,7 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -36,7 +38,7 @@ public class BookDetailDialog extends Dialog {
 	private TextView mISBNTextView = null;
 	private TextView mDescriptionTextView = null;
 	
-	private Button mDeleteButton = null;
+	private ImageButton mDeleteButton = null;
 	private BookDetailDialog mDialog = null;
 	
 	public BookDetailDialog(Context context) {
@@ -100,16 +102,45 @@ public class BookDetailDialog extends Dialog {
 		mLayout.addView(createSeparator(separatorY + descriptionHeight + boundMargin - DensityAdaptor.getDensityIndependentValue(8)));
 		
 		// Buttons
-		mDeleteButton = new Button(context);
-		mDeleteButton.setText(R.string.delete);
+		mDeleteButton = new ImageButton(context);
+		//mDeleteButton.setText(R.string.delete);
+		mDeleteButton.setImageResource(R.drawable.delete);
+		mDeleteButton.setBackgroundDrawable(null);
 		mDeleteButton.setOnClickListener(new View.OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				AppData.getInstance().removeBook(mBookItem.getInfo());
-				mBookItem.setVisibility(View.GONE);
-				mDialog.dismiss();
+				Context context = v.getContext();
+				String confirm = context.getString(R.string.confirm);
+				String deleteBookConfirm = context.getString(R.string.delete_book_confirm);
+				String ok = context.getString(R.string.ok);
+				String cancel = context.getString(R.string.cancel);
+
+				AlertDialog alertDialog = new AlertDialog.Builder(context)
+						.setTitle(confirm)
+						.setMessage(deleteBookConfirm)
+						.setIcon(R.drawable.question)
+						.setPositiveButton(ok,
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										AppData.getInstance().removeBook(
+												mBookItem.getInfo());
+										mBookItem.setVisibility(View.GONE);
+										mDialog.dismiss();
+									}
+								})
+						.setNegativeButton(cancel,
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+									}
+								}).create();
+				alertDialog.show();
 			}
 		});
 		

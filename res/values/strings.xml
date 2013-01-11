@@ -16,6 +16,9 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="delete_book_confirm">Remove this book from gallery?</string>
 
 </resources>
