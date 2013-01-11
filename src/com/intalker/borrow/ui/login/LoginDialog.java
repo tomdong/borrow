@@ -1,6 +1,7 @@
 package com.intalker.borrow.ui.login;
 
 import com.intalker.borrow.R;
+import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.cloud.CloudApi;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.util.DensityAdaptor;
@@ -26,13 +27,13 @@ public class LoginDialog extends Dialog {
 	private EditText mPasswordInput = null;
 	private Button mLoginBtn = null;
 	private Button mCancelBtn = null;
-	
+
 	public LoginDialog(Context context) {
 		super(context, R.style.Theme_TransparentDialog);
-		
+
 		mContent = new RelativeLayout(context);
 		this.setContentView(mContent);
-		
+
 		mMainLayout = new RelativeLayout(context);
 		mMainLayout.setBackgroundResource(R.drawable.detail_bk);
 		RelativeLayout.LayoutParams mainLayoutLP = new RelativeLayout.LayoutParams(
@@ -40,26 +41,27 @@ public class LoginDialog extends Dialog {
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		mainLayoutLP.width = DensityAdaptor.getDensityIndependentValue(260);
 		mainLayoutLP.height = DensityAdaptor.getDensityIndependentValue(250);
-		
+
 		mContent.addView(mMainLayout, mainLayoutLP);
-		
+
 		int margin = LayoutUtil.getLoginDialogMargin();
 		int y = DensityAdaptor.getDensityIndependentValue(40);
 		mEmailInput = createElement(R.string.email, margin, y);
-		//mEmailInput.setInputType(InputType.TYPE_CLASS_TEXT);//??
+		// mEmailInput.setInputType(InputType.TYPE_CLASS_TEXT);//??
 		mEmailInput.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-		//Test
+		// Test
 		mEmailInput.setText("ryan.shao@openlib.com");
-		
+
 		y = DensityAdaptor.getDensityIndependentValue(100);
 		mPasswordInput = createElement(R.string.password, margin, y);
 		mPasswordInput.setInputType(InputType.TYPE_CLASS_TEXT
 				| InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		//Test
+		// Test
 		mPasswordInput.setText("shao");
-		
-		mMainLayout.addView(createSeparator(DensityAdaptor.getDensityIndependentValue(160)));
-		
+
+		mMainLayout.addView(createSeparator(DensityAdaptor
+				.getDensityIndependentValue(160)));
+
 		mLoginBtn = new Button(context);
 		mLoginBtn.setText(R.string.login);
 		RelativeLayout.LayoutParams loginBtnLP = new RelativeLayout.LayoutParams(
@@ -70,15 +72,15 @@ public class LoginDialog extends Dialog {
 		loginBtnLP.leftMargin = margin;
 		loginBtnLP.bottomMargin = margin;
 		mMainLayout.addView(mLoginBtn, loginBtnLP);
-		mLoginBtn.setOnClickListener(new View.OnClickListener(){
+		mLoginBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				login();
 			}
-			
+
 		});
-		
+
 		mCancelBtn = new Button(context);
 		mCancelBtn.setText(R.string.cancel);
 		RelativeLayout.LayoutParams cancelBtnLP = new RelativeLayout.LayoutParams(
@@ -89,18 +91,17 @@ public class LoginDialog extends Dialog {
 		cancelBtnLP.rightMargin = margin;
 		cancelBtnLP.bottomMargin = margin;
 		mMainLayout.addView(mCancelBtn, cancelBtnLP);
-		mCancelBtn.setOnClickListener(new View.OnClickListener(){
+		mCancelBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				cancelLogin();
 			}
-			
+
 		});
 	}
-	
-	private View createSeparator(int y)
-	{
+
+	private View createSeparator(int y) {
 		ImageView v = new ImageView(this.getContext());
 		v.setImageResource(R.drawable.hori_separator);
 		v.setScaleType(ScaleType.FIT_XY);
@@ -110,13 +111,13 @@ public class LoginDialog extends Dialog {
 
 		lp.topMargin = y;
 		lp.width = LayoutUtil.getDetailDialogWidth();
-		
+
 		v.setLayoutParams(lp);
 		return v;
 	}
- 
-	private EditText createElement(int labelTextResId, int leftMargin, int topMargin)
-	{
+
+	private EditText createElement(int labelTextResId, int leftMargin,
+			int topMargin) {
 		Context context = this.getContext();
 		TextView label = new TextView(context);
 		label.setTextColor(Color.BLACK);
@@ -127,38 +128,47 @@ public class LoginDialog extends Dialog {
 		labelLP.leftMargin = leftMargin;
 		labelLP.topMargin = topMargin;
 		mMainLayout.addView(label, labelLP);
-		
+
 		EditText input = new EditText(context);
 		input.setTextSize(12.0f);
 		RelativeLayout.LayoutParams inputLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		inputLP.width = LayoutUtil.getLoginDialogInputWidth();
-		inputLP.leftMargin = leftMargin + DensityAdaptor.getDensityIndependentValue(70);
-		inputLP.topMargin = topMargin - DensityAdaptor.getDensityIndependentValue(10);
+		inputLP.leftMargin = leftMargin
+				+ DensityAdaptor.getDensityIndependentValue(70);
+		inputLP.topMargin = topMargin
+				- DensityAdaptor.getDensityIndependentValue(10);
 		mMainLayout.addView(input, inputLP);
-		
+
 		return input;
 	}
-	
-	private void login() {
-		if (CloudApi.login(mEmailInput.getText().toString(), mPasswordInput
-				.getText().toString())) {
-			if (CloudApi.UpdateLoggedInUserInfo()) {
-				Toast.makeText(this.getContext(),
-						UserInfo.getCurLoginUser().toString(),
-						Toast.LENGTH_SHORT).show();
-				this.dismiss();
-			} else {
-				Toast.makeText(this.getContext(), "Fail.", Toast.LENGTH_SHORT)
-						.show();
-			}
+
+	private void doAfterLogin(boolean isSuccessful) {
+		if (isSuccessful) {
+			Toast.makeText(this.getContext(),
+					UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT)
+					.show();
+			this.dismiss();
 		} else {
 			Toast.makeText(this.getContext(), "Wrong username or pwd.",
 					Toast.LENGTH_SHORT).show();
 		}
 	}
-	
+
+	private void login() {
+		CloudApi.login(this.getContext(), mEmailInput.getText().toString(),
+				mPasswordInput.getText().toString(),
+				new ICloudAPITaskListener() {
+
+					@Override
+					public void onFinish(boolean doAfterLogin) {
+						doAfterLogin(doAfterLogin);
+					}
+
+				});
+	}
+
 	private void cancelLogin() {
 		this.dismiss();
 	}

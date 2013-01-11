@@ -1,6 +1,7 @@
 package com.intalker.borrow;
 
 import com.intalker.borrow.cloud.CloudApi;
+import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.friends.FriendsNavigationVertical;
@@ -66,6 +67,24 @@ public class HomeActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_home, menu);
 		return true;
 	}
+	
+	private void doAfterSignUp(boolean isSuccessful) {
+		if (isSuccessful) {
+			Toast.makeText(this, UserInfo.getCurLoginUser().toString(),
+					Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(this, "User name occupied.", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	private void doAfterGetUserInfoByToken(boolean isSuccessful) {
+		if (isSuccessful) {
+			Toast.makeText(this, UserInfo.getCurLoginUser().toString(),
+					Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(this, "Bad token.", Toast.LENGTH_SHORT).show();
+		}
+	}
 
 	private View createHomeUI() {
 		LinearLayout mainLayout = new LinearLayout(this);
@@ -88,27 +107,18 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Login API test
-				v.setEnabled(false);
-				String email = "abc104@openlib.com";
-				String pwd = "test1";
-				String nickName = "newUser2";
-				if (CloudApi.signUp(email, pwd, nickName)) {
-					Toast.makeText(v.getContext(),
-							"Sign up successful!\nNow logging in...",
-							Toast.LENGTH_SHORT).show();
-					if (CloudApi.UpdateLoggedInUserInfo()) {
-						Toast.makeText(v.getContext(),
-								UserInfo.getCurLoginUser().toString(),
-								Toast.LENGTH_SHORT).show();
-					} else {
-						Toast.makeText(v.getContext(), "Fail.",
-								Toast.LENGTH_SHORT).show();
-					}
-				} else {
-					Toast.makeText(v.getContext(), "User name occupied.",
-							Toast.LENGTH_SHORT).show();
-				}
-				v.setEnabled(true);
+				CloudApi.signUp(v.getContext(),
+						"abc1041@openlib.com",
+						"test1",
+						"newUser2",
+						new ICloudAPITaskListener(){
+
+							@Override
+							public void onFinish(boolean isSuccessful) {
+								doAfterSignUp(isSuccessful);
+							}
+					
+				});
 			}
 		});
 
@@ -124,26 +134,6 @@ public class HomeActivity extends Activity {
 				// TODO: it is possible to add annimation to shown an dialog ?
 				LoginDialog loginDialog = new LoginDialog(v.getContext());
 				loginDialog.show();
-				// Login API test
-				// if(CloudApi.login("ryan.shao@openlib.com", "shao"))
-				// {
-				// if(CloudApi.UpdateLoggedInUserInfo())
-				// {
-				// Toast.makeText(v.getContext(),
-				// UserInfo.getCurLoginUser().toString(),
-				// Toast.LENGTH_SHORT).show();
-				// }
-				// else
-				// {
-				// Toast.makeText(v.getContext(), "Fail.",
-				// Toast.LENGTH_SHORT).show();
-				// }
-				// }
-				// else
-				// {
-				// Toast.makeText(v.getContext(), "Wrong username or pwd.",
-				// Toast.LENGTH_SHORT).show();
-				// }
 			}
 		});
 		navigationBar.addView(btn);
@@ -158,14 +148,14 @@ public class HomeActivity extends Activity {
 					// Login API test
 					String testToken = "7a3cf000-0662-715b-a6a8-89feb8466014";
 					CloudApi.setAccessToken(testToken);
-					if (CloudApi.UpdateLoggedInUserInfo()) {
-						Toast.makeText(v.getContext(),
-								UserInfo.getCurLoginUser().toString(),
-								Toast.LENGTH_SHORT).show();
-					} else {
-						Toast.makeText(v.getContext(), "Fail.",
-								Toast.LENGTH_SHORT).show();
-					}
+					CloudApi.updateLoggedInUserInfo(v.getContext(), new ICloudAPITaskListener(){
+
+						@Override
+						public void onFinish(boolean isSuccessful) {
+							doAfterGetUserInfoByToken(isSuccessful);
+						}
+						
+					});
 				}
 			});
 
@@ -264,15 +254,12 @@ public class HomeActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode == ResultCode.SCAN_RESULT_CODE) {
 			switch (resultCode) {
 			case RESULT_OK:
 				String isbn = data.getStringExtra("SCAN_RESULT");
-				// String format = data.getStringExtra("SCAN_RESULT_FORMAT");
-				// Toast.makeText(this, contents, Toast.LENGTH_LONG).show();
 				WebUtil.getInstance()
 						.getBookInfoByISBN(HomeActivity.this, isbn);
 				break;

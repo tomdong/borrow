@@ -90,16 +90,9 @@ public class WebUtil {
 		protected InputStream doInBackground(String... params) {
 
 			String url = ISBN_SEARCHURL_DOUBAN + mISBN;
-//			HttpGet get = new HttpGet(url);
-//			HttpClient client = new DefaultHttpClient();
-//			InputStream inputStream = null;
-//			try {
-//				HttpResponse response = client.execute(get);
-//				inputStream = response.getEntity().getContent();
-//			} catch (Exception e) {
-//			}
 			String imageURL = parseDoubanXML(url);
 			mCoverImage = getImage(imageURL);
+			
 			return null;
 		}
 
