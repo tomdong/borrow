@@ -1,5 +1,7 @@
 package com.intalker.borrow.util;
 
+import com.intalker.borrow.config.AppConfig;
+
 public class LayoutUtil {
 
 	private static int navigationPanelWidth = -1;
@@ -26,7 +28,7 @@ public class LayoutUtil {
 
 	public static int getNavigationPanelWidth() {
 		if (navigationPanelWidth < 0) {
-			navigationPanelWidth = DensityAdaptor.getScreenWidth() / 5;
+			navigationPanelWidth = DensityAdaptor.getScreenWidth() / 3;
 		}
 		return navigationPanelWidth;
 	}
@@ -70,8 +72,7 @@ public class LayoutUtil {
 	
 	public static int getShelfWidth() {
 		if (shelfWidth < 0) {
-			shelfWidth = DensityAdaptor.getScreenWidth()
-					- getNavigationPanelWidth();
+			shelfWidth = DensityAdaptor.getScreenWidth();
 		}
 		return shelfWidth;
 	}

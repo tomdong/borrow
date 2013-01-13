@@ -2,11 +2,13 @@ package com.intalker.borrow;
 
 import com.intalker.borrow.cloud.CloudApi;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
+import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.friends.FriendsNavigationVertical;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
+import com.intalker.borrow.ui.control.sliding.SlidingMenu;
 import com.intalker.borrow.ui.login.LoginDialog;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
@@ -39,8 +41,8 @@ public class HomeActivity extends Activity {
 																	// and
 																	// action
 																	// button!
-	public boolean isUIDebugMode = false;
-
+	private SlidingMenu mSlidingMenu = null;
+	
 	public static HomeActivity getApp() {
 		return app;
 	}
@@ -52,15 +54,31 @@ public class HomeActivity extends Activity {
 		app = this;
 		DensityAdaptor.init(this);
 		StorageUtil.initialize();
-
 		StorageUtil.loadCachedBooks();
-
-		BookShelfItem.lastBookForTest = null;
-		mFriendsNavigation = new FriendsNavigationVertical(this);
-		setContentView(createHomeUI());
-
-		this.mBookGallery.initialWithCachedData();
+		
+		setContentView(initializeWithSlidingStyle());
 	}
+	
+	private View initializeWithSlidingStyle()
+	{
+		mSlidingMenu = new SlidingMenu(this);
+		
+		mSlidingMenu.setLeftView(createNavigationPanel());
+		mSlidingMenu.setCenterView(createHomeUI());
+		return mSlidingMenu;
+	}
+	
+//	private View createLeftNavigationPanel()
+//	{
+//		RelativeLayout naviPanel = new RelativeLayout(this);
+//		Button btn = new Button(this);
+//		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+//				RelativeLayout.LayoutParams.WRAP_CONTENT,
+//				RelativeLayout.LayoutParams.WRAP_CONTENT);
+//		lp.width = LayoutUtil.getNavigationPanelWidth();
+//		naviPanel.addView(btn, lp);
+//		return naviPanel;
+//	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,18 +104,62 @@ public class HomeActivity extends Activity {
 		}
 	}
 
-	private View createHomeUI() {
+	public View createHomeUI() {
+		BookShelfItem.lastBookForTest = null;
+		
 		LinearLayout mainLayout = new LinearLayout(this);
 		mainLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-		LinearLayout navigationBar = new LinearLayout(this);
-		navigationBar.setOrientation(LinearLayout.VERTICAL);
-		LinearLayout.LayoutParams navigationBarLP = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT,
+		//Add this listener to make the whole gallery be dragable.
+		mainLayout.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				//Toast.makeText(arg0.getContext(), "Test", Toast.LENGTH_SHORT).show();
+			}
+			
+		});
+		
+		// book gallery ui
+		mBookGallery = new BookGallery(this);
+		LinearLayout.LayoutParams bookGalleryLP = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.FILL_PARENT,
 				LinearLayout.LayoutParams.FILL_PARENT);
+		mainLayout.addView(mBookGallery, bookGalleryLP);
+		
+		mBookGallery.initialWithCachedData();
+
+		// Test settings
+		mainLayout.setBackgroundColor(Color.GRAY);
+		return mainLayout;
+	}
+	
+	private View createNavigationPanel()
+	{
+		LinearLayout navigationBar = new LinearLayout(this);
+		navigationBar.setBackgroundColor(Color.DKGRAY);
+		navigationBar.setOrientation(LinearLayout.VERTICAL);
+		RelativeLayout.LayoutParams navigationBarLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.FILL_PARENT);
 
 		navigationBarLP.width = LayoutUtil.getNavigationPanelWidth();
+		
+		navigationBar.setLayoutParams(navigationBarLP);
 
+		Button b = new Button(this);
+		b.setText("<<");
+		b.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mSlidingMenu.showLeftView();
+			}
+			
+		});
+		navigationBar.addView(b);
 		// Sign up test
 		ImageButton btn0 = new ImageButton(this);
 		// btn0.setText("Reg");
@@ -138,7 +200,7 @@ public class HomeActivity extends Activity {
 		});
 		navigationBar.addView(btn);
 
-		if (isUIDebugMode) {
+		if (AppConfig.isDebugMode) {
 			Button btn_loginbysession = new Button(this);
 			btn_loginbysession.setText("Login by test token");
 			btn_loginbysession.setOnClickListener(new OnClickListener() {
@@ -175,7 +237,7 @@ public class HomeActivity extends Activity {
 
 		navigationBar.addView(btn1);
 
-		if (isUIDebugMode) {
+		if (AppConfig.isDebugMode) {
 			Button btn2 = new Button(this);
 			btn2.setText("Clear");
 			btn2.setOnClickListener(new OnClickListener() {
@@ -200,26 +262,13 @@ public class HomeActivity extends Activity {
 		// });
 		//
 		// navigationBar.addView(btn3);
+//		mFriendsNavigation = new FriendsNavigationVertical(this);
+//		navigationBar.addView(mFriendsNavigation.createFriendsNavigationUI());
 
-		navigationBar.addView(mFriendsNavigation.createFriendsNavigationUI());
-
-		// for (int i = 0; i < 10; ++i) {
-		// navigationBar.addView(createTestFriendItemUI());
-		// }
-
-		mainLayout.addView(navigationBar, navigationBarLP);
-
-		// book gallery ui
-		mBookGallery = new BookGallery(this);
-		LinearLayout.LayoutParams bookGalleryLP = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.FILL_PARENT,
-				LinearLayout.LayoutParams.FILL_PARENT);
-		mainLayout.addView(mBookGallery, bookGalleryLP);
-
-		// Test settings
-		mainLayout.setBackgroundColor(Color.GRAY);
-		navigationBar.setBackgroundColor(Color.DKGRAY);
-		return mainLayout;
+		 for (int i = 0; i < 4; ++i) {
+		 navigationBar.addView(createTestFriendItemUI());
+		 }
+		return navigationBar;
 	}
 
 	private View createTestFriendItemUI() {
