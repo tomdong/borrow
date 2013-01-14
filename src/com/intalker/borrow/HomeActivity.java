@@ -24,11 +24,13 @@ import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,11 +48,17 @@ public class HomeActivity extends Activity {
 	public static HomeActivity getApp() {
 		return app;
 	}
+	
+	public BookGallery getBookGallery()
+	{
+		return mBookGallery;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.activity_home);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		app = this;
 		DensityAdaptor.init(this);
 		StorageUtil.initialize();
@@ -224,18 +232,18 @@ public class HomeActivity extends Activity {
 			navigationBar.addView(btn_loginbysession);
 		}
 
-		ImageButton btn1 = new ImageButton(this);
-		// btn1.setText("Scan");
-		btn1.setImageResource(R.drawable.scan);
-		btn1.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ScanUtil.scanBarCode(HomeActivity.this);
-			}
-		});
-
-		navigationBar.addView(btn1);
+//		ImageButton btn1 = new ImageButton(this);
+//		// btn1.setText("Scan");
+//		btn1.setImageResource(R.drawable.scan);
+//		btn1.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				ScanUtil.scanBarCode(HomeActivity.this);
+//			}
+//		});
+//
+//		navigationBar.addView(btn1);
 
 		if (AppConfig.isDebugMode) {
 			Button btn2 = new Button(this);
@@ -265,20 +273,31 @@ public class HomeActivity extends Activity {
 //		mFriendsNavigation = new FriendsNavigationVertical(this);
 //		navigationBar.addView(mFriendsNavigation.createFriendsNavigationUI());
 
-		 for (int i = 0; i < 4; ++i) {
-		 navigationBar.addView(createTestFriendItemUI());
-		 }
+		ScrollView testFriendScrollView = new ScrollView(this);
+		LinearLayout friendsLayout = new LinearLayout(this);
+		testFriendScrollView.addView(friendsLayout);
+		friendsLayout.setOrientation(LinearLayout.VERTICAL);
+		for (int i = 0; i < 8; ++i) {
+			friendsLayout.addView(createTestFriendItemUI(R.drawable.avatar_2));
+		}
+		for (int i = 0; i < 8; ++i) {
+			friendsLayout.addView(createTestFriendItemUI(R.drawable.avatar_3));
+		}
+		for (int i = 0; i < 8; ++i) {
+			friendsLayout.addView(createTestFriendItemUI(R.drawable.avatar_1));
+		}
+		navigationBar.addView(testFriendScrollView);
 		return navigationBar;
 	}
 
-	private View createTestFriendItemUI() {
+	private View createTestFriendItemUI(int avatarId) {
 		RelativeLayout item = new RelativeLayout(this);
 
 		LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		itemLP.width = LayoutUtil.getNavigationPanelWidth();
-		itemLP.height = DensityAdaptor.getDensityIndependentValue(64);
+		itemLP.height = DensityAdaptor.getDensityIndependentValue(40);
 
 		item.setBackgroundColor(ColorUtil.generateRandomColor());
 		item.setLayoutParams(itemLP);
@@ -288,12 +307,12 @@ public class HomeActivity extends Activity {
 		item.addView(t);
 
 		ImageView avatar = new ImageView(this);
-		avatar.setImageResource(R.drawable.avatar);
+		avatar.setImageResource(avatarId);
 		RelativeLayout.LayoutParams avatarLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		avatarLP.width = DensityAdaptor.getDensityIndependentValue(48);
-		avatarLP.height = DensityAdaptor.getDensityIndependentValue(48);
+		avatarLP.width = DensityAdaptor.getDensityIndependentValue(32);
+		avatarLP.height = DensityAdaptor.getDensityIndependentValue(32);
 		avatarLP.addRule(RelativeLayout.CENTER_VERTICAL);
 		avatarLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		avatarLP.rightMargin = DensityAdaptor.getDensityIndependentValue(8);

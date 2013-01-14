@@ -1,5 +1,7 @@
 package com.intalker.borrow.friends;
 
+import java.util.Random;
+
 import com.intalker.borrow.R;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.WebUtil;
@@ -153,12 +155,13 @@ public class FriendsNavigationVertical {
 		// item.setLayoutParams(itemLP);
 
 		ImageView avatar = new ImageView(mParentOwner);
-		avatar.setImageResource(R.drawable.avatar);
+		
+		avatar.setImageResource(R.drawable.avatar_1);
 		RelativeLayout.LayoutParams avatarLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		avatarLP.width = DensityAdaptor.getDensityIndependentValue(48);
-		avatarLP.height = DensityAdaptor.getDensityIndependentValue(48);
+		avatarLP.width = DensityAdaptor.getDensityIndependentValue(20);
+		avatarLP.height = DensityAdaptor.getDensityIndependentValue(20);
 		avatarLP.addRule(RelativeLayout.CENTER_VERTICAL);
 		avatarLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		avatarLP.rightMargin = DensityAdaptor.getDensityIndependentValue(8);

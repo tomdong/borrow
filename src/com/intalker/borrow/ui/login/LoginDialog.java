@@ -1,5 +1,6 @@
 package com.intalker.borrow.ui.login;
 
+import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.cloud.CloudApi;
@@ -146,9 +147,10 @@ public class LoginDialog extends Dialog {
 
 	private void doAfterLogin(boolean isSuccessful) {
 		if (isSuccessful) {
-			Toast.makeText(this.getContext(),
-					UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT)
-					.show();
+//			Toast.makeText(this.getContext(),
+//					UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT)
+//					.show();
+			HomeActivity.getApp().getBookGallery().updateTopPanel();
 			this.dismiss();
 		} else {
 			Toast.makeText(this.getContext(), "Wrong username or pwd.",

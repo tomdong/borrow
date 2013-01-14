@@ -20,5 +20,7 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="delete_book_confirm">Remove this book from gallery?</string>
+    
+    <string name="shelf_owner_suffix">\'s shelf</string>
 
 </resources>

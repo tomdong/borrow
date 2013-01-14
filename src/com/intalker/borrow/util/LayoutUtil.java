@@ -1,7 +1,5 @@
 package com.intalker.borrow.util;
 
-import com.intalker.borrow.config.AppConfig;
-
 public class LayoutUtil {
 
 	private static int navigationPanelWidth = -1;
@@ -21,6 +19,9 @@ public class LayoutUtil {
 	
 	private static int loginDialogMargin = -1;
 	private static int loginDialogInputWidth = -1;
+	
+	private static int galleryTopPanelHeight = -1;
+	private static int galleryBottomPanelHeight = -1;
 	
 	public static int getRowBookCount() {
 		return rowBookCount;
@@ -126,4 +127,19 @@ public class LayoutUtil {
 		}
 		return loginDialogInputWidth;
 	}
+	
+	public static int getGalleryTopPanelHeight() {
+		if(galleryTopPanelHeight < 0) {
+			galleryTopPanelHeight = DensityAdaptor.getDensityIndependentValue(36);
+		}
+		return galleryTopPanelHeight;
+	}
+	
+	public static int getGalleryBottomPanelHeight() {
+		if(galleryBottomPanelHeight < 0) {
+			galleryBottomPanelHeight = DensityAdaptor.getDensityIndependentValue(36);
+		}
+		return galleryBottomPanelHeight;
+	}
+	
 }
