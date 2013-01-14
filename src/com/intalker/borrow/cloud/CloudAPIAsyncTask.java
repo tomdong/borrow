@@ -69,7 +69,7 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		mProgressDialog.hide();
+		mProgressDialog.dismiss();
 		if (null != mAPIListener) {
 			mAPIListener.onFinish(mIsSuccessful);
 		}
