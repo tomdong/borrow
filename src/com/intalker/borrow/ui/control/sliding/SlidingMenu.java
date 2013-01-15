@@ -59,11 +59,11 @@ public class SlidingMenu extends RelativeLayout {
 		mSlidingView.setRightView(mRightView);
 	}
 
-	public void showLeftView() {
-		mSlidingView.showLeftView();
+	public void toggleLeftView() {
+		mSlidingView.toggleLeftView();
 	}
 
-	public void showRightView() {
-		mSlidingView.showRightView();
+	public void toggleRightView() {
+		mSlidingView.toggleRightView();
 	}
 }

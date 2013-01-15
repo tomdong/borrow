@@ -3,6 +3,7 @@ package com.intalker.borrow.ui.book;
 import com.intalker.borrow.R;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 
@@ -38,7 +39,9 @@ public class BookDetailDialog extends Dialog {
 	private TextView mISBNTextView = null;
 	private TextView mDescriptionTextView = null;
 	
-	private ImageButton mDeleteButton = null;
+	private HaloButton mDeleteButton = null;
+	private HaloButton mCloseButton = null;
+	
 	private BookDetailDialog mDialog = null;
 	
 	public BookDetailDialog(Context context) {
@@ -102,10 +105,7 @@ public class BookDetailDialog extends Dialog {
 		mLayout.addView(createSeparator(separatorY + descriptionHeight + boundMargin - DensityAdaptor.getDensityIndependentValue(8)));
 		
 		// Buttons
-		mDeleteButton = new ImageButton(context);
-		//mDeleteButton.setText(R.string.delete);
-		mDeleteButton.setImageResource(R.drawable.delete);
-		mDeleteButton.setBackgroundDrawable(null);
+		mDeleteButton = new HaloButton(context, R.drawable.trash);
 		mDeleteButton.setOnClickListener(new View.OnClickListener(){
 
 			@Override
@@ -153,6 +153,26 @@ public class BookDetailDialog extends Dialog {
 		deleteBtnLP.bottomMargin = boundMargin;
 		
 		mLayout.addView(mDeleteButton, deleteBtnLP);
+		
+		//Close button.
+		mCloseButton = new HaloButton(context, R.drawable.close);
+		mCloseButton.setOnClickListener(new View.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				mDialog.dismiss();
+			}
+		});
+		
+		RelativeLayout.LayoutParams closeBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		closeBtnLP.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		closeBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//		closeBtnLP.rightMargin = boundMargin;
+//		closeBtnLP.topMargin = boundMargin;
+		
+		mLayout.addView(mCloseButton, closeBtnLP);
 	}
 	
 	private TextView addInfoTextView(int textResId, int index)

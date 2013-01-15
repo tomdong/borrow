@@ -287,7 +287,7 @@ public class SlidingView extends ViewGroup {
 		}
 	}
 
-	public void showLeftView() {
+	public void toggleLeftView() {
 		int menuWidth = mLeftView.getWidth();
 		int oldScrollX = getScrollX();
 		if (oldScrollX == 0) {
@@ -297,7 +297,7 @@ public class SlidingView extends ViewGroup {
 		}
 	}
 
-	public void showRightView() {
+	public void toggleRightView() {
 		int menuWidth = mRightView.getWidth();
 		int oldScrollX = getScrollX();
 		if (oldScrollX == 0) {

@@ -27,8 +27,8 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 		mAPIListener = apiListener;
 		mProgressDialog = new ProgressDialog(context);
 		mProgressDialog.setCancelable(false);
-		mProgressDialog.setTitle(HomeActivity.getApp().getString(
-				R.string.please_wait));
+		mProgressDialog.setTitle(context.getString(R.string.please_wait));
+		mProgressDialog.setIcon(R.drawable.appicon_128);
 		mProgressDialog.setMessage(op);
 		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		mProgressDialog.show();

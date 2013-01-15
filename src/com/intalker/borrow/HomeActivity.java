@@ -45,6 +45,11 @@ public class HomeActivity extends Activity {
 																	// button!
 	private SlidingMenu mSlidingMenu = null;
 	
+	public void toggleLeftPanel()
+	{
+		mSlidingMenu.toggleLeftView();
+	}
+	
 	public static HomeActivity getApp() {
 		return app;
 	}
@@ -163,7 +168,7 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				mSlidingMenu.showLeftView();
+				mSlidingMenu.toggleLeftView();
 			}
 			
 		});
@@ -178,9 +183,9 @@ public class HomeActivity extends Activity {
 			public void onClick(View v) {
 				// Login API test
 				CloudApi.signUp(v.getContext(),
-						"abc1041@openlib.com",
-						"test1",
-						"newUser2",
+						"xiangyun.gao@adsk.com",
+						"gao",
+						"Xiangyun",
 						new ICloudAPITaskListener(){
 
 							@Override

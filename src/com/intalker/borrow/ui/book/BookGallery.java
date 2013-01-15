@@ -7,6 +7,7 @@ import com.intalker.borrow.R;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.data.UserInfo;
+import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.ScanUtil;
@@ -15,6 +16,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -26,6 +28,7 @@ public class BookGallery extends RelativeLayout {
 	private RelativeLayout mBottomPanel = null;
 	private BookShelfView mShelfView = null;
 	private TextView mShelfOwnerTextView = null;
+	private HaloButton mToggleLeftPanelBtn = null;
 	
 	public BookGallery(Context context) {
 		super(context);
@@ -60,6 +63,23 @@ public class BookGallery extends RelativeLayout {
 		topPanelLP.height = LayoutUtil.getGalleryTopPanelHeight();
 		this.addView(mTopPanel, topPanelLP);
 		
+		mToggleLeftPanelBtn = new HaloButton(this.getContext(), R.drawable.menu);
+		mToggleLeftPanelBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				HomeActivity.getApp().toggleLeftPanel();
+			}
+			
+		});
+		RelativeLayout.LayoutParams toggleLeftPanelBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		toggleLeftPanelBtnLP.addRule(RelativeLayout.CENTER_VERTICAL);
+		toggleLeftPanelBtnLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
+		mTopPanel.addView(mToggleLeftPanelBtn, toggleLeftPanelBtnLP);
+		
 		mShelfOwnerTextView = new TextView(this.getContext());
 		mShelfOwnerTextView.setText(R.string.app_name);
 		mShelfOwnerTextView.setTextColor(Color.WHITE);
@@ -67,7 +87,8 @@ public class BookGallery extends RelativeLayout {
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		textLP.addRule(RelativeLayout.CENTER_VERTICAL);
-		textLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
+		textLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		textLP.rightMargin = DensityAdaptor.getDensityIndependentValue(10);
 		mTopPanel.addView(mShelfOwnerTextView, textLP);
 	}
 	
@@ -83,26 +104,7 @@ public class BookGallery extends RelativeLayout {
 		imageBGLP.height = LayoutUtil.getGalleryBottomPanelHeight();
 		mBottomPanel.addView(imageBackground, imageBGLP);
 		
-		ImageButton scanBtn = new ImageButton(this.getContext());
-		scanBtn.setImageResource(R.drawable.scan_barcode);
-		scanBtn.setBackgroundDrawable(null);
-		scanBtn.setOnTouchListener(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				ImageButton imageBtn = (ImageButton)v;
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					imageBtn.setImageResource(R.drawable.scan_barcode_down);
-					break;
-				default:
-					imageBtn.setImageResource(R.drawable.scan_barcode);
-					break;
-				}
-				return false;
-			}
-			
-		});
+		HaloButton scanBtn = new HaloButton(this.getContext(), R.drawable.scan_barcode);
 		scanBtn.setOnClickListener(new OnClickListener(){
 
 			@Override
