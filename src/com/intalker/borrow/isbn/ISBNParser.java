@@ -1,4 +1,4 @@
-package com.intalker.borrow.util;
+package com.intalker.borrow.isbn;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -25,13 +25,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
-public class WebUtil {
+public class ISBNParser {
 	private final static String ISBN_SEARCHURL_DOUBAN = "http://api.douban.com/book/subject/isbn/";
-	private static WebUtil instance = null;
+	private static ISBNParser instance = null;
 
-	public static WebUtil getInstance() {
+	public static ISBNParser getInstance() {
 		if (null == instance) {
-			instance = new WebUtil();
+			instance = new ISBNParser();
 		}
 		return instance;
 	}

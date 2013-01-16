@@ -6,6 +6,7 @@ import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.friends.FriendsNavigationVertical;
+import com.intalker.borrow.isbn.ISBNParser;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.control.sliding.SlidingMenu;
@@ -15,7 +16,6 @@ import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.StorageUtil;
 import com.intalker.borrow.util.ScanUtil;
-import com.intalker.borrow.util.WebUtil;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -333,7 +333,7 @@ public class HomeActivity extends Activity {
 			switch (resultCode) {
 			case RESULT_OK:
 				String isbn = data.getStringExtra("SCAN_RESULT");
-				WebUtil.getInstance()
+				ISBNParser.getInstance()
 						.getBookInfoByISBN(HomeActivity.this, isbn);
 				break;
 			case RESULT_CANCELED:

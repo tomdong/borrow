@@ -3,8 +3,8 @@ package com.intalker.borrow.friends;
 import java.util.Random;
 
 import com.intalker.borrow.R;
+import com.intalker.borrow.isbn.ISBNParser;
 import com.intalker.borrow.util.DensityAdaptor;
-import com.intalker.borrow.util.WebUtil;
 import com.intalker.tencentinterface.TencentConnection;
 
 import android.app.Activity;
@@ -125,7 +125,7 @@ public class FriendsNavigationVertical {
 
 		//mProfileImg.setImageResource(R.drawable.ic_launcher);
 		
-		mProfileImg.setImageBitmap(WebUtil.getImage(mTencentConnection.getUserInfo().getIcon_100()));
+		mProfileImg.setImageBitmap(ISBNParser.getImage(mTencentConnection.getUserInfo().getIcon_100()));
 		
 		return mProfileImg;
 	}
