@@ -16,8 +16,6 @@ import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.StorageUtil;
-import com.intalker.borrow.util.ScanUtil;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;

@@ -2,7 +2,7 @@ package com.intalker.borrow.isbn.parser;
 
 import android.graphics.Bitmap;
 
-public class ISBNParserBase {
+public class BookInfoParser {
 	protected String mISBN = "";
 	protected String mBookName = "";
 	protected String mDescription = "";
@@ -11,7 +11,7 @@ public class ISBNParserBase {
 	protected String mPageCount = "";
 	protected Bitmap mCoverImage = null;
 
-	public ISBNParserBase(String isbn) {
+	public BookInfoParser(String isbn) {
 		mISBN = isbn;
 	}
 	

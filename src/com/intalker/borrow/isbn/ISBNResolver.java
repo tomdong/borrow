@@ -16,8 +16,9 @@ import org.w3c.dom.NodeList;
 
 import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
-import com.intalker.borrow.isbn.parser.ISBNDoubanParser;
-import com.intalker.borrow.isbn.parser.ISBNParserBase;
+import com.intalker.borrow.isbn.parser.DoubanBookInfoParser;
+import com.intalker.borrow.isbn.parser.BookInfoParser;
+import com.intalker.borrow.isbn.parser.OpenISBNBookInfoParser;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.book.BookShelfView;
 
@@ -44,12 +45,13 @@ public class ISBNResolver {
 	}
 
 	class GetBookInfoTask extends AsyncTask<String, Void, InputStream> {
-		private ISBNParserBase isbnParser = null;
+		private BookInfoParser isbnParser = null;
 		private ProgressDialog mProgressDialog = null;
 
 		public GetBookInfoTask(Activity app, String isbn) {
 			super();
-			isbnParser = new ISBNDoubanParser(isbn);
+			isbnParser = new DoubanBookInfoParser(isbn);
+			//isbnParser = new OpenISBNBookInfoParser(isbn);
 			mProgressDialog = new ProgressDialog(app);
 			mProgressDialog.setCancelable(false);
 			mProgressDialog.setTitle(HomeActivity.getApp().getString(R.string.please_wait));
@@ -87,12 +89,12 @@ public class ISBNResolver {
 			if(null != lastBook)
 			{
 				Bitmap coverImage = isbnParser.getCoverImage();
+				lastBook.setDetailInfo(isbnParser.getBookName(),
+						isbnParser.getAuthor(), isbnParser.getPublisher(),
+						isbnParser.getPageCount(),
+						isbnParser.getDescription());
 				if (null != coverImage) {
 					lastBook.setCoverImage(coverImage);
-					lastBook.setDetailInfo(isbnParser.getBookName(),
-							isbnParser.getAuthor(), isbnParser.getPublisher(),
-							isbnParser.getPageCount(),
-							isbnParser.getDescription());
 				}
 				else {
 					lastBook.setCoverAsUnknown();
