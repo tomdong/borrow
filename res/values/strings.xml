@@ -22,5 +22,13 @@
     <string name="delete_book_confirm">Remove this book from gallery?</string>
     
     <string name="shelf_owner_suffix">\'s shelf</string>
+    
+    <string name="reg_back">&lt;&lt; Back</string>
+    <string name="reg_title">Regisgter</string>
+    <string name="reg_name">Your Email</string>    
+    <string name="reg_passowrd">Your Password</string>  
+    <string name="reg_password_confirm">Please Repeat your password</string>
+    <string name="reg_agreement">Agree with the Law</string> 
+    <string name="reg_commit">Commit</string>       
 
 </resources>

@@ -11,6 +11,7 @@ import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.control.sliding.SlidingMenu;
 import com.intalker.borrow.ui.login.LoginDialog;
+import com.intalker.borrow.ui.login.RegisterView;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -37,6 +38,8 @@ import android.widget.Toast;
 public class HomeActivity extends Activity {
 	private static HomeActivity app = null;
 	private BookGallery mBookGallery = null;
+	
+	private RegisterView mReg = null;
 	private FriendsNavigationVertical mFriendsNavigation = null; // it also
 																	// contains
 																	// self info
@@ -142,6 +145,10 @@ public class HomeActivity extends Activity {
 		mainLayout.addView(mBookGallery, bookGalleryLP);
 		
 		mBookGallery.initialWithCachedData();
+		
+		mReg = new RegisterView(this);
+		mainLayout.addView(mReg);
+		mReg.setVisibility(View.GONE);
 
 		// Test settings
 		mainLayout.setBackgroundColor(Color.GRAY);
@@ -181,19 +188,22 @@ public class HomeActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// Login API test
-				CloudApi.signUp(v.getContext(),
-						"xiangyun.gao@adsk.com",
-						"gao",
-						"Xiangyun",
-						new ICloudAPITaskListener(){
-
-							@Override
-							public void onFinish(boolean isSuccessful) {
-								doAfterSignUp(isSuccessful);
-							}
-					
-				});
+				mSlidingMenu.toggleLeftView();
+				mBookGallery.setVisibility(View.GONE);
+				mReg.setVisibility(View.VISIBLE);
+//				// Login API test
+//				CloudApi.signUp(v.getContext(),
+//						"xiangyun.gao@adsk.com",
+//						"gao",
+//						"Xiangyun",
+//						new ICloudAPITaskListener(){
+//
+//							@Override
+//							public void onFinish(boolean isSuccessful) {
+//								doAfterSignUp(isSuccessful);
+//							}
+//					
+//				});
 			}
 		});
 
