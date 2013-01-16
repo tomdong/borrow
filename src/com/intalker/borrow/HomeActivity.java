@@ -6,7 +6,7 @@ import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.friends.FriendsNavigationVertical;
-import com.intalker.borrow.isbn.ISBNParser;
+import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.control.sliding.SlidingMenu;
@@ -333,7 +333,7 @@ public class HomeActivity extends Activity {
 			switch (resultCode) {
 			case RESULT_OK:
 				String isbn = data.getStringExtra("SCAN_RESULT");
-				ISBNParser.getInstance()
+				ISBNResolver.getInstance()
 						.getBookInfoByISBN(HomeActivity.this, isbn);
 				break;
 			case RESULT_CANCELED:
