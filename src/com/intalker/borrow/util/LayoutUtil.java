@@ -29,7 +29,7 @@ public class LayoutUtil {
 
 	public static int getNavigationPanelWidth() {
 		if (navigationPanelWidth < 0) {
-			navigationPanelWidth = DensityAdaptor.getScreenWidth() / 3;
+			navigationPanelWidth = DensityAdaptor.getScreenWidth() * 3 / 4;
 		}
 		return navigationPanelWidth;
 	}

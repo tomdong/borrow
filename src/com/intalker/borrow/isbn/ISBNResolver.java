@@ -1,19 +1,6 @@
 package com.intalker.borrow.isbn;
 
 import java.io.InputStream;
-import java.net.URL;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.isbn.parser.DoubanBookInfoParser;
@@ -25,7 +12,6 @@ import com.intalker.borrow.ui.book.BookShelfView;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 public class ISBNResolver {
