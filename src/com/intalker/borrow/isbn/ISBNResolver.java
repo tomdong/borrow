@@ -41,7 +41,7 @@ public class ISBNResolver {
 			mProgressDialog = new ProgressDialog(app);
 			mProgressDialog.setCancelable(false);
 			mProgressDialog.setTitle(HomeActivity.getApp().getString(R.string.please_wait));
-			mProgressDialog.setMessage(HomeActivity.getApp().getString(R.string.searching_book_info));
+			mProgressDialog.setMessage(HomeActivity.getApp().getString(R.string.searching_book_info) + isbn);
 			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			mProgressDialog.show();
 		}
