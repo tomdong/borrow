@@ -12,7 +12,6 @@
     <string name="page_count">Page Count</string>
     <string name="isbn">ISBN</string>
     <string name="delete">Delete</string>
-    
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -20,15 +19,14 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="delete_book_confirm">Remove this book from gallery?</string>
-    
     <string name="shelf_owner_suffix">\'s shelf</string>
-    
     <string name="reg_back">&lt;&lt; Back</string>
     <string name="reg_title">Regisgter</string>
-    <string name="reg_name">Your Email</string>    
-    <string name="reg_passowrd">Your Password</string>  
+    <string name="reg_name">Your Email</string>
+    <string name="reg_passowrd">Your Password</string>
     <string name="reg_password_confirm">Please Repeat your password</string>
-    <string name="reg_agreement">Agree with the Law</string> 
-    <string name="reg_commit">Commit</string>       
+    <string name="reg_agreement">Agree with the Law</string>
+    <string name="reg_commit">Commit</string>
+    <string name="invalid_isbn">Invalid ISBN</string>
 
 </resources>

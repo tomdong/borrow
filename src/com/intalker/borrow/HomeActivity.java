@@ -341,8 +341,14 @@ public class HomeActivity extends Activity {
 			switch (resultCode) {
 			case RESULT_OK:
 				String isbn = data.getStringExtra("SCAN_RESULT");
-				ISBNResolver.getInstance()
-						.getBookInfoByISBN(HomeActivity.this, isbn);
+				int length = isbn.length();
+				if (10 == length || 13 == length) {
+					ISBNResolver.getInstance().getBookInfoByISBN(
+							HomeActivity.this, isbn);
+				} else {
+					Toast.makeText(this, this.getString(R.string.invalid_isbn),
+							Toast.LENGTH_SHORT).show();
+				}
 				break;
 			case RESULT_CANCELED:
 				break;
