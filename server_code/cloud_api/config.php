@@ -68,6 +68,33 @@ define("DB_SESSION_DATETIME", "datetime");
 // GET/POST param keys
 define("PARAM_KEY_SESSIONID", "sessionid");
 
+
+
+// Return code
+define("USERNAME_OCCUPIED","UserNameOccupied");
+define("SUCCESSFUL","Successful");
+define("NO_SUCH_USER","NoSuchUser");
+define("WRONG_USERNAME_OR_PWD","WrongUserNameOrPwd");
+define("BAD_SESSION","BadSession");
+define("UNKNOWN_ERROR","UnknownError");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 define("DB_MAILS", "mails");
 define("DB_SESSIONS", "sessions");
@@ -159,8 +186,7 @@ define("PASSWORD","password");
 define("MD5","md5");
 define("SHA1","sha1");
 
-define("USERNAME_OCCUPIED","UserNameOccupied");
-define("SUCCESSFUL","Successful");
+
 
 // Message string
 define("AUTHENTICATION_PASSED","Authentication passed.");

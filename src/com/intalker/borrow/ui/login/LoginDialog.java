@@ -3,7 +3,7 @@ package com.intalker.borrow.ui.login;
 import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
-import com.intalker.borrow.cloud.CloudApi;
+import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -145,27 +145,35 @@ public class LoginDialog extends Dialog {
 		return input;
 	}
 
-	private void doAfterLogin(boolean isSuccessful) {
-		if (isSuccessful) {
-//			Toast.makeText(this.getContext(),
-//					UserInfo.getCurLoginUser().toString(), Toast.LENGTH_SHORT)
-//					.show();
+	private void doAfterLogin(int returnCode) {
+		switch (returnCode) {
+		case CloudAPI.Return_OK:
 			HomeActivity.getApp().getBookGallery().updateTopPanel();
 			this.dismiss();
-		} else {
+			break;
+		case CloudAPI.Return_WrongUserNameOrPassword:
 			Toast.makeText(this.getContext(), "Wrong username or pwd.",
 					Toast.LENGTH_SHORT).show();
+			break;
+		case CloudAPI.Return_NetworkError:
+			Toast.makeText(this.getContext(), "Network error.",
+					Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			Toast.makeText(this.getContext(), "Unknown error.",
+					Toast.LENGTH_SHORT).show();
+			break;
 		}
 	}
 
 	private void login() {
-		CloudApi.login(this.getContext(), mEmailInput.getText().toString(),
+		CloudAPI.login(this.getContext(), mEmailInput.getText().toString(),
 				mPasswordInput.getText().toString(),
 				new ICloudAPITaskListener() {
 
 					@Override
-					public void onFinish(boolean doAfterLogin) {
-						doAfterLogin(doAfterLogin);
+					public void onFinish(int returnCode) {
+						doAfterLogin(returnCode);
 					}
 
 				});

@@ -1,6 +1,6 @@
 package com.intalker.borrow;
 
-import com.intalker.borrow.cloud.CloudApi;
+import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.config.ResultCode;
@@ -36,7 +36,7 @@ import android.widget.Toast;
 public class HomeActivity extends Activity {
 	private static HomeActivity app = null;
 	private BookGallery mBookGallery = null;
-	
+
 	private RegisterView mReg = null;
 	private FriendsNavigationVertical mFriendsNavigation = null; // it also
 																	// contains
@@ -45,18 +45,16 @@ public class HomeActivity extends Activity {
 																	// action
 																	// button!
 	private SlidingMenu mSlidingMenu = null;
-	
-	public void toggleLeftPanel()
-	{
+
+	public void toggleLeftPanel() {
 		mSlidingMenu.toggleLeftView();
 	}
-	
+
 	public static HomeActivity getApp() {
 		return app;
 	}
-	
-	public BookGallery getBookGallery()
-	{
+
+	public BookGallery getBookGallery() {
 		return mBookGallery;
 	}
 
@@ -69,81 +67,102 @@ public class HomeActivity extends Activity {
 		DensityAdaptor.init(this);
 		StorageUtil.initialize();
 		StorageUtil.loadCachedBooks();
-		
+
 		setContentView(initializeWithSlidingStyle());
 	}
-	
-	private View initializeWithSlidingStyle()
-	{
+
+	private View initializeWithSlidingStyle() {
 		mSlidingMenu = new SlidingMenu(this);
-		
+
 		mSlidingMenu.setLeftView(createNavigationPanel());
 		mSlidingMenu.setCenterView(createHomeUI());
 		return mSlidingMenu;
 	}
-	
-//	private View createLeftNavigationPanel()
-//	{
-//		RelativeLayout naviPanel = new RelativeLayout(this);
-//		Button btn = new Button(this);
-//		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-//				RelativeLayout.LayoutParams.WRAP_CONTENT,
-//				RelativeLayout.LayoutParams.WRAP_CONTENT);
-//		lp.width = LayoutUtil.getNavigationPanelWidth();
-//		naviPanel.addView(btn, lp);
-//		return naviPanel;
-//	}
+
+	// private View createLeftNavigationPanel()
+	// {
+	// RelativeLayout naviPanel = new RelativeLayout(this);
+	// Button btn = new Button(this);
+	// RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+	// RelativeLayout.LayoutParams.WRAP_CONTENT,
+	// RelativeLayout.LayoutParams.WRAP_CONTENT);
+	// lp.width = LayoutUtil.getNavigationPanelWidth();
+	// naviPanel.addView(btn, lp);
+	// return naviPanel;
+	// }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_home, menu);
 		return true;
 	}
-	
-	private void doAfterSignUp(boolean isSuccessful) {
-		if (isSuccessful) {
+
+	private void doAfterSignUp(int returnCode) {
+		switch (returnCode) {
+		case CloudAPI.Return_OK:
 			Toast.makeText(this, UserInfo.getCurLoginUser().toString(),
 					Toast.LENGTH_SHORT).show();
-		} else {
-			Toast.makeText(this, "User name occupied.", Toast.LENGTH_SHORT).show();
+			break;
+		case CloudAPI.Return_UserNameOccupied:
+			Toast.makeText(this, "User name occupied.", Toast.LENGTH_SHORT)
+					.show();
+			break;
+		case CloudAPI.Return_NetworkError:
+			Toast.makeText(this, "Network error.", Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			Toast.makeText(this, "Unknown error.", Toast.LENGTH_SHORT).show();
+			break;
 		}
 	}
-	
-	private void doAfterGetUserInfoByToken(boolean isSuccessful) {
-		if (isSuccessful) {
-			Toast.makeText(this, UserInfo.getCurLoginUser().toString(),
-					Toast.LENGTH_SHORT).show();
-		} else {
+
+	private void doAfterGetUserInfoByToken(int returnCode) {
+		switch (returnCode) {
+		case CloudAPI.Return_OK:
+			mBookGallery.updateTopPanel();
+			break;
+		case CloudAPI.Return_NoSuchUser:
+			Toast.makeText(this, "No such user.", Toast.LENGTH_SHORT).show();
+			break;
+		case CloudAPI.Return_BadToken:
 			Toast.makeText(this, "Bad token.", Toast.LENGTH_SHORT).show();
+			break;
+		case CloudAPI.Return_NetworkError:
+			Toast.makeText(this, "Network error.", Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			Toast.makeText(this, "Unknown error.", Toast.LENGTH_SHORT).show();
+			break;
 		}
 	}
 
 	public View createHomeUI() {
 		BookShelfItem.lastBookForTest = null;
-		
+
 		LinearLayout mainLayout = new LinearLayout(this);
 		mainLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-		//Add this listener to make the whole gallery be dragable.
-		mainLayout.setOnClickListener(new OnClickListener(){
+		// Add this listener to make the whole gallery be dragable.
+		mainLayout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				//Toast.makeText(arg0.getContext(), "Test", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(arg0.getContext(), "Test",
+				// Toast.LENGTH_SHORT).show();
 			}
-			
+
 		});
-		
+
 		// book gallery ui
 		mBookGallery = new BookGallery(this);
 		LinearLayout.LayoutParams bookGalleryLP = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT,
 				LinearLayout.LayoutParams.FILL_PARENT);
 		mainLayout.addView(mBookGallery, bookGalleryLP);
-		
+
 		mBookGallery.initialWithCachedData();
-		
+
 		mReg = new RegisterView(this);
 		mainLayout.addView(mReg);
 		mReg.setVisibility(View.GONE);
@@ -152,9 +171,8 @@ public class HomeActivity extends Activity {
 		mainLayout.setBackgroundColor(Color.GRAY);
 		return mainLayout;
 	}
-	
-	private View createNavigationPanel()
-	{
+
+	private View createNavigationPanel() {
 		LinearLayout navigationBar = new LinearLayout(this);
 		navigationBar.setBackgroundColor(Color.DKGRAY);
 		navigationBar.setOrientation(LinearLayout.VERTICAL);
@@ -163,7 +181,7 @@ public class HomeActivity extends Activity {
 				RelativeLayout.LayoutParams.FILL_PARENT);
 
 		navigationBarLP.width = LayoutUtil.getNavigationPanelWidth();
-		
+
 		navigationBar.setLayoutParams(navigationBarLP);
 
 		Button b = new Button(this);
@@ -175,7 +193,7 @@ public class HomeActivity extends Activity {
 				// TODO Auto-generated method stub
 				mSlidingMenu.toggleLeftView();
 			}
-			
+
 		});
 		navigationBar.addView(b);
 		// Sign up test
@@ -189,19 +207,19 @@ public class HomeActivity extends Activity {
 				mSlidingMenu.toggleLeftView();
 				mBookGallery.setVisibility(View.GONE);
 				mReg.setVisibility(View.VISIBLE);
-//				// Login API test
-//				CloudApi.signUp(v.getContext(),
-//						"xiangyun.gao@adsk.com",
-//						"gao",
-//						"Xiangyun",
-//						new ICloudAPITaskListener(){
-//
-//							@Override
-//							public void onFinish(boolean isSuccessful) {
-//								doAfterSignUp(isSuccessful);
-//							}
-//					
-//				});
+				// Login API test
+				// CloudAPI.signUp(v.getContext(),
+				// "xiangyun.gaox@adsk.com",
+				// "gao",
+				// "Xiangyun",
+				// new ICloudAPITaskListener(){
+				//
+				// @Override
+				// public void onFinish(int returnCode) {
+				// doAfterSignUp(returnCode);
+				// }
+				//
+				// });
 			}
 		});
 
@@ -230,33 +248,34 @@ public class HomeActivity extends Activity {
 				public void onClick(View v) {
 					// Login API test
 					String testToken = "7a3cf000-0662-715b-a6a8-89feb8466014";
-					CloudApi.setAccessToken(testToken);
-					CloudApi.updateLoggedInUserInfo(v.getContext(), new ICloudAPITaskListener(){
+					CloudAPI.setAccessToken(testToken);
+					CloudAPI.getLoggedInUserInfo(v.getContext(),
+							new ICloudAPITaskListener() {
 
-						@Override
-						public void onFinish(boolean isSuccessful) {
-							doAfterGetUserInfoByToken(isSuccessful);
-						}
-						
-					});
+								@Override
+								public void onFinish(int returnCode) {
+									doAfterGetUserInfoByToken(returnCode);
+								}
+
+							});
 				}
 			});
 
 			navigationBar.addView(btn_loginbysession);
 		}
 
-//		ImageButton btn1 = new ImageButton(this);
-//		// btn1.setText("Scan");
-//		btn1.setImageResource(R.drawable.scan);
-//		btn1.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				ScanUtil.scanBarCode(HomeActivity.this);
-//			}
-//		});
-//
-//		navigationBar.addView(btn1);
+		// ImageButton btn1 = new ImageButton(this);
+		// // btn1.setText("Scan");
+		// btn1.setImageResource(R.drawable.scan);
+		// btn1.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// ScanUtil.scanBarCode(HomeActivity.this);
+		// }
+		// });
+		//
+		// navigationBar.addView(btn1);
 
 		if (AppConfig.isDebugMode) {
 			Button btn2 = new Button(this);
@@ -283,8 +302,8 @@ public class HomeActivity extends Activity {
 		// });
 		//
 		// navigationBar.addView(btn3);
-//		mFriendsNavigation = new FriendsNavigationVertical(this);
-//		navigationBar.addView(mFriendsNavigation.createFriendsNavigationUI());
+		// mFriendsNavigation = new FriendsNavigationVertical(this);
+		// navigationBar.addView(mFriendsNavigation.createFriendsNavigationUI());
 
 		ScrollView testFriendScrollView = new ScrollView(this);
 		LinearLayout friendsLayout = new LinearLayout(this);

@@ -13,7 +13,7 @@ import android.content.Context;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.UserInfo;
 
-public class CloudApi {
+public class CloudAPI {
 	public final static String API_BaseURL = "http://services.sketchbook.cn/openlib/service_test/api.php?op=";
 
 	// API keys
@@ -32,9 +32,25 @@ public class CloudApi {
 	public final static String Parse_User_RegTime = "registertime";
 	public final static String Parse_User_Permission = "permission";
 
-	// Return code
-	public final static String ReturnCode_Successful = "SUCCESSFUL";
+	// Server Return code
+	public final static String ServerReturnCode_Successful = "Successful";
+	public final static String ServerReturnCode_NoSuchUser = "NoSuchUser";
+	public final static String ServerReturnCode_BadSession = "BadSession";
+	public final static String ServerReturnCode_UserNameOccupied = "UserNameOccupied";
 
+	// API return code
+	public final static int Return_Unset = -1;
+	public final static int Return_OK = 0;
+	public final static int Return_TimeOut = 1;
+	public final static int Return_NoNetworkConnection = 2;
+	public final static int Return_NoSuchUser = 3;
+	public final static int Return_WrongUserNameOrPassword = 4;
+	public final static int Return_UserNameOccupied = 5;
+	public final static int Return_BadToken = 6;
+	public final static int Return_NetworkError = 7;
+	public final static int Return_UnknownError = 100;
+
+	// Token
 	public static String CloudToken = "";
 
 	public static String md5(String val) {
@@ -76,21 +92,24 @@ public class CloudApi {
 		return null;
 	}
 
-	public static boolean _login(String url) {
+	public static int _login(String url) {
 		HttpGet getReq = new HttpGet(url);
 		try {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				String strResult = EntityUtils.toString(httpResponse
 						.getEntity());
-				return setAccessToken(strResult);
+				if (setAccessToken(strResult)) {
+					return CloudAPI.Return_OK;
+				} else {
+					return CloudAPI.Return_WrongUserNameOrPassword;
+				}
 			} else {
-				// Network error.
+				return CloudAPI.Return_NetworkError;
 			}
 		} catch (Exception e) {
-			// Check result string for more info.
+			return CloudAPI.Return_NetworkError;
 		}
-		return false;
 	}
 
 	public static boolean isLoggedIn() {
@@ -105,7 +124,7 @@ public class CloudApi {
 		return false;
 	}
 
-	public static boolean _signUp(String url) {
+	public static int _signUp(String url) {
 		HttpGet getReq = new HttpGet(url);
 		try {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
@@ -113,60 +132,85 @@ public class CloudApi {
 				String strResult = EntityUtils.toString(httpResponse
 						.getEntity());
 
-				return setAccessToken(strResult);
+				if (setAccessToken(strResult)) {
+					return CloudAPI.Return_OK;
+				} else {
+					if (strResult
+							.compareTo(CloudAPI.ServerReturnCode_UserNameOccupied) == 0) {
+						return CloudAPI.Return_UserNameOccupied;
+					} else {
+						return CloudAPI.Return_UnknownError;
+					}
+				}
 			} else {
-				// Network error.
+				return CloudAPI.Return_NetworkError;
 			}
 		} catch (Exception e) {
-			// Check result string for more info.
+			return CloudAPI.Return_UnknownError;
 		}
-		return false;
 	}
-	
-	public static boolean _updateLoggedInUserInfo() {
-		String url = CloudApi.API_BaseURL + CloudApi.API_GetUserInfo + CloudApi.API_TOKEN + CloudApi.CloudToken;
-        HttpGet getReq = new HttpGet(url);
-        try {
-                        HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
-                        if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                                        String strResult = EntityUtils.toString(httpResponse
-                                                                        .getEntity());
 
-                                        UserInfo userInfo = getUserInfoFromJSON(strResult);
+	public static int _getLoggedInUserInfo() {
+		String url = CloudAPI.API_BaseURL + CloudAPI.API_GetUserInfo
+				+ CloudAPI.API_TOKEN + CloudAPI.CloudToken;
+		HttpGet getReq = new HttpGet(url);
+		try {
+			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
 
-                                        if (null != userInfo) {
-                                                        UserInfo.setCurLoginUser(userInfo);
-                                                        return true;
-                                        }
-                        } else {
-                                        // Network error.
-                        }
-        } catch (Exception e) {
-                        // Check result string for more info.
-        }
-        return false;
-}
-	//Client should not call any of the methods above.
-	public static void login(Context context, String email, String pwd, ICloudAPITaskListener apiListener) {
+				UserInfo userInfo = getUserInfoFromJSON(strResult);
+
+				if (null != userInfo) {
+					UserInfo.setCurLoginUser(userInfo);
+					return CloudAPI.Return_OK;
+				} else {
+					if (strResult
+							.compareTo(CloudAPI.ServerReturnCode_NoSuchUser) == 0) {
+						return CloudAPI.Return_NoSuchUser;
+					} else if (strResult
+							.compareTo(CloudAPI.ServerReturnCode_BadSession) == 0) {
+						return CloudAPI.Return_BadToken;
+					} else {
+						return CloudAPI.Return_UnknownError;
+					}
+				}
+			} else {
+				return CloudAPI.Return_NetworkError;
+			}
+		} catch (Exception e) {
+			return CloudAPI.Return_NetworkError;
+		}
+	}
+
+	// Client should not call any of the methods above.
+	public static void login(Context context, String email, String pwd,
+			ICloudAPITaskListener apiListener) {
 		String encryptedPwd = md5(pwd);
 		String url = API_BaseURL + API_Login + API_Email + email + API_LocalPwd
 				+ encryptedPwd;
 
-		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url, API_Login, apiListener);
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url, API_Login,
+				apiListener);
 		task.execute();
 	}
-	
-	public static void signUp(Context context, String email, String pwd, String nickName, ICloudAPITaskListener apiListener) {
+
+	public static void signUp(Context context, String email, String pwd,
+			String nickName, ICloudAPITaskListener apiListener) {
 		String encryptedPwd = md5(pwd);
 		String url = API_BaseURL + API_SignUp + API_Email + email
 				+ API_LocalPwd + encryptedPwd + API_NickName + nickName;
-		
-		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url, API_SignUp, apiListener);
+
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
+				API_SignUp, apiListener);
 		task.execute();
 	}
-	
-	public static void updateLoggedInUserInfo(Context context, ICloudAPITaskListener apiListener) {
-		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, "", API_GetUserInfo, apiListener);
+
+	public static void getLoggedInUserInfo(Context context,
+			ICloudAPITaskListener apiListener) {
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, "",
+				API_GetUserInfo, apiListener);
 		task.execute();
 	}
 

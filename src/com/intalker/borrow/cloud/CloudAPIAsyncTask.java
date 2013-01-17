@@ -10,13 +10,13 @@ import com.intalker.borrow.R;
 public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 
 	public interface ICloudAPITaskListener {
-		public void onFinish(boolean isSuccessful);
+		public void onFinish(int returnCode);
 	}
 
 	private ProgressDialog mProgressDialog = null;
 	private String mUrl = "";
 	private String mOp = "";
-	private boolean mIsSuccessful = false;
+	private int mReturnCode = CloudAPI.Return_Unset;
 	private ICloudAPITaskListener mAPIListener = null;
 
 	public CloudAPIAsyncTask(Context context, String url, String op,
@@ -37,31 +37,23 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		mIsSuccessful = false;
+		mReturnCode = CloudAPI.Return_Unset;
 	}
 
 	@Override
 	protected Void doInBackground(String... params) {
-		if (mOp.compareTo(CloudApi.API_Login) == 0) {
-			if (CloudApi._login(mUrl)) {
-				if (CloudApi._updateLoggedInUserInfo()) {
-					mIsSuccessful = true;
-				} else {
-
-				}
+		if (mOp.compareTo(CloudAPI.API_Login) == 0) {
+			mReturnCode = CloudAPI._login(mUrl);
+			if (CloudAPI.Return_OK == mReturnCode) {
+				mReturnCode = CloudAPI._getLoggedInUserInfo();
 			}
-		} else if (mOp.compareTo(CloudApi.API_SignUp) == 0) {
-			if (CloudApi._signUp(mUrl)) {
-				if (CloudApi._updateLoggedInUserInfo()) {
-					mIsSuccessful = true;
-				} else {
-
-				}
+		} else if (mOp.compareTo(CloudAPI.API_SignUp) == 0) {
+			mReturnCode = CloudAPI._signUp(mUrl);
+			if (CloudAPI.Return_OK == mReturnCode) {
+				mReturnCode = CloudAPI._getLoggedInUserInfo();
 			}
-		} else if (mOp.compareTo(CloudApi.API_GetUserInfo) == 0) {
-			if (CloudApi._updateLoggedInUserInfo()) {
-				mIsSuccessful = true;
-			}
+		} else if (mOp.compareTo(CloudAPI.API_GetUserInfo) == 0) {
+			mReturnCode = CloudAPI._getLoggedInUserInfo();
 		}
 		return null;
 	}
@@ -71,7 +63,7 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 		super.onPostExecute(result);
 		mProgressDialog.dismiss();
 		if (null != mAPIListener) {
-			mAPIListener.onFinish(mIsSuccessful);
+			mAPIListener.onFinish(mReturnCode);
 		}
 	}
 }

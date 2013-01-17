@@ -34,15 +34,26 @@ switch($op)
 		if(NULL != $sessionId)
 		{
 			$uid = getUserIdBySession($sessionId);
-			$user_info = getUserInfoByUserId($uid);
-			if(NULL != $user_info)
+			if(NULL != $uid)
 			{
-				echo encodeUserInfo($user_info);
+				$user_info = getUserInfoByUserId($uid);
+				if(NULL != $user_info)
+				{
+					echo encodeUserInfo($user_info);
+				}
+				else
+				{
+					echo NO_SUCH_USER;
+				}
 			}
 			else
 			{
-				echo "Fail";
+				echo BAD_SESSION;
 			}
+		}
+		else
+		{
+			echo BAD_SESSION;
 		}
 		disconnectDB($con);
 		break;
@@ -102,9 +113,13 @@ switch($op)
             }
             else
             {
-                echo "Fail";
+                echo WRONG_USERNAME_OR_PWD;
             }
             disconnectDB($con);
+        }
+        else
+        {
+        	echo WRONG_USERNAME_OR_PWD;
         }
         break;
         
@@ -125,14 +140,18 @@ switch($op)
             	}
             	else
             	{
-            		echo "Fail";
+            		echo NO_SUCH_USER;
             	}
             }
             else
             {
-                echo "Fail";
+                echo BAD_SESSION;
             }
             disconnectDB($con);
+        }
+        else
+        {
+        	echo BAD_SESSION;
         }
         break;
         
@@ -156,21 +175,25 @@ switch($op)
             $con = connectDB();
             $result = signUp($newUserData);
             
-            if(SUCCESSFUL == $result)
+            switch($result)
             {
-            	$sessionid = login($email, $local_pwd);
-	            if(NULL != $sessionid)
-	            {
-	                echo $sessionid;
-	            }
-	            else
-	            {
-	                echo "Fail";
-	            }
-            }
-            else
-            {
-            	echo $result;
+            	case USERNAME_OCCUPIED:
+            		echo USERNAME_OCCUPIED;
+            	break;
+            	case SUCCESSFUL:
+	            	$sessionid = login($email, $local_pwd);
+		            if(NULL != $sessionid)
+		            {
+		                echo $sessionid;
+		            }
+		            else
+		            {
+		                echo UNKNOWN_ERROR;
+		            }
+            	break;
+            	default:
+            		echo UNKNOWN_ERROR;
+            	break;
             }
             disconnectDB($con);
         }
