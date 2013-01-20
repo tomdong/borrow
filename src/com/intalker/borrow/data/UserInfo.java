@@ -9,7 +9,7 @@ public class UserInfo {
 
 	private static UserInfo mCurLoggedinUser = null;
 
-	public static UserInfo getCurLoginUser() {
+	public static UserInfo getCurLoggedinUser() {
 		return mCurLoggedinUser;
 	}
 

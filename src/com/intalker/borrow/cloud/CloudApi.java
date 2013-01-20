@@ -24,6 +24,17 @@ public class CloudAPI {
 	public final static String API_LocalPwd = "&localpwd=";
 	public final static String API_NickName = "&nickname=";
 	public final static String API_TOKEN = "&sessionid=";
+	
+	// DB keys
+	public final static String DB_Book_OwnerId = "ownerid";
+	public final static String DB_Book_ISBN = "isbn";
+	public final static String DB_Book_Quantity = "quantity";
+	public final static String DB_Book_Description = "description";
+	public final static String DB_Book_PublicLevel = "publiclevel";
+	public final static String DB_Book_Status = "status";
+	
+	// JSON keys
+	public final static String JSON_Book_InfoList = "bookinfolist";
 
 	// Parse keys
 	public final static String Parse_User_Id = "id";
@@ -113,7 +124,7 @@ public class CloudAPI {
 	}
 
 	public static boolean isLoggedIn() {
-		return null != UserInfo.getCurLoginUser();
+		return null != UserInfo.getCurLoggedinUser();
 	}
 
 	public static boolean setAccessToken(String token) {

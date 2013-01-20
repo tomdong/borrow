@@ -38,7 +38,7 @@ public class BookGallery extends RelativeLayout {
 	
 	public void updateTopPanel()
 	{
-		UserInfo curLoginUser = UserInfo.getCurLoginUser();
+		UserInfo curLoginUser = UserInfo.getCurLoggedinUser();
 		if(null != curLoginUser)
 		{
 			mShelfOwnerTextView.setText(curLoginUser.getNickName()

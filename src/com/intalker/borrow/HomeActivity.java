@@ -14,6 +14,7 @@ import com.intalker.borrow.ui.login.LoginDialog;
 import com.intalker.borrow.ui.login.RegisterView;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
+import com.intalker.borrow.util.JSONUtil;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.StorageUtil;
 import android.os.Bundle;
@@ -93,14 +94,18 @@ public class HomeActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_home, menu);
+		//getMenuInflater().inflate(R.menu.activity_home, menu);
+		menu.addSubMenu("Settings");
+		menu.addSubMenu("Help");
+		menu.addSubMenu("About");
+		menu.addSubMenu("Exit");
 		return true;
 	}
 
 	private void doAfterSignUp(int returnCode) {
 		switch (returnCode) {
 		case CloudAPI.Return_OK:
-			Toast.makeText(this, UserInfo.getCurLoginUser().toString(),
+			Toast.makeText(this, UserInfo.getCurLoggedinUser().toString(),
 					Toast.LENGTH_SHORT).show();
 			break;
 		case CloudAPI.Return_UserNameOccupied:
@@ -262,6 +267,19 @@ public class HomeActivity extends Activity {
 			});
 
 			navigationBar.addView(btn_loginbysession);
+			
+			Button btn_test = new Button(this);
+			btn_test.setText("Temp Test");
+			btn_test.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// For any test code
+					JSONUtil.makeBookInfoListUploadData();
+				}
+			});
+
+			navigationBar.addView(btn_test);
 		}
 
 		// ImageButton btn1 = new ImageButton(this);
