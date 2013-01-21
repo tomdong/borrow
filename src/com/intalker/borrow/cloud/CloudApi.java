@@ -4,6 +4,8 @@ import java.security.MessageDigest;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
@@ -12,18 +14,24 @@ import android.content.Context;
 
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.UserInfo;
+import com.intalker.borrow.util.JSONUtil;
 
 public class CloudAPI {
 	public final static String API_BaseURL = "http://services.sketchbook.cn/openlib/service_test/api.php?op=";
 
-	// API keys
+	// API operations
 	public final static String API_Login = "Login";
 	public final static String API_SignUp = "SignUp";
 	public final static String API_GetUserInfo = "GetUserInfoBySession";
+	public final static String API_UploadBooks = "UploadBooks";
+	
+	// API params
 	public final static String API_Email = "&email=";
 	public final static String API_LocalPwd = "&localpwd=";
 	public final static String API_NickName = "&nickname=";
 	public final static String API_TOKEN = "&sessionid=";
+	
+	public final static String API_POST_BookInfoList = "bookinfolist";
 	
 	// DB keys
 	public final static String DB_Book_OwnerId = "ownerid";
@@ -32,9 +40,6 @@ public class CloudAPI {
 	public final static String DB_Book_Description = "description";
 	public final static String DB_Book_PublicLevel = "publiclevel";
 	public final static String DB_Book_Status = "status";
-	
-	// JSON keys
-	public final static String JSON_Book_InfoList = "bookinfolist";
 
 	// Parse keys
 	public final static String Parse_User_Id = "id";
@@ -194,6 +199,40 @@ public class CloudAPI {
 			return CloudAPI.Return_NetworkError;
 		}
 	}
+	
+	public static int _uploadBooks()
+	{
+		String url = API_BaseURL + API_UploadBooks + CloudAPI.API_TOKEN + CloudAPI.CloudToken;;
+		String strResult;
+		HttpPost httpRequest = new HttpPost(url);
+		try {
+			JSONObject data = JSONUtil.makeBookInfoListUploadData();
+			String dataStr = data.toString();
+			StringEntity se = new StringEntity(dataStr);
+			httpRequest.setEntity(se);
+			HttpResponse httpResponse = new DefaultHttpClient()
+					.execute(httpRequest);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				strResult = EntityUtils.toString(httpResponse.getEntity());
+				if(strResult.compareTo(CloudAPI.ServerReturnCode_Successful) == 0)
+				{
+					return CloudAPI.Return_OK;
+				}
+				else if(strResult.compareTo(CloudAPI.ServerReturnCode_BadSession) == 0)
+				{
+					return CloudAPI.Return_BadToken;
+				}
+				else
+				{
+					return CloudAPI.Return_UnknownError;
+				}
+			} else {
+				return CloudAPI.Return_NetworkError;
+			}
+		} catch (Exception ex) {
+			return CloudAPI.Return_NetworkError;
+		}
+	}
 
 	// Client should not call any of the methods above.
 	public static void login(Context context, String email, String pwd,
@@ -225,4 +264,10 @@ public class CloudAPI {
 		task.execute();
 	}
 
+	public static void uploadBooks(Context context,
+			ICloudAPITaskListener apiListener) {
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, "",
+				API_UploadBooks, apiListener);
+		task.execute();
+	}
 }

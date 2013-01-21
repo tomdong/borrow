@@ -199,6 +199,21 @@ function getUserIdBySession($sessionId)
     return NULL;
 }
 
+function getBookByOwnerAndISBN($ownerid, $isbn)
+{
+    $sql = "select * from " . DB_TABLE_BOOK . " where " . DB_BOOK_OWNERID . "=" . wrapStr($ownerid)
+    . " and " . DB_BOOK_ISBN . "=" . wrapStr($isbn);
+    $result = mysql_query($sql);
+    while($row = mysql_fetch_array($result))
+    {
+        if(NULL != $row)
+        {
+            return $row;
+        }
+    }
+    return NULL;
+}
+
 function getUserInfoById($uid)
 {
     $sql = "select * from " . DB_TABLE_USER . " where " . DB_USER_ID . "=" . wrapStr($uid);

@@ -99,7 +99,6 @@ switch($op)
 		}
 		disconnectDB($con);
 		break;
-	
     case "Login":
         $email = getValueFromRequest(DB_USER_EMAIL);
         $local_pwd = getValueFromRequest(DB_USER_LOCALPWD);
@@ -122,7 +121,6 @@ switch($op)
         	echo WRONG_USERNAME_OR_PWD;
         }
         break;
-        
     case "LoginBySession":
         $sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
         if(NULL != $sessionId)
@@ -198,7 +196,41 @@ switch($op)
             disconnectDB($con);
         }
 		break;
-    
+    case "UploadBooks":
+    	$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+		$bookUploadData = json_decode($GLOBALS["HTTP_RAW_POST_DATA"]);
+		$bookInfoList = $bookUploadData->bookinfolist;
+		if(empty($bookUploadData) || empty($bookInfoList))
+		{
+			echo UNKNOWN_ERROR;
+			break;
+		}
+	    $con = connectDB();
+	    
+	    $ownerId = getUserIdBySession($sessionId);
+        if(NULL == $ownerId)
+        {
+        	echo BAD_SESSION;
+        	disconnectDB($con);
+			break;
+        }
+		foreach($bookInfoList as $bookInfo)
+		{
+			$isbn = $bookInfo->isbn;
+			if(NULL != getBookByOwnerAndISBN($ownerId, $isbn))
+			{
+				continue;
+			}
+			$bookInfoRecord[DB_BOOK_OWNERID] = $ownerId;
+			$bookInfoRecord[DB_BOOK_ISBN] = $isbn;
+			$bookInfoRecord[DB_BOOK_QUANTITY] = $bookInfo->quantity;
+			$bookInfoRecord[DB_BOOK_DESCRIPTION] = $bookInfo->description;
+			$bookInfoRecord[DB_BOOK_STATUS] = $bookInfo->status;
+		    insertRecord(DB_TABLE_BOOK, $bookInfoRecord);
+		}
+		disconnectDB($con);
+		echo SUCCESSFUL;
+    	break;
 	/*	
     case "Signup":
         $con = connectDB();

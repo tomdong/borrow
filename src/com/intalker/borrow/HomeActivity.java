@@ -120,6 +120,24 @@ public class HomeActivity extends Activity {
 			break;
 		}
 	}
+	
+	private void doAfterUplaod(int returnCode) {
+		switch (returnCode) {
+		case CloudAPI.Return_OK:
+			Toast.makeText(this, "Upload done!", Toast.LENGTH_SHORT).show();
+			break;
+		case CloudAPI.Return_BadToken:
+			Toast.makeText(this, "Bad token.", Toast.LENGTH_SHORT)
+					.show();
+			break;
+		case CloudAPI.Return_NetworkError:
+			Toast.makeText(this, "Network error.", Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			Toast.makeText(this, "Unknown error.", Toast.LENGTH_SHORT).show();
+			break;
+		}
+	}
 
 	private void doAfterGetUserInfoByToken(int returnCode) {
 		switch (returnCode) {
@@ -275,7 +293,17 @@ public class HomeActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					// For any test code
-					JSONUtil.makeBookInfoListUploadData();
+					//JSONUtil.postData(JSONUtil.makeBookInfoListUploadData());
+					//JSONUtil.makeBookInfoListUploadData(); 
+					CloudAPI.uploadBooks(HomeActivity.getApp(),
+							new ICloudAPITaskListener() {
+
+								@Override
+								public void onFinish(int returnCode) {
+									doAfterUplaod(returnCode);
+								}
+
+							});
 				}
 			});
 
