@@ -68,6 +68,7 @@ public class HomeActivity extends Activity {
 		DensityAdaptor.init(this);
 		StorageUtil.initialize();
 		StorageUtil.loadCachedBooks();
+		CloudAPI.CloudToken = "";
 
 		setContentView(initializeWithSlidingStyle());
 	}
