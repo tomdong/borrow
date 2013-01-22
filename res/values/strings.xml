@@ -21,10 +21,15 @@
     <string name="delete_book_confirm">Remove this book from gallery?</string>
     <string name="shelf_owner_suffix">\'s shelf</string>
     <string name="reg_back">&lt;&lt; Back</string>
-    <string name="reg_title">Regisgter</string>
-    <string name="reg_name">Your Email</string>
+    <string name="reg_title">Register</string>
+    <string name="reg_name">Your login name</string>
+    <string name="reg_name_hint">We recommand to use your Email</string>
+    <string name="reg_nickname">Your nick name</string>
+    <string name="reg_nickname_hint">Your display name(optinal)</string>
     <string name="reg_passowrd">Your Password</string>
+    <string name="reg_password_hint">5-20 letters</string>
     <string name="reg_password_confirm">Please Repeat your password</string>
+     <string name="reg_password_confirm_hint">Repeat your password</string>
     <string name="reg_agreement">Agree with the Law</string>
     <string name="reg_commit">Commit</string>
     <string name="invalid_isbn">Invalid ISBN</string>
