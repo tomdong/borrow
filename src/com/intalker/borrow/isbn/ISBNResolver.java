@@ -1,8 +1,12 @@
 package com.intalker.borrow.isbn;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+
 import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
+import com.intalker.borrow.data.AppData;
+import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.isbn.parser.DoubanBookInfoParser;
 import com.intalker.borrow.isbn.parser.BookInfoParser;
 import com.intalker.borrow.isbn.parser.OpenISBNBookInfoParser;
@@ -11,12 +15,14 @@ import com.intalker.borrow.ui.book.BookShelfView;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 public class ISBNResolver {
 
 	private static ISBNResolver instance = null;
+	private static BookInfoParser parser = null;
 
 	public static ISBNResolver getInstance() {
 		if (null == instance) {
@@ -25,20 +31,33 @@ public class ISBNResolver {
 		return instance;
 	}
 
-	public void getBookInfoByISBN(Activity app, String isbn) {
-		GetBookInfoTask task = new GetBookInfoTask(app, isbn);
+	public void getBookInfoByISBN(Context context, String isbn) {
+		GetBookInfoTask task = new GetBookInfoTask(context, isbn);
 		task.execute();
+	}
+	
+	public void batchGetBookInfo(Context context) {
+		BatchGetBookInfoTask task = new BatchGetBookInfoTask(context);
+		task.execute();
+	}
+	
+	private BookInfoParser getParser() {
+		if (null == parser) {
+			parser = new DoubanBookInfoParser();
+			//parser = new OpenISBNBookInfoParser();
+		}
+		return parser;
 	}
 
 	class GetBookInfoTask extends AsyncTask<String, Void, InputStream> {
 		private BookInfoParser isbnParser = null;
 		private ProgressDialog mProgressDialog = null;
 
-		public GetBookInfoTask(Activity app, String isbn) {
+		public GetBookInfoTask(Context context, String isbn) {
 			super();
-			isbnParser = new DoubanBookInfoParser(isbn);
-			//isbnParser = new OpenISBNBookInfoParser(isbn);
-			mProgressDialog = new ProgressDialog(app);
+			isbnParser = getParser();
+			isbnParser.reset(isbn);
+			mProgressDialog = new ProgressDialog(context);
 			mProgressDialog.setCancelable(false);
 			mProgressDialog.setTitle(HomeActivity.getApp().getString(R.string.please_wait));
 			mProgressDialog.setMessage(HomeActivity.getApp().getString(R.string.searching_book_info) + isbn);
@@ -70,7 +89,7 @@ public class ISBNResolver {
 		@Override
 		protected void onPostExecute(InputStream result) {
 			super.onPostExecute(result);
-			mProgressDialog.hide();
+			mProgressDialog.dismiss();
 			BookShelfItem lastBook = BookShelfItem.lastBookForTest;
 			if(null != lastBook)
 			{
@@ -86,6 +105,93 @@ public class ISBNResolver {
 					lastBook.setCoverAsUnknown();
 				}
 				lastBook.show();
+			}
+		}
+	}
+	
+	//Batch method
+	class BatchGetBookInfoTask extends AsyncTask<String, String, InputStream> {
+		private Context mContext = null;
+		private BookInfoParser mParser = null;
+		private ProgressDialog mProgressDialog = null;
+		
+		public BatchGetBookInfoTask(Context context) {
+			super();
+			mContext = context;
+			mParser = getParser();
+			mProgressDialog = new ProgressDialog(mContext);
+			mProgressDialog.setCancelable(false);
+			mProgressDialog.setTitle(mContext.getString(R.string.please_wait));
+			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			mProgressDialog.show();
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected void onProgressUpdate(String... values) {
+			mProgressDialog.setMessage(mContext.getString(R.string.searching_book_info) + values[0]);
+		}
+
+		@Override
+		protected InputStream doInBackground(String... params) {
+
+			AppData appData = AppData.getInstance();
+			ArrayList<BookInfo> bookInfoList = appData.getBooks();
+			int length = bookInfoList.size();
+			for(int i = 0; i < length; ++i)
+			{
+				BookInfo bookInfo = bookInfoList.get(i);
+				if(null != bookInfo && !bookInfo.getInitialized())
+				{
+					String isbn = bookInfo.getISBN();
+					mParser.reset(isbn);
+					mParser.parse();
+					
+					bookInfo.setData(mParser);
+					publishProgress(isbn);
+				}
+			}
+			
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(InputStream result) {
+			super.onPostExecute(result);
+			mProgressDialog.dismiss();
+			AppData appData = AppData.getInstance();
+			ArrayList<BookInfo> bookInfoList = appData.getBooks();
+			int length = bookInfoList.size();
+			for(int i = 0; i < length; ++i)
+			{
+				BookInfo bookInfo = bookInfoList.get(i);
+				if(null != bookInfo && !bookInfo.getInitialized())
+				{
+					BookShelfView.getInstance().addBookForLoading();
+					BookShelfItem lastBook = BookShelfItem.lastBookForTest;
+					if(null != lastBook)
+					{
+						lastBook.setISBN(bookInfo.getISBN());
+						
+						Bitmap coverImage = bookInfo.getCoverImage();
+						lastBook.setDetailInfo(bookInfo.getBookName(),
+								bookInfo.getAuthor(), bookInfo.getPublisher(),
+								bookInfo.getPageCount(),
+								bookInfo.getDescription());
+						if (null != coverImage) {
+							lastBook.setCoverImage(coverImage);
+						}
+						else {
+							lastBook.setCoverAsUnknown();
+						}
+						lastBook.show();
+					}
+					bookInfo.setInitialized(true);
+				}
 			}
 		}
 	}

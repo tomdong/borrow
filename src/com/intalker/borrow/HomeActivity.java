@@ -451,8 +451,7 @@ public class HomeActivity extends Activity {
 				String isbn = data.getStringExtra("SCAN_RESULT");
 				int length = isbn.length();
 				if (10 == length || 13 == length) {
-					ISBNResolver.getInstance().getBookInfoByISBN(
-							HomeActivity.this, isbn);
+					ISBNResolver.getInstance().getBookInfoByISBN(this, isbn);
 				} else {
 					Toast.makeText(this, this.getString(R.string.invalid_isbn),
 							Toast.LENGTH_SHORT).show();

@@ -13,8 +13,7 @@ import com.intalker.borrow.util.WebUtil;
 public class DoubanBookInfoParser extends BookInfoParser {
 	private final static String ISBN_SEARCHURL_DOUBAN = "http://api.douban.com/book/subject/isbn/";
 
-	public DoubanBookInfoParser(String isbn) {
-		super(isbn);
+	public DoubanBookInfoParser() {
 	}
 
 	@Override

@@ -4,9 +4,12 @@ import java.util.ArrayList;
 
 import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
+import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.data.UserInfo;
+import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -29,6 +32,7 @@ public class BookGallery extends RelativeLayout {
 	private BookShelfView mShelfView = null;
 	private TextView mShelfOwnerTextView = null;
 	private HaloButton mToggleLeftPanelBtn = null;
+	private HaloButton mRefreshBtn = null;
 	
 	public BookGallery(Context context) {
 		super(context);
@@ -86,11 +90,50 @@ public class BookGallery extends RelativeLayout {
 		RelativeLayout.LayoutParams textLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		textLP.addRule(RelativeLayout.CENTER_VERTICAL);
-		textLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		textLP.rightMargin = DensityAdaptor.getDensityIndependentValue(10);
+		textLP.addRule(RelativeLayout.CENTER_IN_PARENT);
 		mTopPanel.addView(mShelfOwnerTextView, textLP);
+		
+		mRefreshBtn = new HaloButton(this.getContext(), R.drawable.refresh);
+		mRefreshBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				CloudAPI.getOwnedBooks(HomeActivity.getApp(),
+						new ICloudAPITaskListener() {
+
+							@Override
+							public void onFinish(int returnCode) {
+								ISBNResolver.getInstance().batchGetBookInfo(
+										HomeActivity.getApp());
+							}
+
+						});
+
+			}
+			
+		});
+		RelativeLayout.LayoutParams refreshBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		refreshBtnLP.addRule(RelativeLayout.CENTER_VERTICAL);
+		refreshBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		refreshBtnLP.rightMargin = DensityAdaptor.getDensityIndependentValue(5);
+		mTopPanel.addView(mRefreshBtn, refreshBtnLP);
 	}
+	
+//	private void updateGalleryAfterSync() {
+//		AppData appData = AppData.getInstance();
+//		ArrayList<BookInfo> bookInfoList = appData.getBooks();
+//		int length = bookInfoList.size();
+//		for(int i = 0; i < length; ++i)
+//		{
+//			BookInfo bookInfo = bookInfoList.get(i);
+//			if(null != bookInfo && !bookInfo.getInitialized())
+//			{
+//				ISBNResolver.getInstance().getBookInfoByISBN(this.getContext(), bookInfo.getISBN());
+//			}
+//		}
+//	}
 	
 	private void createBottomPanel()
 	{

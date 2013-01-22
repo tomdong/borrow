@@ -1,5 +1,6 @@
 package com.intalker.borrow.data;
 
+import com.intalker.borrow.isbn.parser.BookInfoParser;
 import com.intalker.borrow.util.StorageUtil;
 
 import android.graphics.Bitmap;
@@ -41,7 +42,7 @@ public class BookInfo {
 		mCoverImage = coverImage;
 	}
 
-	public void setName(String name) {
+	public void setBookName(String name) {
 		mName = name;
 	}
 
@@ -69,7 +70,7 @@ public class BookInfo {
 		return mCoverImage;
 	}
 
-	public String getName() {
+	public String getBookName() {
 		return mName;
 	}
 
@@ -91,5 +92,16 @@ public class BookInfo {
 	
 	public boolean getInitialized() {
 		return mInitialized;
+	}
+	
+	public void setData(BookInfoParser parser)
+	{
+		setISBN(parser.getISBN());
+		setBookName(parser.getBookName());
+		setAuthor(parser.getAuthor());
+		setCoverImage(parser.getCoverImage());
+		setDescription(parser.getDescription());
+		setPageCount(parser.getPageCount());
+		setPublisher(parser.getPublisher());
 	}
 }

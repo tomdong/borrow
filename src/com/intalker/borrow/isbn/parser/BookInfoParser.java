@@ -11,8 +11,17 @@ public class BookInfoParser {
 	protected String mPageCount = "";
 	protected Bitmap mCoverImage = null;
 
-	public BookInfoParser(String isbn) {
+	public BookInfoParser() {
+	}
+	
+	public void reset(String isbn) {
 		mISBN = isbn;
+		mBookName = "";
+		mDescription = "";
+		mAuthor = "";
+		mPublisher = "";
+		mPageCount = "";
+		mCoverImage = null;
 	}
 	
 	public void parse() {

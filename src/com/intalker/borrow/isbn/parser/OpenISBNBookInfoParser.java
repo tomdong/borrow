@@ -10,8 +10,7 @@ import com.intalker.borrow.util.WebUtil;
 public class OpenISBNBookInfoParser extends BookInfoParser {
 	private final static String ISBN_SEARCHURL_OPENISBN = "http://openisbn.com/isbn/";
 
-	public OpenISBNBookInfoParser(String isbn) {
-		super(isbn);
+	public OpenISBNBookInfoParser() {
 	}
 
 	@Override

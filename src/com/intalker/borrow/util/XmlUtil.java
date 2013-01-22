@@ -89,7 +89,7 @@ public class XmlUtil {
 					String nodeTagName = subNode.getNodeName();
 					if (nodeTagName.compareTo(BookNameNodeName) == 0) {
 						String bookName = subNode.getTextContent();
-						book.setName(bookName);
+						book.setBookName(bookName);
 					}
 					
 					String authorTagName = subNode.getNodeName();
@@ -135,7 +135,7 @@ public class XmlUtil {
 			bookElement.setAttribute(ISBNAttributeName, book.getISBN());
 
 			Element nameElement = doc.createElement(BookNameNodeName);
-			nameElement.setTextContent(book.getName());
+			nameElement.setTextContent(book.getBookName());
 			bookElement.appendChild(nameElement);
 			
 			Element authorElement = doc.createElement(AuthorNodeName);

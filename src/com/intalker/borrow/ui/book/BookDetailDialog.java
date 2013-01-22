@@ -257,7 +257,7 @@ public class BookDetailDialog extends Dialog {
 			BookInfo bookInfo = bookItem.getInfo();
 			if (null != bookInfo) {
 				mCoverImage.setImageBitmap(bookInfo.getCoverImage());
-				mNameTextView.setText(bookInfo.getName());
+				mNameTextView.setText(bookInfo.getBookName());
 				mAuthorTextView.setText(bookInfo.getAuthor());
 				mPublisherTextView.setText(bookInfo.getPublisher());
 				mPageCountTextView.setText(bookInfo.getPageCount());

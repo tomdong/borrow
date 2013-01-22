@@ -25,6 +25,7 @@ public class CloudAPI {
 	public final static String API_GetUserInfo = "GetUserInfoBySession";
 	public final static String API_UploadBooks = "UploadBooks";
 	public final static String API_GetOwnedBooks = "GetBooksBySession";
+	public final static String API_SynchronizeOwnedBooks = "SynchronizeOwnedBooks";
 	
 	// API params
 	public final static String API_Email = "&email=";
@@ -307,6 +308,13 @@ public class CloudAPI {
 			ICloudAPITaskListener apiListener) {
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, "",
 				API_GetOwnedBooks, apiListener);
+		task.execute();
+	}
+	
+	public static void sychronizeOwnedBooks(Context context,
+			ICloudAPITaskListener apiListener) {
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, "",
+				API_SynchronizeOwnedBooks, apiListener);
 		task.execute();
 	}
 }

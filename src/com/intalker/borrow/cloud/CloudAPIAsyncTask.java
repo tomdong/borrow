@@ -58,6 +58,11 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 			mReturnCode = CloudAPI._uploadBooks();
 		} else if (mOp.compareTo(CloudAPI.API_GetOwnedBooks) == 0) {
 			mReturnCode = CloudAPI._getOwnedBooks();
+		} else if (mOp.compareTo(CloudAPI.API_SynchronizeOwnedBooks) == 0) {
+			mReturnCode = CloudAPI._uploadBooks();
+			if (CloudAPI.Return_OK == mReturnCode) {
+				mReturnCode = CloudAPI._getOwnedBooks();
+			}
 		}
 		return null;
 	}
