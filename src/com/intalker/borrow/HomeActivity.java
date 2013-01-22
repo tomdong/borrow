@@ -190,6 +190,22 @@ public class HomeActivity extends Activity {
 		mReg = new RegisterView(this);
 		mainLayout.addView(mReg);
 		mReg.setVisibility(View.GONE);
+		mReg.setRegisterListener(new RegisterView.OnRegisterListener() {
+			
+			@Override
+			public void onSuccess() {
+				mReg.setVisibility(View.GONE);
+				mBookGallery.setVisibility(View.VISIBLE);
+			}
+			
+			@Override
+			public void onBack()
+			{
+				mReg.setVisibility(View.GONE);
+				mBookGallery.setVisibility(View.VISIBLE);
+			}
+		});
+
 
 		// Test settings
 		mainLayout.setBackgroundColor(Color.GRAY);
