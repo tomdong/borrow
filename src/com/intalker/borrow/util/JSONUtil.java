@@ -35,9 +35,31 @@ public class JSONUtil {
 			}
 			jsonData.put(CloudAPI.API_POST_BookInfoList, jsonBookInfoList);
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
 		return jsonData;
+	}
+
+	public static void parseBooksInfo(String strJSON) {
+		try {
+			JSONArray jsonBookArray = new JSONArray(strJSON);
+			int length = jsonBookArray.length();
+			AppData appData = AppData.getInstance();
+			ArrayList<BookInfo> curBooks = appData.getBooks();
+			for (int i = 0; i < length; ++i) {
+				JSONObject jsonBookItem = (JSONObject) jsonBookArray.get(i);
+				if (null != jsonBookItem
+						&& jsonBookItem.has(CloudAPI.DB_Book_ISBN)) {
+					String isbn = jsonBookItem.getString(CloudAPI.DB_Book_ISBN);
+					if (null != isbn && !appData.containsBook(isbn)) {
+						BookInfo bookInfo = new BookInfo(isbn);
+						bookInfo.setInitialized(false);
+						curBooks.add(bookInfo);
+					}
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 }

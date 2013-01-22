@@ -24,6 +24,7 @@ public class CloudAPI {
 	public final static String API_SignUp = "SignUp";
 	public final static String API_GetUserInfo = "GetUserInfoBySession";
 	public final static String API_UploadBooks = "UploadBooks";
+	public final static String API_GetOwnedBooks = "GetBooksBySession";
 	
 	// API params
 	public final static String API_Email = "&email=";
@@ -53,6 +54,7 @@ public class CloudAPI {
 	public final static String ServerReturnCode_NoSuchUser = "NoSuchUser";
 	public final static String ServerReturnCode_BadSession = "BadSession";
 	public final static String ServerReturnCode_UserNameOccupied = "UserNameOccupied";
+	public final static String ServerReturnCode_EmptyResult = "EmptyResult";
 
 	// API return code
 	public final static int Return_Unset = -1;
@@ -233,6 +235,36 @@ public class CloudAPI {
 			return CloudAPI.Return_NetworkError;
 		}
 	}
+	
+	public static int _getOwnedBooks()
+	{
+		String url = API_BaseURL + API_GetOwnedBooks + CloudAPI.API_TOKEN + CloudAPI.CloudToken;;
+		HttpGet getReq = new HttpGet(url);
+		try {
+			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+				if (null != strResult && strResult.length() > 0) {
+					if (strResult.compareTo(CloudAPI.ServerReturnCode_EmptyResult) == 0)
+					{
+						return CloudAPI.Return_OK;
+					}
+					else
+					{
+						JSONUtil.parseBooksInfo(strResult);
+					}
+					return CloudAPI.Return_OK;
+				} else {
+					return CloudAPI.Return_UnknownError;
+				}
+			} else {
+				return CloudAPI.Return_NetworkError;
+			}
+		} catch (Exception e) {
+			return CloudAPI.Return_NetworkError;
+		}
+	}
 
 	// Client should not call any of the methods above.
 	public static void login(Context context, String email, String pwd,
@@ -268,6 +300,13 @@ public class CloudAPI {
 			ICloudAPITaskListener apiListener) {
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, "",
 				API_UploadBooks, apiListener);
+		task.execute();
+	}
+	
+	public static void getOwnedBooks(Context context,
+			ICloudAPITaskListener apiListener) {
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, "",
+				API_GetOwnedBooks, apiListener);
 		task.execute();
 	}
 }

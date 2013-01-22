@@ -75,16 +75,6 @@ switch($op)
 		echo encodeBooksQueryResult($books);
 		disconnectDB($con);
 		break;
-	case "GetBooksByUser":
-		$con = connectDB();
-		$owner_id = getValueFromRequest(DB_BOOK_OWNERID);
-		if(NULL != $owner_id)
-		{
-			$books = getBooksByUser($owner_id);
-			showQueryResult($books);
-		}
-		disconnectDB($con);
-		break;
 	case "GetBookOfficialInfo":
 		$con = connectDB();
 		$isbn = getValueFromRequest(DB_BOOKINFO_ISBN);
@@ -230,6 +220,28 @@ switch($op)
 		}
 		disconnectDB($con);
 		echo SUCCESSFUL;
+    	break;
+    case "GetBooksBySession":
+		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+        if(NULL != $sessionId)
+        {
+            $con = connectDB();
+            $owner_id = getUserIdBySession($sessionId);
+            if(NULL != $owner_id)
+            {
+				$books = getBooksByOwner($owner_id);
+				echo encodeBooksQueryResult($books);
+            }
+            else
+            {
+                echo BAD_SESSION;
+            }
+            disconnectDB($con);
+        }
+        else
+        {
+        	echo BAD_SESSION;
+        }
     	break;
 	/*	
     case "Signup":

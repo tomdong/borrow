@@ -50,4 +50,14 @@ public class AppData {
 	public void clearBooks() {
 		mBooks.clear();
 	}
+	
+	//[TODO] User another implementation to improve the performance later
+	public boolean containsBook(String isbn) {
+		for (BookInfo bookInfo : mBooks) {
+			if (bookInfo.getISBN().compareTo(isbn) == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

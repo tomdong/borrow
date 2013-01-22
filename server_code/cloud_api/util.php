@@ -132,7 +132,7 @@ function getLocalId($type, $externalid)
     return $local_id;
 }
 
-function getBooksByUser($ownerid)
+function getBooksByOwner($ownerid)
 {
     $sql = "select * from " . DB_TABLE_BOOK . " where " . DB_BOOK_OWNERID . "=" . wrapStr($ownerid);
     $result = mysql_query($sql);
@@ -296,6 +296,10 @@ function encodeBooksQueryResult($result)
         }
         $encodedStr = json_encode($worksList);
     }
+    else
+    {
+        $encodedStr = EMPTY_RESULT;
+	}
     return $encodedStr;
 }
 

@@ -77,6 +77,7 @@ define("NO_SUCH_USER","NoSuchUser");
 define("WRONG_USERNAME_OR_PWD","WrongUserNameOrPwd");
 define("BAD_SESSION","BadSession");
 define("UNKNOWN_ERROR","UnknownError");
+define("EMPTY_RESULT","EmptyResult");
 
 
 

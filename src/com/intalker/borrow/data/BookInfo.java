@@ -12,13 +12,19 @@ public class BookInfo {
 	private String mPageCount = "";
 	private String mDescription = "";
 	private Bitmap mCoverImage = null;
+	
+	//Currently, only used for synchronizing with cloud
+	private boolean mInitialized = true;
 
 	public BookInfo() {
-
 	}
 
 	public BookInfo(String isbn) {
 		setISBN(isbn);
+	}
+	
+	public void setInitialized(boolean initialized) {
+		mInitialized = initialized;
 	}
 
 	public void setISBN(String isbn) {
@@ -81,5 +87,9 @@ public class BookInfo {
 	
 	public String getDescription() {
 		return mDescription;
+	}
+	
+	public boolean getInitialized() {
+		return mInitialized;
 	}
 }
