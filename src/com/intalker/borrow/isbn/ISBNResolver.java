@@ -18,6 +18,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 public class ISBNResolver {
 
@@ -178,6 +179,7 @@ public class ISBNResolver {
 					bookInfo.setInitialized(true);
 				}
 			}
+			Toast.makeText(mContext, "Synchronize done!", Toast.LENGTH_SHORT).show();
 		}
 	}
 }

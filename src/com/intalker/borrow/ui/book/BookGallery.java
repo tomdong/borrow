@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BookGallery extends RelativeLayout {
 
@@ -103,8 +104,22 @@ public class BookGallery extends RelativeLayout {
 
 							@Override
 							public void onFinish(int returnCode) {
-								ISBNResolver.getInstance().batchGetBookInfo(
-										HomeActivity.getApp());
+								Context context = HomeActivity.getApp();
+								switch (returnCode) {
+								case CloudAPI.Return_OK:
+									ISBNResolver.getInstance().batchGetBookInfo(context);
+									break;
+								case CloudAPI.Return_BadToken:
+									Toast.makeText(context, "Bad token.", Toast.LENGTH_SHORT)
+											.show();
+									break;
+								case CloudAPI.Return_NetworkError:
+									Toast.makeText(context, "Network error.", Toast.LENGTH_SHORT).show();
+									break;
+								default:
+									Toast.makeText(context, "Unknown error.", Toast.LENGTH_SHORT).show();
+									break;
+								}
 							}
 
 						});
