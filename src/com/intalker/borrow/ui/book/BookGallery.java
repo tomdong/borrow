@@ -98,7 +98,7 @@ public class BookGallery extends RelativeLayout {
 
 			@Override
 			public void onClick(View v) {
-				CloudAPI.getOwnedBooks(HomeActivity.getApp(),
+				CloudAPI.sychronizeOwnedBooks(HomeActivity.getApp(),
 						new ICloudAPITaskListener() {
 
 							@Override

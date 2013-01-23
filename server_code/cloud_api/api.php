@@ -192,7 +192,8 @@ switch($op)
 		$bookInfoList = $bookUploadData->bookinfolist;
 		if(empty($bookUploadData) || empty($bookInfoList))
 		{
-			echo UNKNOWN_ERROR;
+			//Handle this kind of cases later, now, just treat them as successful.
+			echo SUCCESSFUL;
 			break;
 		}
 	    $con = connectDB();
