@@ -148,11 +148,12 @@ public class ISBNResolver {
 				if(null != bookInfo && !bookInfo.getInitialized())
 				{
 					String isbn = bookInfo.getISBN();
+					publishProgress(isbn);
+					
 					mParser.reset(isbn);
 					mParser.parse();
 					
 					bookInfo.setData(mParser);
-					publishProgress(isbn);
 				}
 			}
 			
@@ -171,25 +172,7 @@ public class ISBNResolver {
 				BookInfo bookInfo = bookInfoList.get(i);
 				if(null != bookInfo && !bookInfo.getInitialized())
 				{
-					BookShelfView.getInstance().addBookForLoading();
-					BookShelfItem lastBook = BookShelfItem.lastBookForTest;
-					if(null != lastBook)
-					{
-						lastBook.setISBN(bookInfo.getISBN());
-						
-						Bitmap coverImage = bookInfo.getCoverImage();
-						lastBook.setDetailInfo(bookInfo.getBookName(),
-								bookInfo.getAuthor(), bookInfo.getPublisher(),
-								bookInfo.getPageCount(),
-								bookInfo.getDescription());
-						if (null != coverImage) {
-							lastBook.setCoverImage(coverImage);
-						}
-						else {
-							lastBook.setCoverAsUnknown();
-						}
-						lastBook.show();
-					}
+					BookShelfView.getInstance().addBookByExistingInfo(bookInfo);
 					bookInfo.setInitialized(true);
 				}
 			}

@@ -209,7 +209,7 @@ public class BookGallery extends RelativeLayout {
 		ArrayList<BookInfo> books = AppData.getInstance().getBooks();
 		for(BookInfo bookInfo : books)
 		{
-			mShelfView.addBookForCachedBook(bookInfo);
+			mShelfView.addBookByExistingInfo(bookInfo);
 		}
 	}
 }

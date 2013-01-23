@@ -82,7 +82,7 @@ public class BookShelfView extends ScrollView {
 		}
 	}
 	
-	public void addBookForCachedBook(BookInfo bookInfo) {
+	public void addBookByExistingInfo(BookInfo bookInfo) {
 		BookShelfRow lastRow = mBookShelfRows.get(mBookShelfRows.size() - 1);
 		if(lastRow.isFull())
 		{
