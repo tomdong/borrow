@@ -188,6 +188,11 @@ switch($op)
 		break;
     case "UploadBooks":
     	$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+    	if(NULL == $sessionId)
+        {
+        	echo BAD_SESSION;
+			break;
+        }
 		$bookUploadData = json_decode($GLOBALS["HTTP_RAW_POST_DATA"]);
 		$bookInfoList = $bookUploadData->bookinfolist;
 		if(empty($bookUploadData) || empty($bookInfoList))

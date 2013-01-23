@@ -51,14 +51,14 @@ public class LoginDialog extends Dialog {
 		// mEmailInput.setInputType(InputType.TYPE_CLASS_TEXT);//??
 		mEmailInput.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		// Test
-		mEmailInput.setText("ryan.shao@openlib.com");
+		mEmailInput.setText("tom.dong@openlib.com");
 
 		y = DensityAdaptor.getDensityIndependentValue(100);
 		mPasswordInput = createElement(R.string.password, margin, y);
 		mPasswordInput.setInputType(InputType.TYPE_CLASS_TEXT
 				| InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		// Test
-		mPasswordInput.setText("shao");
+		mPasswordInput.setText("dong");
 
 		mMainLayout.addView(createSeparator(DensityAdaptor
 				.getDensityIndependentValue(160)));
