@@ -103,5 +103,6 @@ public class BookInfo {
 		setDescription(parser.getDescription());
 		setPageCount(parser.getPageCount());
 		setPublisher(parser.getPublisher());
+		setInitialized(true);
 	}
 }

@@ -112,10 +112,11 @@ public class ISBNResolver {
 	}
 	
 	//Batch method
-	class BatchGetBookInfoTask extends AsyncTask<String, String, InputStream> {
+	class BatchGetBookInfoTask extends AsyncTask<String, BookInfo, InputStream> {
 		private Context mContext = null;
 		private BookInfoParser mParser = null;
 		private ProgressDialog mProgressDialog = null;
+		//private int mCurProgress = 0;
 		
 		public BatchGetBookInfoTask(Context context) {
 			super();
@@ -135,8 +136,19 @@ public class ISBNResolver {
 		}
 
 		@Override
-		protected void onProgressUpdate(String... values) {
-			mProgressDialog.setMessage(mContext.getString(R.string.searching_book_info) + values[0]);
+		protected void onProgressUpdate(BookInfo... values) {
+			BookInfo bookInfo = values[0];
+			if (null != bookInfo) {
+				if (!bookInfo.getInitialized()) {
+					mProgressDialog.setMessage(mContext
+							.getString(R.string.searching_book_info)
+							+ bookInfo.getISBN());
+				} else {
+					BookShelfView.getInstance()
+							.addBookByExistingInfo(values[0]);
+				}
+				//mProgressDialog.setProgress(mCurProgress);
+			}
 		}
 
 		@Override
@@ -150,13 +162,15 @@ public class ISBNResolver {
 				BookInfo bookInfo = bookInfoList.get(i);
 				if(null != bookInfo && !bookInfo.getInitialized())
 				{
-					String isbn = bookInfo.getISBN();
-					publishProgress(isbn);
-					
-					mParser.reset(isbn);
+					publishProgress(bookInfo);
+
+					mParser.reset(bookInfo.getISBN());
 					mParser.parse();
-					
 					bookInfo.setData(mParser);
+					
+					//mCurProgress = i;
+					
+					publishProgress(bookInfo);
 				}
 			}
 			
@@ -167,18 +181,6 @@ public class ISBNResolver {
 		protected void onPostExecute(InputStream result) {
 			super.onPostExecute(result);
 			mProgressDialog.dismiss();
-			AppData appData = AppData.getInstance();
-			ArrayList<BookInfo> bookInfoList = appData.getBooks();
-			int length = bookInfoList.size();
-			for(int i = 0; i < length; ++i)
-			{
-				BookInfo bookInfo = bookInfoList.get(i);
-				if(null != bookInfo && !bookInfo.getInitialized())
-				{
-					BookShelfView.getInstance().addBookByExistingInfo(bookInfo);
-					bookInfo.setInitialized(true);
-				}
-			}
 			Toast.makeText(mContext, "Synchronize done!", Toast.LENGTH_SHORT).show();
 		}
 	}
