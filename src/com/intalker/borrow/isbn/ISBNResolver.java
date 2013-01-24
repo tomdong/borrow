@@ -12,6 +12,7 @@ import com.intalker.borrow.isbn.parser.BookInfoParser;
 import com.intalker.borrow.isbn.parser.OpenISBNBookInfoParser;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.book.BookShelfView;
+import com.intalker.borrow.ui.control.TransparentProgressDialog;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -52,18 +53,15 @@ public class ISBNResolver {
 
 	class GetBookInfoTask extends AsyncTask<String, Void, InputStream> {
 		private BookInfoParser isbnParser = null;
-		private ProgressDialog mProgressDialog = null;
+		private TransparentProgressDialog mProgressDialog = null;
 
 		public GetBookInfoTask(Context context, String isbn) {
 			super();
 			isbnParser = getParser();
 			isbnParser.reset(isbn);
-			mProgressDialog = new ProgressDialog(context);
+			mProgressDialog = new TransparentProgressDialog(context, false);
 			mProgressDialog.setCancelable(false);
-			mProgressDialog.setTitle(context.getString(R.string.please_wait));
-			mProgressDialog.setIcon(R.drawable.appicon_128);
 			mProgressDialog.setMessage(HomeActivity.getApp().getString(R.string.searching_book_info) + isbn);
-			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			mProgressDialog.show();
 		}
 
@@ -115,24 +113,35 @@ public class ISBNResolver {
 	class BatchGetBookInfoTask extends AsyncTask<String, BookInfo, InputStream> {
 		private Context mContext = null;
 		private BookInfoParser mParser = null;
-		private ProgressDialog mProgressDialog = null;
-		//private int mCurProgress = 0;
+		private TransparentProgressDialog mProgressDialog = null;
+		private ArrayList<BookInfo> mToProcessBookInfoList = null;
+		private int mCurProgress = 0;
 		
 		public BatchGetBookInfoTask(Context context) {
 			super();
 			mContext = context;
 			mParser = getParser();
-			mProgressDialog = new ProgressDialog(mContext);
+			mProgressDialog = new TransparentProgressDialog(mContext, true);
 			mProgressDialog.setCancelable(false);
-			mProgressDialog.setTitle(mContext.getString(R.string.please_wait));
-			mProgressDialog.setIcon(R.drawable.appicon_128);
-			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			mProgressDialog.show();
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			mToProcessBookInfoList = new ArrayList<BookInfo>();
+			ArrayList<BookInfo> bookInfoList = AppData.getInstance().getBooks();
+			int length = bookInfoList.size();
+			for(int i = 0; i < length; ++i)
+			{
+				BookInfo bookInfo = bookInfoList.get(i);
+				if(null != bookInfo && !bookInfo.getInitialized())
+				{
+					mToProcessBookInfoList.add(bookInfo);
+				}
+			}
+			mProgressDialog.setMax(mToProcessBookInfoList.size());
+			mProgressDialog.setProgress(0);
 		}
 
 		@Override
@@ -147,31 +156,26 @@ public class ISBNResolver {
 					BookShelfView.getInstance()
 							.addBookByExistingInfo(values[0]);
 				}
-				//mProgressDialog.setProgress(mCurProgress);
+				mProgressDialog.setProgress(mCurProgress);
 			}
 		}
 
 		@Override
 		protected InputStream doInBackground(String... params) {
 
-			AppData appData = AppData.getInstance();
-			ArrayList<BookInfo> bookInfoList = appData.getBooks();
-			int length = bookInfoList.size();
+			int length = mToProcessBookInfoList.size();
 			for(int i = 0; i < length; ++i)
 			{
-				BookInfo bookInfo = bookInfoList.get(i);
-				if(null != bookInfo && !bookInfo.getInitialized())
-				{
-					publishProgress(bookInfo);
+				BookInfo bookInfo = mToProcessBookInfoList.get(i);
+				publishProgress(bookInfo);
 
-					mParser.reset(bookInfo.getISBN());
-					mParser.parse();
-					bookInfo.setData(mParser);
-					
-					//mCurProgress = i;
-					
-					publishProgress(bookInfo);
-				}
+				mParser.reset(bookInfo.getISBN());
+				mParser.parse();
+				bookInfo.setData(mParser);
+				
+				mCurProgress = i;
+				
+				publishProgress(bookInfo);
 			}
 			
 			return null;
@@ -181,6 +185,7 @@ public class ISBNResolver {
 		protected void onPostExecute(InputStream result) {
 			super.onPostExecute(result);
 			mProgressDialog.dismiss();
+			mToProcessBookInfoList.clear();
 			Toast.makeText(mContext, "Synchronize done!", Toast.LENGTH_SHORT).show();
 		}
 	}

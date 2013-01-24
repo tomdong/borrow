@@ -1,11 +1,9 @@
 package com.intalker.borrow.cloud;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.intalker.borrow.HomeActivity;
-import com.intalker.borrow.R;
+import com.intalker.borrow.ui.control.TransparentProgressDialog;
 
 public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 
@@ -13,7 +11,7 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 		public void onFinish(int returnCode);
 	}
 
-	private ProgressDialog mProgressDialog = null;
+	private TransparentProgressDialog mProgressDialog = null;
 	private String mUrl = "";
 	private String mOp = "";
 	private int mReturnCode = CloudAPI.Return_Unset;
@@ -25,12 +23,9 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 		mUrl = url;
 		mOp = op;
 		mAPIListener = apiListener;
-		mProgressDialog = new ProgressDialog(context);
+		mProgressDialog = new TransparentProgressDialog(context, false);
 		mProgressDialog.setCancelable(false);
-		mProgressDialog.setTitle(context.getString(R.string.please_wait));
-		mProgressDialog.setIcon(R.drawable.appicon_128);
 		mProgressDialog.setMessage(op);
-		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		mProgressDialog.show();
 	}
 
