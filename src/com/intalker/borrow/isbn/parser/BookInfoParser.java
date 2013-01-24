@@ -1,5 +1,7 @@
 package com.intalker.borrow.isbn.parser;
 
+import com.intalker.borrow.util.StorageUtil;
+
 import android.graphics.Bitmap;
 
 public class BookInfoParser {
@@ -21,7 +23,7 @@ public class BookInfoParser {
 		mAuthor = "";
 		mPublisher = "";
 		mPageCount = "";
-		mCoverImage = null;
+		mCoverImage = StorageUtil.loadCoverImageFromCache(isbn);
 	}
 	
 	public void parse() {

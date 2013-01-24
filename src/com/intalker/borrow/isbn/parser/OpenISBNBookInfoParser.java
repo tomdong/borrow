@@ -32,11 +32,15 @@ public class OpenISBNBookInfoParser extends BookInfoParser {
 			if (elements.size() > 0) {
 				Element articleElement = elements.get(0);
 				
-				Elements subElements = articleElement.getElementsByTag("img");
-				if (subElements.size() > 0) {
-					Element imageElement = subElements.get(0);
-					String imageURL = imageElement.attr("src");
-					mCoverImage = WebUtil.getImageFromURL(imageURL);
+				Elements subElements = null;
+				
+				if (null == mCoverImage) {
+					subElements = articleElement.getElementsByTag("img");
+					if (subElements.size() > 0) {
+						Element imageElement = subElements.get(0);
+						String imageURL = imageElement.attr("src");
+						mCoverImage = WebUtil.getImageFromURL(imageURL);
+					}
 				}
 				
 				subElements = articleElement

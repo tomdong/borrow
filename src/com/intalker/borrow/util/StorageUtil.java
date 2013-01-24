@@ -38,6 +38,11 @@ public class StorageUtil {
 		}
 	}
 	
+	public static Bitmap loadCoverImageFromCache(String isbn) {
+		String imagePath = StorageUtil.CacheImagePath + "/" + isbn + ".png";
+		return StorageUtil.getLocalImage(imagePath);
+	}
+	
 	public static Bitmap getLocalImage(String path)
 	{
 		Bitmap image = null;

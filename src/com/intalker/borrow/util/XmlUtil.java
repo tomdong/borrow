@@ -75,7 +75,7 @@ public class XmlUtil {
 				String isbn = isbnNode.getNodeValue();
 				
 				BookInfo book = new BookInfo(isbn);
-
+				book.setCoverImage(StorageUtil.loadCoverImageFromCache(isbn));
 				NodeList subNodes = item.getChildNodes();
 				int subNodeCount = subNodes.getLength();
 				for(int j = 0; j < subNodeCount; ++j)

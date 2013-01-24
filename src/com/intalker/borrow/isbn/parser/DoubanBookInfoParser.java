@@ -25,18 +25,24 @@ public class DoubanBookInfoParser extends BookInfoParser {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document doc = builder.parse(url);
 
+			NodeList nodes = null;
+			int length = 0;
+			
 			// Get preview image (cover image)
-			NodeList nodes = doc.getElementsByTagName("link");
-			int length = nodes.getLength();
-			for (int i = 0; i < length; ++i) {
-				Node node = nodes.item(i);
-				NamedNodeMap attrs = node.getAttributes();
-				Node relAttr = attrs.getNamedItem("rel");
-				if (relAttr.getNodeValue().compareTo("image") == 0) {
-					imageURL = attrs.getNamedItem("href").getNodeValue();
-					imageURL = imageURL.replace("spic", "lpic");
-					break;
+			if (null == mCoverImage) {
+				nodes = doc.getElementsByTagName("link");
+				length = nodes.getLength();
+				for (int i = 0; i < length; ++i) {
+					Node node = nodes.item(i);
+					NamedNodeMap attrs = node.getAttributes();
+					Node relAttr = attrs.getNamedItem("rel");
+					if (relAttr.getNodeValue().compareTo("image") == 0) {
+						imageURL = attrs.getNamedItem("href").getNodeValue();
+						imageURL = imageURL.replace("spic", "lpic");
+						break;
+					}
 				}
+				mCoverImage = WebUtil.getImageFromURL(imageURL);
 			}
 
 			// Get title text
@@ -74,7 +80,5 @@ public class DoubanBookInfoParser extends BookInfoParser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		mCoverImage = WebUtil.getImageFromURL(imageURL);
 	}
 }

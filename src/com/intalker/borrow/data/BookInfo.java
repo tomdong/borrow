@@ -30,12 +30,6 @@ public class BookInfo {
 
 	public void setISBN(String isbn) {
 		mISBN = isbn;
-		tryLoadCachedCoverImage();
-	}
-
-	private void tryLoadCachedCoverImage() {
-		String imagePath = StorageUtil.CacheImagePath + "/" + mISBN + ".png";
-		mCoverImage = StorageUtil.getLocalImage(imagePath);
 	}
 
 	public void setCoverImage(Bitmap coverImage) {
