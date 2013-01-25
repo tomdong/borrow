@@ -9,13 +9,12 @@ import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.isbn.parser.DoubanBookInfoParser;
 import com.intalker.borrow.isbn.parser.BookInfoParser;
+import com.intalker.borrow.isbn.parser.DoubanBookInfoParserV2;
 import com.intalker.borrow.isbn.parser.OpenISBNBookInfoParser;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.book.BookShelfView;
 import com.intalker.borrow.ui.control.TransparentProgressDialog;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -45,7 +44,8 @@ public class ISBNResolver {
 	
 	private BookInfoParser getParser() {
 		if (null == parser) {
-			parser = new DoubanBookInfoParser();
+			//parser = new DoubanBookInfoParser();
+			parser = new DoubanBookInfoParserV2();
 			//parser = new OpenISBNBookInfoParser();
 		}
 		return parser;
