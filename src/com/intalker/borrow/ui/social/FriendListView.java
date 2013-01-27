@@ -39,7 +39,7 @@ public class FriendListView extends ScrollView{
 			LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
 					LinearLayout.LayoutParams.FILL_PARENT,
 					LinearLayout.LayoutParams.WRAP_CONTENT);
-			itemLP.height = DensityAdaptor.getDensityIndependentValue(52);
+			itemLP.height = DensityAdaptor.getDensityIndependentValue(40);
 			mListView.addView(new FriendItemUI(this.getContext()), itemLP);
 		}
 	}

@@ -34,6 +34,8 @@ public class FriendItemUI extends RelativeLayout {
 		avatarLP.leftMargin = margin;
 		avatarLP.topMargin = margin;
 		avatarLP.bottomMargin = margin;
+		avatarLP.width = DensityAdaptor.getDensityIndependentValue(32);
+		avatarLP.height = DensityAdaptor.getDensityIndependentValue(32);
 		avatarLP.addRule(RelativeLayout.CENTER_VERTICAL);
 
 		mAvatar.setLayoutParams(avatarLP);
@@ -41,13 +43,14 @@ public class FriendItemUI extends RelativeLayout {
 		this.addView(mAvatar);
 
 		mNameTextView = new TextView(this.getContext());
+		mNameTextView.setTextSize(16.0f);
 		mNameTextView.setText("test");
 		mNameTextView.setTextColor(Color.YELLOW);
 
 		RelativeLayout.LayoutParams nameTextLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		nameTextLP.leftMargin = DensityAdaptor.getDensityIndependentValue(80);
+		nameTextLP.leftMargin = DensityAdaptor.getDensityIndependentValue(40);
 		nameTextLP.addRule(RelativeLayout.CENTER_VERTICAL);
 
 		mNameTextView.setLayoutParams(nameTextLP);

@@ -37,10 +37,6 @@ public class SlidingMenu extends RelativeLayout {
 	}
 
 	public void setRightView(View view) {
-//		if(null == view)
-//		{
-//			return;
-//		}
 		LayoutParams behindParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.FILL_PARENT);
 		behindParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);

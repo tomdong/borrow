@@ -51,6 +51,10 @@ public class HomeActivity extends Activity {
 	public void toggleLeftPanel() {
 		mSlidingMenu.toggleLeftView();
 	}
+	
+	public void toggleRightPanel() {
+		mSlidingMenu.toggleRightView();
+	}
 
 	public static HomeActivity getApp() {
 		return app;

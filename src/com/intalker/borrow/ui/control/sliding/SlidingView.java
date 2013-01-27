@@ -196,21 +196,9 @@ public class SlidingView extends ViewGroup {
 //				}
 				
 				if (scrollX > 0) {
-					if (!mShowRight) {
-						this.mRightView.setVisibility(VISIBLE);
-						this.mLeftView.setVisibility(GONE);
-						mShowRight = true;
-						mShowLeft = false;
-						Log.i("switch", "turn on right");
-					}
+					prepareTurnOnRightView();
 				} else if(scrollX < 0) {
-					if (!mShowLeft) {
-						this.mLeftView.setVisibility(VISIBLE);
-						this.mRightView.setVisibility(GONE);
-						mShowRight = false;
-						mShowLeft = true;
-						Log.i("switch", "turn on left");
-					}
+					prepareTurnOnLeftView();
 				} else {
 					break;
 				}
@@ -310,6 +298,7 @@ public class SlidingView extends ViewGroup {
 	}
 
 	public void toggleLeftView() {
+		prepareTurnOnLeftView();
 		int menuWidth = mLeftView.getWidth();
 		int oldScrollX = getScrollX();
 		if (oldScrollX == 0) {
@@ -320,6 +309,7 @@ public class SlidingView extends ViewGroup {
 	}
 
 	public void toggleRightView() {
+		prepareTurnOnRightView();
 		int menuWidth = mRightView.getWidth();
 		int oldScrollX = getScrollX();
 		if (oldScrollX == 0) {
@@ -353,4 +343,23 @@ public class SlidingView extends ViewGroup {
 		}
 	}
 
+	void prepareTurnOnLeftView() {
+		if (!mShowLeft) {
+			this.mLeftView.setVisibility(VISIBLE);
+			this.mRightView.setVisibility(GONE);
+			mShowRight = false;
+			mShowLeft = true;
+			Log.i("switch", "turn on left");
+		}
+	}
+	
+	void prepareTurnOnRightView() {
+		if (!mShowRight) {
+			this.mRightView.setVisibility(VISIBLE);
+			this.mLeftView.setVisibility(GONE);
+			mShowRight = true;
+			mShowLeft = false;
+			Log.i("switch", "turn on right");
+		}
+	}
 }

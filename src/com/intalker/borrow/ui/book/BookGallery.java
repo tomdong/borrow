@@ -33,6 +33,7 @@ public class BookGallery extends RelativeLayout {
 	private BookShelfView mShelfView = null;
 	private TextView mShelfOwnerTextView = null;
 	private HaloButton mToggleLeftPanelBtn = null;
+	private HaloButton mToggleRightPanelBtn = null;
 	private HaloButton mRefreshBtn = null;
 	
 	public BookGallery(Context context) {
@@ -67,23 +68,6 @@ public class BookGallery extends RelativeLayout {
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		topPanelLP.height = LayoutUtil.getGalleryTopPanelHeight();
 		this.addView(mTopPanel, topPanelLP);
-		
-		mToggleLeftPanelBtn = new HaloButton(this.getContext(), R.drawable.menu);
-		mToggleLeftPanelBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				HomeActivity.getApp().toggleLeftPanel();
-			}
-			
-		});
-		RelativeLayout.LayoutParams toggleLeftPanelBtnLP = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		toggleLeftPanelBtnLP.addRule(RelativeLayout.CENTER_VERTICAL);
-		toggleLeftPanelBtnLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
-		mTopPanel.addView(mToggleLeftPanelBtn, toggleLeftPanelBtnLP);
 		
 		mShelfOwnerTextView = new TextView(this.getContext());
 		mShelfOwnerTextView.setText(R.string.app_name);
@@ -177,6 +161,45 @@ public class BookGallery extends RelativeLayout {
 		scanBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		scanBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		mBottomPanel.addView(scanBtn, scanBtnLP);
+		
+		//Toggle left-panel button
+		mToggleLeftPanelBtn = new HaloButton(this.getContext(), R.drawable.menu);
+		mToggleLeftPanelBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				HomeActivity.getApp().toggleLeftPanel();
+			}
+			
+		});
+		RelativeLayout.LayoutParams toggleLeftPanelBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		toggleLeftPanelBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		toggleLeftPanelBtnLP.leftMargin = DensityAdaptor.getDensityIndependentValue(10);
+		toggleLeftPanelBtnLP.bottomMargin = DensityAdaptor.getDensityIndependentValue(10);
+		mBottomPanel.addView(mToggleLeftPanelBtn, toggleLeftPanelBtnLP);
+		
+		//Toggle right-panel button
+		mToggleRightPanelBtn = new HaloButton(this.getContext(), R.drawable.menu);
+		mToggleRightPanelBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				HomeActivity.getApp().toggleRightPanel();
+			}
+			
+		});
+		RelativeLayout.LayoutParams toggleRightPanelBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		toggleRightPanelBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		toggleRightPanelBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		toggleRightPanelBtnLP.rightMargin = DensityAdaptor.getDensityIndependentValue(10);
+		toggleRightPanelBtnLP.bottomMargin = DensityAdaptor.getDensityIndependentValue(10);
+		mBottomPanel.addView(mToggleRightPanelBtn, toggleRightPanelBtnLP);
 		
 		RelativeLayout.LayoutParams bottomPanelLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
