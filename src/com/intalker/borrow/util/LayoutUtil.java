@@ -3,6 +3,7 @@ package com.intalker.borrow.util;
 public class LayoutUtil {
 
 	private static int navigationPanelWidth = -1;
+	private static int socialPanelWidth = -1;
 	private static int shelfRowHeight = -1;
 	private static int shelfBookItemWidth = -1;
 	private static int shelfBookItemHeight = -1;
@@ -32,6 +33,13 @@ public class LayoutUtil {
 			navigationPanelWidth = DensityAdaptor.getScreenWidth() * 3 / 4;
 		}
 		return navigationPanelWidth;
+	}
+	
+	public static int getSocialPanelWidth() {
+		if (socialPanelWidth < 0) {
+			socialPanelWidth = DensityAdaptor.getScreenWidth() * 3 / 4;
+		}
+		return socialPanelWidth;
 	}
 
 	public static int getShelfRowHeight() {

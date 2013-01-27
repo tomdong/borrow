@@ -22,9 +22,11 @@ public class SlidingView extends ViewGroup {
 	private int mTouchSlop;
 	private float mLastMotionX;
 	private float mLastMotionY;
-	private static final int SNAP_VELOCITY = 1000;
+	private static final int SNAP_VELOCITY = 5;
 	private View mLeftView;
 	private View mRightView;
+	private boolean mShowLeft = false;
+	private boolean mShowRight = false;
 
 	public SlidingView(Context context) {
 		super(context);
@@ -99,8 +101,6 @@ public class SlidingView extends ViewGroup {
 
 	private boolean mIsBeingDragged;
 
-	private boolean mIsAlreadySetViewState = true;
-
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 
@@ -110,7 +110,6 @@ public class SlidingView extends ViewGroup {
 
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
-			mIsAlreadySetViewState = false;
 			mLastMotionX = x;
 			mLastMotionY = y;
 			mIsBeingDragged = false;
@@ -191,9 +190,27 @@ public class SlidingView extends ViewGroup {
 				}
 				
 				//disable right panel
-				if(scrollX > 0)
-				{
-					scrollX = 0;
+//				if(scrollX > 0)
+//				{
+//					scrollX = 0;
+//				}
+				
+				if (scrollX > 0) {
+					if (!mShowRight) {
+						this.mLeftView.setVisibility(GONE);
+						this.mRightView.setVisibility(VISIBLE);
+						mShowRight = true;
+						mShowLeft = false;
+					}
+				} else if(scrollX < 0) {
+					if (!mShowLeft) {
+						this.mLeftView.setVisibility(VISIBLE);
+						this.mRightView.setVisibility(GONE);
+						mShowRight = false;
+						mShowLeft = true;
+					}
+				} else {
+					break;
 				}
 
 				Log.i("Scroll", String.valueOf(scrollX));
@@ -250,10 +267,10 @@ public class SlidingView extends ViewGroup {
 	}
 
 	private int getRightViewWidth() {
-		if (mRightView == null) {
-			return 0;
-		}
-		return mRightView.getWidth();
+//		if (mRightView == null) {
+//			return 0;
+//		}
+		return LayoutUtil.getSocialPanelWidth();
 	}
 
 	@Override
@@ -265,8 +282,8 @@ public class SlidingView extends ViewGroup {
 		return mRightView;
 	}
 
-	public void setRightView(View mDetailView) {
-		this.mRightView = mDetailView;
+	public void setRightView(View rightView) {
+		this.mRightView = rightView;
 	}
 
 	public View getLeftView() {

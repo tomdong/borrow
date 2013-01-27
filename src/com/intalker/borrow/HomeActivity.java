@@ -12,6 +12,7 @@ import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.control.sliding.SlidingMenu;
 import com.intalker.borrow.ui.login.LoginDialog;
 import com.intalker.borrow.ui.login.RegisterView;
+import com.intalker.borrow.ui.social.SocialPanel;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.JSONUtil;
@@ -77,6 +78,9 @@ public class HomeActivity extends Activity {
 		mSlidingMenu = new SlidingMenu(this);
 
 		mSlidingMenu.setLeftView(createNavigationPanel());
+		
+		mSlidingMenu.setLeftView(createNavigationPanel());
+		mSlidingMenu.setRightView(new SocialPanel(this));
 		mSlidingMenu.setCenterView(createHomeUI());
 		return mSlidingMenu;
 	}
