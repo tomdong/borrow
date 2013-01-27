@@ -78,8 +78,6 @@ public class HomeActivity extends Activity {
 		mSlidingMenu = new SlidingMenu(this);
 
 		mSlidingMenu.setLeftView(createNavigationPanel());
-		
-		mSlidingMenu.setLeftView(createNavigationPanel());
 		mSlidingMenu.setRightView(new SocialPanel(this));
 		mSlidingMenu.setCenterView(createHomeUI());
 		return mSlidingMenu;

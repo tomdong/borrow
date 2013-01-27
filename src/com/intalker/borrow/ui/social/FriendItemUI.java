@@ -20,21 +20,12 @@ public class FriendItemUI extends RelativeLayout {
 	public FriendItemUI(Context context) {
 		super(context);
 		this.setBackgroundColor(ColorUtil.generateRandomColor());
-		this.setOnTouchListener(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-			
-		});
 		createUI();
 	}
 
 	private void createUI() {
 		mAvatar = new ImageView(this.getContext());
-		mAvatar.setImageResource(R.drawable.avatar_3);
+		mAvatar.setImageResource(R.drawable.avatar_2);
 
 		RelativeLayout.LayoutParams avatarLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -43,7 +34,6 @@ public class FriendItemUI extends RelativeLayout {
 		avatarLP.leftMargin = margin;
 		avatarLP.topMargin = margin;
 		avatarLP.bottomMargin = margin;
-		avatarLP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		avatarLP.addRule(RelativeLayout.CENTER_VERTICAL);
 
 		mAvatar.setLayoutParams(avatarLP);

@@ -197,10 +197,11 @@ public class SlidingView extends ViewGroup {
 				
 				if (scrollX > 0) {
 					if (!mShowRight) {
-						this.mLeftView.setVisibility(GONE);
 						this.mRightView.setVisibility(VISIBLE);
+						this.mLeftView.setVisibility(GONE);
 						mShowRight = true;
 						mShowLeft = false;
+						Log.i("switch", "turn on right");
 					}
 				} else if(scrollX < 0) {
 					if (!mShowLeft) {
@@ -208,12 +209,13 @@ public class SlidingView extends ViewGroup {
 						this.mRightView.setVisibility(GONE);
 						mShowRight = false;
 						mShowLeft = true;
+						Log.i("switch", "turn on left");
 					}
 				} else {
 					break;
 				}
 
-				Log.i("Scroll", String.valueOf(scrollX));
+				//Log.i("Scroll", String.valueOf(scrollX));
 				scrollTo((int) scrollX, getScrollY());
 
 			}
@@ -263,14 +265,17 @@ public class SlidingView extends ViewGroup {
 	}
 
 	private int getLeftViewWidth() {
-		return LayoutUtil.getNavigationPanelWidth();
+		if (mShowLeft) {
+			return LayoutUtil.getNavigationPanelWidth();
+		}
+		return 0;
 	}
 
 	private int getRightViewWidth() {
-//		if (mRightView == null) {
-//			return 0;
-//		}
-		return LayoutUtil.getSocialPanelWidth();
+		if (mShowRight) {
+			return LayoutUtil.getSocialPanelWidth();
+		}
+		return 0;
 	}
 
 	@Override
