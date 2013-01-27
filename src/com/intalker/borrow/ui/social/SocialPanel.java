@@ -1,6 +1,7 @@
 package com.intalker.borrow.ui.social;
 
 import com.intalker.borrow.R;
+import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;

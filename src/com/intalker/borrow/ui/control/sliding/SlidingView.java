@@ -22,7 +22,7 @@ public class SlidingView extends ViewGroup {
 	private int mTouchSlop;
 	private float mLastMotionX;
 	private float mLastMotionY;
-	private static final int SNAP_VELOCITY = 5;
+	private static final int SNAP_VELOCITY = 1000;
 	private View mLeftView;
 	private View mRightView;
 	private boolean mShowLeft = false;

@@ -402,15 +402,15 @@ public class HomeActivity extends Activity {
 		LinearLayout friendsLayout = new LinearLayout(this);
 		testFriendScrollView.addView(friendsLayout);
 		friendsLayout.setOrientation(LinearLayout.VERTICAL);
-		for (int i = 0; i < 8; ++i) {
+		for (int i = 0; i < 20; ++i) {
 			friendsLayout.addView(createTestFriendItemUI(R.drawable.avatar_2));
 		}
-		for (int i = 0; i < 8; ++i) {
-			friendsLayout.addView(createTestFriendItemUI(R.drawable.avatar_3));
-		}
-		for (int i = 0; i < 8; ++i) {
-			friendsLayout.addView(createTestFriendItemUI(R.drawable.avatar_1));
-		}
+//		for (int i = 0; i < 8; ++i) {
+//			friendsLayout.addView(createTestFriendItemUI(R.drawable.avatar_3));
+//		}
+//		for (int i = 0; i < 8; ++i) {
+//			friendsLayout.addView(createTestFriendItemUI(R.drawable.avatar_1));
+//		}
 		navigationBar.addView(testFriendScrollView);
 		return navigationBar;
 	}
