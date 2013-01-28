@@ -33,19 +33,6 @@ public class FriendListView extends ScrollView{
 		this.addView(mListView);
 		
 		this.setBackgroundColor(Color.BLACK);
-		testData();
-	}
-	
-	private void testData()
-	{
-		for(int i = 0; i < 30; ++i)
-		{
-			LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
-					LinearLayout.LayoutParams.FILL_PARENT,
-					LinearLayout.LayoutParams.WRAP_CONTENT);
-			itemLP.height = DensityAdaptor.getDensityIndependentValue(40);
-			mListView.addView(new FriendItemUI(this.getContext()), itemLP);
-		}
 	}
 	
 	public void refreshList()

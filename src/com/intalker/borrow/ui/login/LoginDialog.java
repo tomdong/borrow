@@ -149,6 +149,7 @@ public class LoginDialog extends Dialog {
 		switch (returnCode) {
 		case CloudAPI.Return_OK:
 			HomeActivity.getApp().getBookGallery().updateTopPanel();
+			HomeActivity.getApp().getSocialPanel().getFriendView().refreshList();
 			this.dismiss();
 			break;
 		case CloudAPI.Return_WrongUserNameOrPassword:

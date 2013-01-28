@@ -41,11 +41,17 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 			mReturnCode = CloudAPI._login(mUrl);
 			if (CloudAPI.Return_OK == mReturnCode) {
 				mReturnCode = CloudAPI._getLoggedInUserInfo();
+				if (CloudAPI.Return_OK == mReturnCode) {
+					CloudAPI._getFriends();
+				}
 			}
 		} else if (mOp.compareTo(CloudAPI.API_SignUp) == 0) {
 			mReturnCode = CloudAPI._signUp(mUrl);
 			if (CloudAPI.Return_OK == mReturnCode) {
 				mReturnCode = CloudAPI._getLoggedInUserInfo();
+				if (CloudAPI.Return_OK == mReturnCode) {
+					CloudAPI._getFriends();
+				}
 			}
 		} else if (mOp.compareTo(CloudAPI.API_GetUserInfo) == 0) {
 			mReturnCode = CloudAPI._getLoggedInUserInfo();

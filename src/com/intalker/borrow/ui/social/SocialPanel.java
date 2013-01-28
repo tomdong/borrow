@@ -47,7 +47,7 @@ public class SocialPanel extends RelativeLayout {
 
 					@Override
 					public void onFinish(int returnCode) {
-						mFriendView.refreshList();
+//						mFriendView.refreshList();
 					}
 					
 				});

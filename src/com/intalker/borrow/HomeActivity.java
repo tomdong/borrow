@@ -38,6 +38,7 @@ import android.widget.Toast;
 public class HomeActivity extends Activity {
 	private static HomeActivity app = null;
 	private BookGallery mBookGallery = null;
+	private SocialPanel mSocialPanel = null;
 
 	private RegisterView mReg = null;
 	private FriendsNavigationVertical mFriendsNavigation = null; // it also
@@ -63,6 +64,10 @@ public class HomeActivity extends Activity {
 	public BookGallery getBookGallery() {
 		return mBookGallery;
 	}
+	
+	public SocialPanel getSocialPanel() {
+		return mSocialPanel;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +87,8 @@ public class HomeActivity extends Activity {
 		mSlidingMenu = new SlidingMenu(this);
 
 		mSlidingMenu.setLeftView(createNavigationPanel());
-		mSlidingMenu.setRightView(new SocialPanel(this));
+		mSocialPanel = new SocialPanel(this);
+		mSlidingMenu.setRightView(mSocialPanel);
 		mSlidingMenu.setCenterView(createHomeUI());
 		return mSlidingMenu;
 	}
