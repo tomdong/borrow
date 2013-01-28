@@ -179,7 +179,7 @@ public class BookGallery extends RelativeLayout {
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		toggleLeftPanelBtnLP.addRule(RelativeLayout.ALIGN_BOTTOM, imageBackground.getId());
 		toggleLeftPanelBtnLP.leftMargin = LayoutUtil.getMediumMargin();
-		toggleLeftPanelBtnLP.bottomMargin = LayoutUtil.getSmallMargin();
+		toggleLeftPanelBtnLP.bottomMargin = LayoutUtil.getMediumMargin();
 		mBottomPanel.addView(mToggleLeftPanelBtn, toggleLeftPanelBtnLP);
 		
 		//Toggle right-panel button
@@ -200,7 +200,7 @@ public class BookGallery extends RelativeLayout {
 		toggleRightPanelBtnLP.addRule(RelativeLayout.ALIGN_BOTTOM, imageBackground.getId());
 		toggleRightPanelBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		toggleRightPanelBtnLP.rightMargin = LayoutUtil.getMediumMargin();
-		toggleRightPanelBtnLP.bottomMargin = LayoutUtil.getSmallMargin();
+		toggleRightPanelBtnLP.bottomMargin = LayoutUtil.getMediumMargin();
 		mBottomPanel.addView(mToggleRightPanelBtn, toggleRightPanelBtnLP);
 		
 		RelativeLayout.LayoutParams bottomPanelLP = new RelativeLayout.LayoutParams(

@@ -149,7 +149,7 @@ public class LayoutUtil {
 	
 	public static int getGalleryBottomPanelHeight() {
 		if(galleryBottomPanelHeight < 0) {
-			galleryBottomPanelHeight = DensityAdaptor.getDensityIndependentValue(36);
+			galleryBottomPanelHeight = DensityAdaptor.getDensityIndependentValue(48);
 		}
 		return galleryBottomPanelHeight;
 	}

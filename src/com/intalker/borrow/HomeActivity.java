@@ -385,68 +385,22 @@ public class HomeActivity extends Activity {
 
 			navigationBar.addView(btn2);
 		}
-		//
-		// Button btn3 = new Button(this);
-		// btn3.setText("Random");
-		// btn3.setOnClickListener(new OnClickListener(){
-		//
-		// @Override
-		// public void onClick(View v) {
-		// mBookGallery.fillWithRandomBooks();
-		// }
-		// });
-		//
-		// navigationBar.addView(btn3);
-		// mFriendsNavigation = new FriendsNavigationVertical(this);
-		// navigationBar.addView(mFriendsNavigation.createFriendsNavigationUI());
-
-		ScrollView testFriendScrollView = new ScrollView(this);
-		LinearLayout friendsLayout = new LinearLayout(this);
-		testFriendScrollView.addView(friendsLayout);
-		friendsLayout.setOrientation(LinearLayout.VERTICAL);
-		for (int i = 0; i < 20; ++i) {
-			friendsLayout.addView(createTestFriendItemUI(R.drawable.avatar_2));
-		}
-//		for (int i = 0; i < 8; ++i) {
-//			friendsLayout.addView(createTestFriendItemUI(R.drawable.avatar_3));
-//		}
-//		for (int i = 0; i < 8; ++i) {
-//			friendsLayout.addView(createTestFriendItemUI(R.drawable.avatar_1));
-//		}
-		navigationBar.addView(testFriendScrollView);
-		return navigationBar;
-	}
-
-	private View createTestFriendItemUI(int avatarId) {
-		RelativeLayout item = new RelativeLayout(this);
-
-		LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT,
-				LinearLayout.LayoutParams.WRAP_CONTENT);
-		itemLP.width = LayoutUtil.getNavigationPanelWidth();
-		itemLP.height = DensityAdaptor.getDensityIndependentValue(40);
-
-		item.setBackgroundColor(ColorUtil.generateRandomColor());
-		item.setLayoutParams(itemLP);
-
-		TextView t = new TextView(this);
-		t.setText("Test");
-		item.addView(t);
-
-		ImageView avatar = new ImageView(this);
-		avatar.setImageResource(avatarId);
-		RelativeLayout.LayoutParams avatarLP = new RelativeLayout.LayoutParams(
+		
+		//Temp code to specify the navigation panel's width
+		RelativeLayout.LayoutParams tempLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		avatarLP.width = DensityAdaptor.getDensityIndependentValue(32);
-		avatarLP.height = DensityAdaptor.getDensityIndependentValue(32);
-		avatarLP.addRule(RelativeLayout.CENTER_VERTICAL);
-		avatarLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		avatarLP.rightMargin = DensityAdaptor.getDensityIndependentValue(8);
-		item.addView(avatar, avatarLP);
-		return item;
-	}
 
+		tempLP.width = LayoutUtil.getNavigationPanelWidth();
+		tempLP.height = LayoutUtil.getSmallMargin();
+		View v = new View(this);
+		v.setBackgroundResource(R.drawable.hori_separator);
+		navigationBar.addView(v, tempLP);
+		
+
+		return navigationBar;
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
