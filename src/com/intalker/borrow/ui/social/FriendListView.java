@@ -1,6 +1,10 @@
 package com.intalker.borrow.ui.social;
 
+import java.util.ArrayList;
+
 import com.intalker.borrow.R;
+import com.intalker.borrow.data.AppData;
+import com.intalker.borrow.data.FriendInfo;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -41,6 +45,24 @@ public class FriendListView extends ScrollView{
 					LinearLayout.LayoutParams.WRAP_CONTENT);
 			itemLP.height = DensityAdaptor.getDensityIndependentValue(40);
 			mListView.addView(new FriendItemUI(this.getContext()), itemLP);
+		}
+	}
+	
+	public void refreshList()
+	{
+		mListView.removeAllViews();
+		
+		LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		itemLP.height = DensityAdaptor.getDensityIndependentValue(40);
+		
+		ArrayList<FriendInfo> friends = AppData.getInstance().getFriends();
+		for(FriendInfo friendInfo : friends)
+		{
+			FriendItemUI friendItemUI = new FriendItemUI(this.getContext());
+			friendItemUI.setInfo(friendInfo);
+			mListView.addView(friendItemUI, itemLP);
 		}
 	}
 }

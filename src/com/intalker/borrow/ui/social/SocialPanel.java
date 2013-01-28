@@ -1,6 +1,8 @@
 package com.intalker.borrow.ui.social;
 
 import com.intalker.borrow.R;
+import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
@@ -8,6 +10,7 @@ import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 public class SocialPanel extends RelativeLayout {
@@ -36,6 +39,20 @@ public class SocialPanel extends RelativeLayout {
 	private void createButtons() {
 		int margin = DensityAdaptor.getDensityIndependentValue(5);
 		mFriendBtn = new HaloButton(this.getContext(), R.drawable.cloud);
+		mFriendBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CloudAPI.getFriends(v.getContext(), new ICloudAPITaskListener(){
+
+					@Override
+					public void onFinish(int returnCode) {
+						mFriendView.refreshList();
+					}
+					
+				});
+			}
+		});
 		RelativeLayout.LayoutParams friendBtnLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -70,6 +87,10 @@ public class SocialPanel extends RelativeLayout {
 		mFriendView.setLayoutParams(friendViewLP);
 
 		mMainLayout.addView(mFriendView);
+	}
+
+	public FriendListView getFriendView() {
+		return mFriendView;
 	}
 
 }

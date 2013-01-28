@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.data.FriendInfo;
 import com.intalker.borrow.data.UserInfo;
 
 public class JSONUtil {
@@ -56,6 +57,37 @@ public class JSONUtil {
 						bookInfo.setInitialized(false);
 						curBooks.add(bookInfo);
 					}
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void parseFriendsInfo(String strJSON) {
+		try {
+			JSONArray jsonBookArray = new JSONArray(strJSON);
+			int length = jsonBookArray.length();
+			AppData appData = AppData.getInstance();
+			ArrayList<FriendInfo> curFriends = appData.getFriends();
+			for (int i = 0; i < length; ++i) {
+				JSONObject jsonFriendItem = (JSONObject) jsonBookArray.get(i);
+				if (null != jsonFriendItem) {
+					String id = jsonFriendItem.getString(CloudAPI.DB_User_Id);
+					String nickName = jsonFriendItem.getString(CloudAPI.DB_User_NickName);
+					String email = jsonFriendItem.getString(CloudAPI.DB_User_Email);
+					String regTime = jsonFriendItem.getString(CloudAPI.DB_User_RegTime);
+					String permission = jsonFriendItem.getString(CloudAPI.DB_User_Permission);
+					
+					String alias = jsonFriendItem.getString(CloudAPI.DB_Friend_Alias);
+					String group = jsonFriendItem.getString(CloudAPI.DB_Friend_Group);
+					String status = jsonFriendItem.getString(CloudAPI.DB_Friend_Status);
+					String connectTime = jsonFriendItem.getString(CloudAPI.DB_Friend_ConnectTime);
+					
+					UserInfo userInfo = new UserInfo(id, nickName, email, regTime, permission);
+					FriendInfo friendInfo = new FriendInfo(userInfo, alias, group, status, connectTime);
+					
+					curFriends.add(friendInfo);
 				}
 			}
 		} catch (Exception ex) {

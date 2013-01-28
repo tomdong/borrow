@@ -26,6 +26,7 @@ public class CloudAPI {
 	public final static String API_UploadBooks = "UploadBooks";
 	public final static String API_GetOwnedBooks = "GetBooksBySession";
 	public final static String API_SynchronizeOwnedBooks = "SynchronizeOwnedBooks";
+	public final static String API_GetFriends = "GetFriendsBySession";
 	
 	// API params
 	public final static String API_Email = "&email=";
@@ -36,20 +37,27 @@ public class CloudAPI {
 	public final static String API_POST_BookInfoList = "bookinfolist";
 	
 	// DB keys
+	// Book
 	public final static String DB_Book_OwnerId = "ownerid";
 	public final static String DB_Book_ISBN = "isbn";
 	public final static String DB_Book_Quantity = "quantity";
 	public final static String DB_Book_Description = "description";
 	public final static String DB_Book_PublicLevel = "publiclevel";
 	public final static String DB_Book_Status = "status";
-
-	// Parse keys
-	public final static String Parse_User_Id = "id";
-	public final static String Parse_User_NickName = "nickname";
-	public final static String Parse_User_Email = "email";
-	public final static String Parse_User_RegTime = "registertime";
-	public final static String Parse_User_Permission = "permission";
-
+	
+	// User
+	public final static String DB_User_Id = "id";
+	public final static String DB_User_NickName = "nickname";
+	public final static String DB_User_Email = "email";
+	public final static String DB_User_RegTime = "registertime";
+	public final static String DB_User_Permission = "permission";
+	
+	// Friend
+	public final static String DB_Friend_Alias = "alias";
+	public final static String DB_Friend_Group = "group";
+	public final static String DB_Friend_Status = "status";
+	public final static String DB_Friend_ConnectTime = "connecttime";
+	
 	// Server Return code
 	public final static String ServerReturnCode_Successful = "Successful";
 	public final static String ServerReturnCode_NoSuchUser = "NoSuchUser";
@@ -96,11 +104,11 @@ public class CloudAPI {
 		try {
 			JSONObject jsonObject = new JSONObject(str);
 
-			String id = jsonObject.getString(Parse_User_Id);
-			String nickName = jsonObject.getString(Parse_User_NickName);
-			String email = jsonObject.getString(Parse_User_Email);
-			String regTime = jsonObject.getString(Parse_User_RegTime);
-			String permission = jsonObject.getString(Parse_User_Permission);
+			String id = jsonObject.getString(DB_User_Id);
+			String nickName = jsonObject.getString(DB_User_NickName);
+			String email = jsonObject.getString(DB_User_Email);
+			String regTime = jsonObject.getString(DB_User_RegTime);
+			String permission = jsonObject.getString(DB_User_Permission);
 
 			UserInfo userInfo = new UserInfo(id, nickName, email, regTime,
 					permission);
@@ -251,6 +259,10 @@ public class CloudAPI {
 					{
 						return CloudAPI.Return_OK;
 					}
+					else if (strResult.compareTo(CloudAPI.ServerReturnCode_BadSession) == 0)
+					{
+						return CloudAPI.Return_BadToken;
+					}
 					else
 					{
 						JSONUtil.parseBooksInfo(strResult);
@@ -267,6 +279,39 @@ public class CloudAPI {
 		}
 	}
 
+	public static int _getFriends()
+	{
+		String url = API_BaseURL + API_GetFriends + CloudAPI.API_TOKEN + CloudAPI.CloudToken;;
+		HttpGet getReq = new HttpGet(url);
+		try {
+			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+				if (null != strResult && strResult.length() > 0) {
+					if (strResult.compareTo(CloudAPI.ServerReturnCode_EmptyResult) == 0)
+					{
+						return CloudAPI.Return_OK;
+					}
+					else if (strResult.compareTo(CloudAPI.ServerReturnCode_BadSession) == 0)
+					{
+						return CloudAPI.Return_BadToken;
+					}
+					else
+					{
+						JSONUtil.parseFriendsInfo(strResult);
+					}
+					return CloudAPI.Return_OK;
+				} else {
+					return CloudAPI.Return_UnknownError;
+				}
+			} else {
+				return CloudAPI.Return_NetworkError;
+			}
+		} catch (Exception e) {
+			return CloudAPI.Return_NetworkError;
+		}
+	}
 	// Client should not call any of the methods above.
 	public static void login(Context context, String email, String pwd,
 			ICloudAPITaskListener apiListener) {
@@ -315,6 +360,13 @@ public class CloudAPI {
 			ICloudAPITaskListener apiListener) {
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, "",
 				API_SynchronizeOwnedBooks, apiListener);
+		task.execute();
+	}
+	
+	public static void getFriends(Context context,
+			ICloudAPITaskListener apiListener) {
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, "",
+				API_GetFriends, apiListener);
 		task.execute();
 	}
 }

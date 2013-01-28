@@ -1,6 +1,7 @@
 package com.intalker.borrow.ui.social;
 
 import com.intalker.borrow.R;
+import com.intalker.borrow.data.FriendInfo;
 import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 
@@ -16,11 +17,21 @@ public class FriendItemUI extends RelativeLayout {
 
 	private ImageView mAvatar = null;
 	private TextView mNameTextView = null;
+	private FriendInfo mInfo = null;
 
 	public FriendItemUI(Context context) {
 		super(context);
 		this.setBackgroundColor(ColorUtil.generateRandomColor());
 		createUI();
+	}
+	
+	public FriendInfo getInfo() {
+		return mInfo;
+	}
+	
+	public void setInfo(FriendInfo info) {
+		mInfo = info;
+		mNameTextView.setText(info.getDisplayName());
 	}
 
 	private void createUI() {
@@ -44,7 +55,6 @@ public class FriendItemUI extends RelativeLayout {
 
 		mNameTextView = new TextView(this.getContext());
 		mNameTextView.setTextSize(16.0f);
-		mNameTextView.setText("test");
 		mNameTextView.setTextColor(Color.YELLOW);
 
 		RelativeLayout.LayoutParams nameTextLP = new RelativeLayout.LayoutParams(
