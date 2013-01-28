@@ -4,6 +4,7 @@ import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.config.ResultCode;
+import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.friends.FriendsNavigationVertical;
 import com.intalker.borrow.isbn.ISBNResolver;
@@ -75,6 +76,7 @@ public class HomeActivity extends Activity {
 		// setContentView(R.layout.activity_home);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		app = this;
+		AppData.getInstance().initialize();
 		DensityAdaptor.init(this);
 		StorageUtil.initialize();
 		StorageUtil.loadCachedBooks();

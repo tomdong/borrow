@@ -18,6 +18,11 @@ public class AppData {
 		mBooks = new ArrayList<BookInfo>();
 		mFriends = new ArrayList<FriendInfo>();
 	}
+	
+	public void initialize() {
+		mBooks.clear();
+		mFriends.clear();
+	}
 
 	public ArrayList<BookInfo> getBooks() {
 		return mBooks;
