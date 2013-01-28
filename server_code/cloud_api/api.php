@@ -249,6 +249,28 @@ switch($op)
         	echo BAD_SESSION;
         }
     	break;
+    case "GetFriendsBySession":
+        $sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+        if(NULL != $sessionId)
+        {
+            $con = connectDB();
+            $host_id = getUserIdBySession($sessionId);
+            if(NULL != $host_id)
+            {
+				$friends = getFriendsByHost($host_id);
+				echo encodeFriendsQueryResult($friends);
+            }
+            else
+            {
+                echo BAD_SESSION;
+            }
+            disconnectDB($con);
+        }
+        else
+        {
+        	echo BAD_SESSION;
+        }
+        break;
 	/*	
     case "Signup":
         $con = connectDB();

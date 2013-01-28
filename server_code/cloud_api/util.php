@@ -139,6 +139,34 @@ function getBooksByOwner($ownerid)
     return $result;
 }
 
+function makeUnifiedColName($tableName, $colName)
+{
+	return $tableName . "." . $colName;
+}
+
+function getFriendsByHost($hostid)
+{
+//select user.id, user.nickname, user.email, user.registertime, user.permission,
+// friend.alias, friend.group, friend.status, friend.connecttime
+// from user inner join friend where user.id=friend.friendid and friend.hostid=2;
+
+	$sql = "select " . makeUnifiedColName(DB_TABLE_USER, DB_USER_ID) . ", "
+	. makeUnifiedColName(DB_TABLE_USER, DB_USER_NICKNAME) . ", "
+	. makeUnifiedColName(DB_TABLE_USER, DB_USER_EMAIL) . ", "
+	. makeUnifiedColName(DB_TABLE_USER, DB_USER_REGISTERTIME) . ", "
+	. makeUnifiedColName(DB_TABLE_USER, DB_USER_PERMISSION) . ", "
+	. makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_ALIAS) . ", "
+	. makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_GROUP) . ", "
+	. makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_STATUS) . ", "
+	. makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_CONNECTTIME)
+	. " from " . DB_TABLE_USER . " inner join " . DB_TABLE_FRIEND
+	. " where " . makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_HOSTID) . "=" . wrapStr($hostid) 
+	. " and " . makeUnifiedColName(DB_TABLE_USER, DB_USER_ID) . "=" . makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_FRIENDID);
+
+    $result = mysql_query($sql);
+    return $result;
+}
+
 function login($email, $local_pwd)
 {
     $sql = "select * from " . DB_TABLE_USER . " where "
@@ -273,6 +301,20 @@ function encodeUserInfo($data)
     return json_encode($userInfo);
 }
 
+function encodeBookOfficialInfo($row)
+{
+    $bookInfo[DB_BOOKINFO_ISBN] = $row[DB_BOOKINFO_ISBN];
+    $bookInfo[DB_BOOKINFO_NAME] = htmlspecialchars_decode($row[DB_BOOKINFO_NAME], ENT_QUOTES);
+    $bookInfo[DB_BOOKINFO_PUBLISHER] = htmlspecialchars_decode($row[DB_BOOKINFO_PUBLISHER], ENT_QUOTES);
+    $bookInfo[DB_BOOKINFO_PAGECOUNT] = $row[DB_BOOKINFO_PAGECOUNT];
+    $bookInfo[DB_BOOKINFO_LANGUAGE] = htmlspecialchars_decode($row[DB_BOOKINFO_LANGUAGE], ENT_QUOTES);
+    $bookInfo[DB_BOOKINFO_REFLINK] = htmlspecialchars_decode($row[DB_BOOKINFO_REFLINK], ENT_QUOTES);
+    $bookInfo[DB_BOOKINFO_REMARK] = $row[DB_BOOKINFO_REMARK];
+    $bookInfo[DB_BOOKINFO_ISBN] = $row[DB_BOOKINFO_ISBN];
+    $bookInfo[DB_BOOKINFO_ISBN] = $row[DB_BOOKINFO_ISBN];
+    return json_encode($bookInfo);
+}
+
 function encodeBooksQueryResult($result)
 {
     $encodedStr = "";
@@ -291,10 +333,10 @@ function encodeBooksQueryResult($result)
             $item[DB_BOOK_PUBLICLEVEL] = $row[DB_BOOK_PUBLICLEVEL];
             $item[DB_BOOK_STATUS] = $row[DB_BOOK_STATUS];
             $item[DB_BOOK_REMARK] = $row[DB_BOOK_REMARK];
-            $worksList[$index] = $item;
+            $booksList[$index] = $item;
             ++$index;
         }
-        $encodedStr = json_encode($worksList);
+        $encodedStr = json_encode($booksList);
     }
     else
     {
@@ -303,23 +345,43 @@ function encodeBooksQueryResult($result)
     return $encodedStr;
 }
 
-function encodeBookOfficialInfo($row)
+function encodeFriendsQueryResult($result)
 {
-    $bookInfo[DB_BOOKINFO_ISBN] = $row[DB_BOOKINFO_ISBN];
-    $bookInfo[DB_BOOKINFO_NAME] = htmlspecialchars_decode($row[DB_BOOKINFO_NAME], ENT_QUOTES);
-    $bookInfo[DB_BOOKINFO_PUBLISHER] = htmlspecialchars_decode($row[DB_BOOKINFO_PUBLISHER], ENT_QUOTES);
-    $bookInfo[DB_BOOKINFO_PAGECOUNT] = $row[DB_BOOKINFO_PAGECOUNT];
-    $bookInfo[DB_BOOKINFO_LANGUAGE] = htmlspecialchars_decode($row[DB_BOOKINFO_LANGUAGE], ENT_QUOTES);
-    $bookInfo[DB_BOOKINFO_REFLINK] = htmlspecialchars_decode($row[DB_BOOKINFO_REFLINK], ENT_QUOTES);
-    $bookInfo[DB_BOOKINFO_REMARK] = $row[DB_BOOKINFO_REMARK];
-    $bookInfo[DB_BOOKINFO_ISBN] = $row[DB_BOOKINFO_ISBN];
-    $bookInfo[DB_BOOKINFO_ISBN] = $row[DB_BOOKINFO_ISBN];
-    return json_encode($bookInfo);
+    $encodedStr = "";
+    if(mysql_num_rows($result) > 0)
+    {
+        $index = 0;
+        while($row = mysql_fetch_array($result))
+        {
+            unset($item);
+            
+			$item[DB_USER_ID] = $row[DB_USER_ID];
+			$item[DB_USER_NICKNAME] = htmlspecialchars_decode($row[DB_USER_NICKNAME], ENT_QUOTES);
+			$item[DB_USER_EMAIL] = $row[DB_USER_EMAIL];
+			$item[DB_USER_REGISTERTIME] = $row[DB_USER_REGISTERTIME];
+			$item[DB_USER_PERMISSION] = $row[DB_USER_PERMISSION];
+			
+			$item[DB_FRIEND_ALIAS] = $row[DB_FRIEND_ALIAS];
+			$item[DB_FRIEND_GROUP] = $row[DB_FRIEND_GROUP];
+			$item[DB_FRIEND_STATUS] = $row[DB_FRIEND_STATUS];
+			$item[DB_FRIEND_CONNECTTIME] = $row[DB_FRIEND_CONNECTTIME];
+			
+            $friendsList[$index] = $item;
+            ++$index;
+        }
+        $encodedStr = json_encode($friendsList);
+    }
+    else
+    {
+        $encodedStr = EMPTY_RESULT;
+	}
+    return $encodedStr;
 }
 
-
-
-
+//========================================================================
+//===========Below code is not necessary for current api script===========
+//==========================Intalker @ 2013===============================
+//========================================================================
 
 
 

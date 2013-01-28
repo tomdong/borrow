@@ -24,6 +24,10 @@ public class LayoutUtil {
 	private static int galleryTopPanelHeight = -1;
 	private static int galleryBottomPanelHeight = -1;
 	
+	//General parameters
+	private static int smallMargin = -1;
+	private static int mediumMargin = -1;
+	
 	public static int getRowBookCount() {
 		return rowBookCount;
 	}
@@ -148,6 +152,20 @@ public class LayoutUtil {
 			galleryBottomPanelHeight = DensityAdaptor.getDensityIndependentValue(36);
 		}
 		return galleryBottomPanelHeight;
+	}
+	
+	public static int getSmallMargin() {
+		if(smallMargin < 0) {
+			smallMargin = DensityAdaptor.getDensityIndependentValue(2);
+		}
+		return smallMargin;
+	}
+	
+	public static int getMediumMargin() {
+		if(mediumMargin < 0) {
+			mediumMargin = DensityAdaptor.getDensityIndependentValue(8);
+		}
+		return mediumMargin;
 	}
 	
 }

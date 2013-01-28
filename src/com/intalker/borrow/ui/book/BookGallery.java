@@ -139,6 +139,7 @@ public class BookGallery extends RelativeLayout {
 		mBottomPanel = new RelativeLayout(this.getContext());
 		View imageBackground = new View(this.getContext());
 		imageBackground.setBackgroundResource(R.drawable.hori_bar);
+		imageBackground.setId(10000);
 		RelativeLayout.LayoutParams imageBGLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -176,13 +177,13 @@ public class BookGallery extends RelativeLayout {
 		RelativeLayout.LayoutParams toggleLeftPanelBtnLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		toggleLeftPanelBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		toggleLeftPanelBtnLP.leftMargin = DensityAdaptor.getDensityIndependentValue(10);
-		toggleLeftPanelBtnLP.bottomMargin = DensityAdaptor.getDensityIndependentValue(10);
+		toggleLeftPanelBtnLP.addRule(RelativeLayout.ALIGN_BOTTOM, imageBackground.getId());
+		toggleLeftPanelBtnLP.leftMargin = LayoutUtil.getMediumMargin();
+		toggleLeftPanelBtnLP.bottomMargin = LayoutUtil.getSmallMargin();
 		mBottomPanel.addView(mToggleLeftPanelBtn, toggleLeftPanelBtnLP);
 		
 		//Toggle right-panel button
-		mToggleRightPanelBtn = new HaloButton(this.getContext(), R.drawable.menu);
+		mToggleRightPanelBtn = new HaloButton(this.getContext(), R.drawable.social);
 		mToggleRightPanelBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -195,10 +196,11 @@ public class BookGallery extends RelativeLayout {
 		RelativeLayout.LayoutParams toggleRightPanelBtnLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		toggleRightPanelBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+		toggleRightPanelBtnLP.addRule(RelativeLayout.ALIGN_BOTTOM, imageBackground.getId());
 		toggleRightPanelBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		toggleRightPanelBtnLP.rightMargin = DensityAdaptor.getDensityIndependentValue(10);
-		toggleRightPanelBtnLP.bottomMargin = DensityAdaptor.getDensityIndependentValue(10);
+		toggleRightPanelBtnLP.rightMargin = LayoutUtil.getMediumMargin();
+		toggleRightPanelBtnLP.bottomMargin = LayoutUtil.getSmallMargin();
 		mBottomPanel.addView(mToggleRightPanelBtn, toggleRightPanelBtnLP);
 		
 		RelativeLayout.LayoutParams bottomPanelLP = new RelativeLayout.LayoutParams(

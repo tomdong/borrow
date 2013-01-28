@@ -48,6 +48,7 @@ define("DB_BOOK_PUBLICLEVEL_MYFRIENDS", "myfriends");
 define("DB_BOOK_PUBLICLEVEL_SPECIFIED", "specified");
 define("DB_BOOK_PUBLICLEVEL_ONLYME", "onlyme");
 
+// Book Info
 define("DB_TABLE_BOOKINFO", "bookinfo");
 
 define("DB_BOOKINFO_ISBN", "isbn");
@@ -57,6 +58,21 @@ define("DB_BOOKINFO_PAGECOUNT", "pagecount");
 define("DB_BOOKINFO_LANGUAGE", "language");
 define("DB_BOOKINFO_REFLINK", "reflink");
 define("DB_BOOKINFO_REMARK", "remark");
+
+// Friend
+define("DB_TABLE_FRIEND", "friend");
+
+define("DB_FRIEND_ID", "id");
+define("DB_FRIEND_HOSTID", "hostid");
+define("DB_FRIEND_FRIENDID", "friendid");
+define("DB_FRIEND_ALIAS", "alias");
+define("DB_FRIEND_GROUP", "group");
+define("DB_FRIEND_STATUS", "status");
+define("DB_FRIEND_CONNECTTIME", "connecttime");
+
+define("DB_FRIEND_STATUS_NORMAL", "normal");
+define("DB_FRIEND_STATUS_CLOSE", "close");
+define("DB_FRIEND_STATUS_BLOCKED", "blocked");
 
 // Session
 define("DB_TABLE_SESSION", "session");
