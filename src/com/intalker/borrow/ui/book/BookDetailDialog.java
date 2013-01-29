@@ -53,7 +53,7 @@ public class BookDetailDialog extends Dialog {
 		this.setContentView(mContent);
 		
 		mLayout = new RelativeLayout(context);
-		mLayout.setBackgroundResource(R.drawable.wood_bk);
+		mLayout.setBackgroundResource(R.drawable.parchment_bg);
 		RelativeLayout.LayoutParams mainLayoutLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);

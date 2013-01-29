@@ -15,9 +15,8 @@ public class BookShelfView extends ScrollView {
 	private LinearLayout mScrollContent = null;
 	private ArrayList<BookShelfRow> mBookShelfRows = new ArrayList<BookShelfRow>();
 	private static BookShelfView instance = null;
-	
-	public static BookShelfView getInstance()
-	{
+
+	public static BookShelfView getInstance() {
 		return instance;
 	}
 
@@ -25,19 +24,19 @@ public class BookShelfView extends ScrollView {
 		super(context);
 
 		initializeUI();
-		
+
 		addRow(false);
-		
+
 		this.setBackgroundResource(R.drawable.wood_bk);
 		instance = this;
 	}
 
 	private void initializeUI() {
-		
-// This is the test code for using drag-down refresh
-//		{
-//			mScrollContent = this.getScrollContent();
-//		}
+
+		// This is the test code for using drag-down refresh
+		// {
+		// mScrollContent = this.getScrollContent();
+		// }
 
 		{
 			mScrollContent = new LinearLayout(this.getContext());
@@ -48,20 +47,19 @@ public class BookShelfView extends ScrollView {
 
 	public void addBookForLoading() {
 		BookShelfRow lastRow = mBookShelfRows.get(mBookShelfRows.size() - 1);
-		if(lastRow.isFull())
-		{
+		if (lastRow.isFull()) {
 			lastRow = addRow(false);
 		}
 		lastRow.addBook(false, null);
 	}
-	
+
 	public void clearShelfRows() {
 		for (BookShelfRow row : mBookShelfRows) {
 			mScrollContent.removeView(row);
 		}
 		mBookShelfRows.clear();
 	}
-	
+
 	public void initializeShelfRows() {
 		for (BookShelfRow row : mBookShelfRows) {
 			mScrollContent.removeView(row);
@@ -69,9 +67,10 @@ public class BookShelfView extends ScrollView {
 		mBookShelfRows.clear();
 		addRow(false);
 	}
-	
+
 	private BookShelfRow addRow(boolean createRandomBooks) {
-		BookShelfRow row = new BookShelfRow(this.getContext(), createRandomBooks);
+		BookShelfRow row = new BookShelfRow(this.getContext(),
+				createRandomBooks);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -80,19 +79,17 @@ public class BookShelfView extends ScrollView {
 		mBookShelfRows.add(row);
 		return row;
 	}
-	
+
 	// for test
-	public void addRandomBooks()
-	{
+	public void addRandomBooks() {
 		for (int i = 0; i < 10; ++i) {
 			addRow(true);
 		}
 	}
-	
+
 	public void addBookByExistingInfo(BookInfo bookInfo) {
 		BookShelfRow lastRow = mBookShelfRows.get(mBookShelfRows.size() - 1);
-		if(lastRow.isFull())
-		{
+		if (lastRow.isFull()) {
 			lastRow = addRow(false);
 		}
 		lastRow.addBook(true, bookInfo);

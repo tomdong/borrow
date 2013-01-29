@@ -191,19 +191,6 @@ public class HomeActivity extends Activity {
 		BookShelfItem.lastBookForTest = null;
 
 		LinearLayout mainLayout = new LinearLayout(this);
-		mainLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-		// Add this listener to make the whole gallery be dragable.
-		mainLayout.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				// Toast.makeText(arg0.getContext(), "Test",
-				// Toast.LENGTH_SHORT).show();
-			}
-
-		});
 
 		// book gallery ui
 		mBookGallery = new BookGallery(this);
@@ -251,6 +238,30 @@ public class HomeActivity extends Activity {
 
 		navigationBar.setLayoutParams(navigationBarLP);
 
+		View logoView = new View(this);
+		logoView.setBackgroundResource(R.drawable.logo);
+		LinearLayout.LayoutParams logoLP = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		logoLP.width = LayoutUtil.getNavigationPanelWidth();
+		logoLP.height = LayoutUtil.getNavigationPanelWidth();
+		navigationBar.addView(logoView, logoLP);
+
+		
+		
+		//Temp code to specify the navigation panel's width
+		LinearLayout.LayoutParams tempLP = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+
+		tempLP.width = LayoutUtil.getNavigationPanelWidth();
+		tempLP.height = LayoutUtil.getSmallMargin();
+		View separatorView = new View(this);
+		separatorView.setBackgroundResource(R.drawable.hori_separator);
+		navigationBar.addView(separatorView, tempLP);
+		
+		
+		
 		Button b = new Button(this);
 		b.setText("<<");
 		b.setOnClickListener(new OnClickListener() {
@@ -388,19 +399,6 @@ public class HomeActivity extends Activity {
 
 			navigationBar.addView(btn2);
 		}
-		
-		//Temp code to specify the navigation panel's width
-		RelativeLayout.LayoutParams tempLP = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-		tempLP.width = LayoutUtil.getNavigationPanelWidth();
-		tempLP.height = LayoutUtil.getSmallMargin();
-		View v = new View(this);
-		v.setBackgroundResource(R.drawable.hori_separator);
-		navigationBar.addView(v, tempLP);
-		
-
 		return navigationBar;
 	}
 	

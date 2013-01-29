@@ -34,7 +34,7 @@ public class TransparentProgressDialog extends Dialog {
 		mainLP.width = DensityAdaptor.getDensityIndependentValue(300);
 		mainLP.height = DensityAdaptor.getDensityIndependentValue(100);
 
-		mainLayout.setBackgroundResource(R.drawable.progress_bk);
+		mainLayout.setBackgroundResource(R.drawable.progress_bg);
 		bkLayout.addView(mainLayout, mainLP);
 
 		ProgressBar spinner = new ProgressBar(context);
