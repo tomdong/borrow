@@ -24,7 +24,7 @@ public class SocialPanel extends RelativeLayout {
 				RelativeLayout.LayoutParams.FILL_PARENT);
 		mainLP.width = LayoutUtil.getSocialPanelWidth();
 		mMainLayout.setLayoutParams(mainLP);
-		mMainLayout.setBackgroundColor(Color.BLUE);
+		mMainLayout.setBackgroundResource(R.drawable.stone_bg);
 
 		this.addView(mMainLayout);
 
@@ -33,23 +33,24 @@ public class SocialPanel extends RelativeLayout {
 	}
 
 	private void createButtons() {
-		int margin = DensityAdaptor.getDensityIndependentValue(5);
-		mFriendBtn = new HaloButton(this.getContext(), R.drawable.cloud);
+		int smallMargin = LayoutUtil.getSmallMargin();
+		int largeMargin = LayoutUtil.getLargeMargin();
+		mFriendBtn = new HaloButton(this.getContext(), R.drawable.friend);
 		RelativeLayout.LayoutParams friendBtnLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		friendBtnLP.leftMargin = margin;
-		friendBtnLP.topMargin = margin;
+		friendBtnLP.leftMargin = largeMargin;
+		friendBtnLP.topMargin = smallMargin;
 		mFriendBtn.setLayoutParams(friendBtnLP);
 		mMainLayout.addView(mFriendBtn);
 
-		mMessageBtn = new HaloButton(this.getContext(), R.drawable.cloud);
+		mMessageBtn = new HaloButton(this.getContext(), R.drawable.message);
 		RelativeLayout.LayoutParams msgBtnLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		msgBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		msgBtnLP.rightMargin = margin;
-		msgBtnLP.topMargin = margin;
+		msgBtnLP.rightMargin = largeMargin;
+		msgBtnLP.topMargin = smallMargin;
 		mMessageBtn.setLayoutParams(msgBtnLP);
 		mMainLayout.addView(mMessageBtn);
 	}

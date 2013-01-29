@@ -35,7 +35,7 @@ public class LoginDialog extends Dialog {
 		this.setContentView(mContent);
 
 		mMainLayout = new RelativeLayout(context);
-		mMainLayout.setBackgroundResource(R.drawable.detail_bk);
+		mMainLayout.setBackgroundResource(R.drawable.wood_bk);
 		RelativeLayout.LayoutParams mainLayoutLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);

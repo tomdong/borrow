@@ -77,7 +77,7 @@ public class RegisterView extends LinearLayout implements OnClickListener{
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		rpwwl.addRule(RelativeLayout.ALIGN_LEFT);
-		this.setBackgroundResource(R.drawable.detail_bk);
+		this.setBackgroundResource(R.drawable.wood_bk);
 //		this.setAlpha(0.7f);
 		this.setOrientation(LinearLayout.VERTICAL);		
 		this.setLayoutParams(lpff); 

@@ -27,6 +27,7 @@ public class LayoutUtil {
 	//General parameters
 	private static int smallMargin = -1;
 	private static int mediumMargin = -1;
+	private static int largeMargin = -1;
 	
 	public static int getRowBookCount() {
 		return rowBookCount;
@@ -166,6 +167,13 @@ public class LayoutUtil {
 			mediumMargin = DensityAdaptor.getDensityIndependentValue(8);
 		}
 		return mediumMargin;
+	}
+	
+	public static int getLargeMargin() {
+		if(largeMargin < 0) {
+			largeMargin = DensityAdaptor.getDensityIndependentValue(30);
+		}
+		return largeMargin;
 	}
 	
 }

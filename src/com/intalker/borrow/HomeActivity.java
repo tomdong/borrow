@@ -241,7 +241,7 @@ public class HomeActivity extends Activity {
 
 	private View createNavigationPanel() {
 		LinearLayout navigationBar = new LinearLayout(this);
-		navigationBar.setBackgroundColor(Color.DKGRAY);
+		navigationBar.setBackgroundResource(R.drawable.stone_bg);
 		navigationBar.setOrientation(LinearLayout.VERTICAL);
 		RelativeLayout.LayoutParams navigationBarLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,

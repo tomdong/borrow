@@ -26,7 +26,7 @@ public class BookShelfView extends ScrollView {
 		
 		addRow(false);
 		
-		this.setBackgroundResource(R.drawable.bookshelf_bg);
+		this.setBackgroundResource(R.drawable.wood_bk);
 		instance = this;
 	}
 
