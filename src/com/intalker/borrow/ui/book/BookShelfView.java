@@ -3,12 +3,14 @@ package com.intalker.borrow.ui.book;
 import java.util.ArrayList;
 import com.intalker.borrow.R;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.ui.control.DragRefreshScroll;
 import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+//public class BookShelfView extends DragRefreshScroll {	// Test code for using drag-down refresh
 public class BookShelfView extends ScrollView {
 	private LinearLayout mScrollContent = null;
 	private ArrayList<BookShelfRow> mBookShelfRows = new ArrayList<BookShelfRow>();
@@ -31,12 +33,17 @@ public class BookShelfView extends ScrollView {
 	}
 
 	private void initializeUI() {
-		mScrollContent = new LinearLayout(this.getContext());
-		mScrollContent.setOrientation(LinearLayout.VERTICAL);
-//		for (int i = 0; i < 10; ++i) {
-//			addRow(true);
+		
+// This is the test code for using drag-down refresh
+//		{
+//			mScrollContent = this.getScrollContent();
 //		}
-		this.addView(mScrollContent);
+
+		{
+			mScrollContent = new LinearLayout(this.getContext());
+			mScrollContent.setOrientation(LinearLayout.VERTICAL);
+			this.addView(mScrollContent);
+		}
 	}
 
 	public void addBookForLoading() {
