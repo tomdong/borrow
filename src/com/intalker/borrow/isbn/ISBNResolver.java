@@ -36,17 +36,17 @@ public class ISBNResolver {
 		GetBookInfoTask task = new GetBookInfoTask(context, isbn);
 		task.execute();
 	}
-	
+
 	public void batchGetBookInfo(Context context) {
 		BatchGetBookInfoTask task = new BatchGetBookInfoTask(context);
 		task.execute();
 	}
-	
+
 	private BookInfoParser getParser() {
 		if (null == parser) {
-			//parser = new DoubanBookInfoParser();
+			// parser = new DoubanBookInfoParser();
 			parser = new DoubanBookInfoParserV2();
-			//parser = new OpenISBNBookInfoParser();
+			// parser = new OpenISBNBookInfoParser();
 		}
 		return parser;
 	}
@@ -61,19 +61,20 @@ public class ISBNResolver {
 			isbnParser.reset(isbn);
 			mProgressDialog = new TransparentProgressDialog(context, false);
 			mProgressDialog.setCancelable(false);
-			mProgressDialog.setMessage(HomeActivity.getApp().getString(R.string.searching_book_info) + isbn);
+			mProgressDialog.setMessage(HomeActivity.getApp().getString(
+					R.string.searching_book_info)
+					+ isbn);
 			mProgressDialog.show();
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			
-			//TODO: should change to use BookGallery later.
+
+			// TODO: should change to use BookGallery later.
 			BookShelfView.getInstance().addBookForLoading();
 			BookShelfItem lastBook = BookShelfItem.lastBookForTest;
-			if(null != lastBook)
-			{
+			if (null != lastBook) {
 				lastBook.setISBN(isbnParser.getISBN());
 			}
 		}
@@ -82,7 +83,7 @@ public class ISBNResolver {
 		protected InputStream doInBackground(String... params) {
 
 			isbnParser.parse();
-			
+
 			return null;
 		}
 
@@ -91,39 +92,32 @@ public class ISBNResolver {
 			super.onPostExecute(result);
 			mProgressDialog.dismiss();
 			BookShelfItem lastBook = BookShelfItem.lastBookForTest;
-			if(null != lastBook)
-			{
+			if (null != lastBook) {
 				Bitmap coverImage = isbnParser.getCoverImage();
 				lastBook.setDetailInfo(isbnParser.getBookName(),
 						isbnParser.getAuthor(), isbnParser.getPublisher(),
-						isbnParser.getPageCount(),
-						isbnParser.getDescription());
+						isbnParser.getPageCount(), isbnParser.getDescription());
 				if (null != coverImage) {
 					lastBook.setCoverImage(coverImage);
-				}
-				else {
+				} else {
 					lastBook.setCoverAsUnknown();
 				}
 				lastBook.show();
 			}
 		}
 	}
-	
-	//Batch method
+
+	// Batch method
 	class BatchGetBookInfoTask extends AsyncTask<String, BookInfo, InputStream> {
 		private Context mContext = null;
 		private BookInfoParser mParser = null;
 		private TransparentProgressDialog mProgressDialog = null;
 		private ArrayList<BookInfo> mToProcessBookInfoList = null;
 		private int mCurProgress = 0;
-		
+
 		public BatchGetBookInfoTask(Context context) {
 			super();
 			mContext = context;
-			mParser = getParser();
-			mProgressDialog = new TransparentProgressDialog(mContext, true);
-			mProgressDialog.setCancelable(false);
-			mProgressDialog.show();
 		}
 
 		@Override
@@ -132,20 +126,29 @@ public class ISBNResolver {
 			mToProcessBookInfoList = new ArrayList<BookInfo>();
 			ArrayList<BookInfo> bookInfoList = AppData.getInstance().getBooks();
 			int length = bookInfoList.size();
-			for(int i = 0; i < length; ++i)
-			{
+
+			for (int i = 0; i < length; ++i) {
 				BookInfo bookInfo = bookInfoList.get(i);
-				if(null != bookInfo && !bookInfo.getInitialized())
-				{
+				if (null != bookInfo && !bookInfo.getInitialized()) {
 					mToProcessBookInfoList.add(bookInfo);
 				}
 			}
-			mProgressDialog.setMax(mToProcessBookInfoList.size());
-			mProgressDialog.setProgress(0);
+
+			if (mToProcessBookInfoList.size() > 0) {
+				mParser = getParser();
+				mProgressDialog = new TransparentProgressDialog(mContext, true);
+				mProgressDialog.setCancelable(false);
+				mProgressDialog.show();
+				mProgressDialog.setMax(mToProcessBookInfoList.size());
+				mProgressDialog.setProgress(0);
+			}
 		}
 
 		@Override
 		protected void onProgressUpdate(BookInfo... values) {
+			if (null == mProgressDialog) {
+				return;
+			}
 			BookInfo bookInfo = values[0];
 			if (null != bookInfo) {
 				if (!bookInfo.getInitialized()) {
@@ -164,29 +167,31 @@ public class ISBNResolver {
 		protected InputStream doInBackground(String... params) {
 
 			int length = mToProcessBookInfoList.size();
-			for(int i = 0; i < length; ++i)
-			{
+			for (int i = 0; i < length; ++i) {
 				BookInfo bookInfo = mToProcessBookInfoList.get(i);
 				publishProgress(bookInfo);
 
 				mParser.reset(bookInfo.getISBN());
 				mParser.parse();
 				bookInfo.setData(mParser);
-				
+
 				mCurProgress = i;
-				
+
 				publishProgress(bookInfo);
 			}
-			
+
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(InputStream result) {
 			super.onPostExecute(result);
-			mProgressDialog.dismiss();
+			if (null != mProgressDialog) {
+				mProgressDialog.dismiss();
+			}
 			mToProcessBookInfoList.clear();
-			Toast.makeText(mContext, "Synchronize done!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "Synchronize done!", Toast.LENGTH_SHORT)
+					.show();
 		}
 	}
 }
