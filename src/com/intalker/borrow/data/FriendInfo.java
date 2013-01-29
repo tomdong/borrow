@@ -1,5 +1,7 @@
 package com.intalker.borrow.data;
 
+import com.intalker.borrow.util.StringUtil;
+
 public class FriendInfo {
 	private UserInfo mUserInfo = null;
 	private String mAlias = null;
@@ -17,12 +19,12 @@ public class FriendInfo {
 	}
 	
 	public String getDisplayName() {
-		if (null != mAlias && mAlias.length() > 0 && mAlias.compareTo("null") != 0) {
+		if (!StringUtil.isEmpty(mAlias)) {
 			return mAlias;
 		}
 		if (null != mUserInfo) {
 			String nickName = mUserInfo.getNickName();
-			if (null != nickName && nickName.compareTo("null") != 0) {
+			if (!StringUtil.isEmpty(nickName)) {
 				return nickName;
 			} else {
 				return mUserInfo.getEmail();
