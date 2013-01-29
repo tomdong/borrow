@@ -5,7 +5,6 @@ import com.intalker.borrow.R;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;

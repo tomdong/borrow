@@ -1,8 +1,6 @@
 package com.intalker.borrow.data;
 
 import com.intalker.borrow.isbn.parser.BookInfoParser;
-import com.intalker.borrow.util.StorageUtil;
-
 import android.graphics.Bitmap;
 
 public class BookInfo {

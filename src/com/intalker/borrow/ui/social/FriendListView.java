@@ -2,24 +2,14 @@ package com.intalker.borrow.ui.social;
 
 import java.util.ArrayList;
 
-import com.intalker.borrow.R;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.FriendInfo;
-import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
-import com.intalker.borrow.util.LayoutUtil;
-
 import android.content.Context;
 import android.graphics.Color;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
-//Change base class to scroll later.
 public class FriendListView extends ScrollView{
 
 	private LinearLayout mListView = null;
