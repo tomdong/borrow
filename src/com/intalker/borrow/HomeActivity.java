@@ -72,9 +72,9 @@ public class HomeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		app = this;
+		StorageUtil.initialize();
 		AppData.getInstance().initialize();
 		DensityAdaptor.init(this);
-		StorageUtil.initialize();
 		StorageUtil.loadCachedBooks();
 		CloudAPI.CloudToken = "";
 
