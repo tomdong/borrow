@@ -1,8 +1,12 @@
 package com.intalker.borrow.ui.book;
 
+import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
+import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
@@ -21,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BookDetailDialog extends Dialog {
 
@@ -134,6 +139,52 @@ public class BookDetailDialog extends Dialog {
 												mBookItem.getInfo());
 										mBookItem.setVisibility(View.GONE);
 										mDialog.dismiss();
+										
+										String isbn = mBookItem.getInfo()
+												.getISBN();
+
+										CloudAPI.deleteBookFromServer(
+												HomeActivity.getApp(), isbn,
+												new ICloudAPITaskListener() {
+
+													@Override
+													public void onFinish(
+															int returnCode) {
+														Context context = HomeActivity
+																.getApp();
+														switch (returnCode) {
+														case CloudAPI.Return_OK:
+															Toast.makeText(
+																	context,
+																	"Removed from server",
+																	Toast.LENGTH_SHORT)
+																	.show();
+															break;
+														case CloudAPI.Return_BadToken:
+															Toast.makeText(
+																	context,
+																	"Bad token.",
+																	Toast.LENGTH_SHORT)
+																	.show();
+															break;
+														case CloudAPI.Return_NetworkError:
+															Toast.makeText(
+																	context,
+																	"Network error.",
+																	Toast.LENGTH_SHORT)
+																	.show();
+															break;
+														default:
+															Toast.makeText(
+																	context,
+																	"Unknown error.",
+																	Toast.LENGTH_SHORT)
+																	.show();
+															break;
+														}
+													}
+
+												});
 									}
 								})
 						.setNegativeButton(cancel,

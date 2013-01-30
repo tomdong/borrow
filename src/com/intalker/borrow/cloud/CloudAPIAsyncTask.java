@@ -69,6 +69,8 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 			}
 		} else if (mOp.compareTo(CloudAPI.API_GetFriends) == 0) {
 			mReturnCode = CloudAPI._getFriends();
+		} else if (mOp.compareTo(CloudAPI.API_DeleteBookFromServer) == 0) {
+			mReturnCode = CloudAPI._deleteBookFromServer(mUrl);
 		}
 		return null;
 	}
