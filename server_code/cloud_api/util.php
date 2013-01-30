@@ -144,6 +144,15 @@ function makeUnifiedColName($tableName, $colName)
 	return $tableName . "." . $colName;
 }
 
+function deleteBookByOwnerIdAndISBN($ownerid, $isbn)
+{
+	$sql = "delete from " . DB_TABLE_BOOK
+	. " where " . DB_BOOK_OWNERID . "=" . wrapStr($ownerid)
+	. " and " . DB_BOOK_ISBN . "=" . wrapStr($isbn);
+    $result = mysql_query($sql);
+    return $result;
+}
+
 function getFriendsByHost($hostid)
 {
 //select user.id, user.nickname, user.email, user.registertime, user.permission,

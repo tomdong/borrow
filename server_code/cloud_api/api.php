@@ -271,6 +271,29 @@ switch($op)
         	echo BAD_SESSION;
         }
         break;
+	case "DeleteBookByOwnerIdAndISBN":
+	    $sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+        if(NULL != $sessionId)
+        {
+            $con = connectDB();
+            $uid = getUserIdBySession($sessionId);
+            if(NULL != $uid)
+            {
+            	$isbn = getValueFromRequest(DB_BOOK_ISBN);
+				deleteBookByOwnerIdAndISBN($uid, $isbn);
+				echo SUCCESSFUL;
+            }
+            else
+            {
+                echo BAD_SESSION;
+            }
+            disconnectDB($con);
+        }
+        else
+        {
+        	echo BAD_SESSION;
+        }
+		break;
 	/*	
     case "Signup":
         $con = connectDB();
