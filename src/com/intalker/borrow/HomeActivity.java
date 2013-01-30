@@ -255,7 +255,7 @@ public class HomeActivity extends Activity {
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 
 		tempLP.width = LayoutUtil.getNavigationPanelWidth();
-		tempLP.height = LayoutUtil.getSmallMargin();
+		tempLP.height = LayoutUtil.getMediumMargin();
 		View separatorView = new View(this);
 		separatorView.setBackgroundResource(R.drawable.hori_separator);
 		navigationBar.addView(separatorView, tempLP);

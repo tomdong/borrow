@@ -1,13 +1,17 @@
 package com.intalker.borrow.ui.social;
 
 import com.intalker.borrow.R;
+import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ImageView.ScaleType;
 
 public class SocialPanel extends RelativeLayout {
 
@@ -27,9 +31,11 @@ public class SocialPanel extends RelativeLayout {
 		mMainLayout.setBackgroundResource(R.drawable.stone_bg);
 
 		this.addView(mMainLayout);
-
-		createFriendView();
 		createButtons();
+		this.addView(ControlFactory.createHoriSeparator(context,
+				LayoutUtil.getSocialPanelWidth(),
+				DensityAdaptor.getDensityIndependentValue(32)));
+		createFriendView();
 	}
 
 	private void createButtons() {

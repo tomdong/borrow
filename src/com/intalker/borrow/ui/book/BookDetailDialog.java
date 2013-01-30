@@ -3,6 +3,7 @@ package com.intalker.borrow.ui.book;
 import com.intalker.borrow.R;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -96,12 +97,17 @@ public class BookDetailDialog extends Dialog {
 		mISBNTextView = addInfoTextView(R.string.isbn, 4);
 		
 		int separatorY = boundMargin + LayoutUtil.getDetailDialogHeight() / 2;
-		mLayout.addView(createSeparator(separatorY));
+		mLayout.addView(ControlFactory.createHoriSeparator(context,
+				LayoutUtil.getDetailDialogWidth(),
+				separatorY));
 		
 		int descriptionHeight = LayoutUtil.getDetailDialogHeight() * 3 / 10;
 		mLayout.addView(createDescriptionPanel(descriptionHeight));
-		mLayout.addView(createSeparator(separatorY + descriptionHeight + boundMargin - DensityAdaptor.getDensityIndependentValue(8)));
 		
+		mLayout.addView(ControlFactory.createHoriSeparator(context,
+				LayoutUtil.getDetailDialogWidth(),
+				separatorY + descriptionHeight + boundMargin - DensityAdaptor.getDensityIndependentValue(8)));
+
 		// Buttons
 		mDeleteButton = new HaloButton(context, R.drawable.trash);
 		mDeleteButton.setOnClickListener(new View.OnClickListener(){
@@ -203,23 +209,7 @@ public class BookDetailDialog extends Dialog {
 
 		return valueText;
 	}
-	
-	private View createSeparator(int y)
-	{
-		ImageView v = new ImageView(this.getContext());
-		v.setImageResource(R.drawable.hori_separator);
-		v.setScaleType(ScaleType.FIT_XY);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.FILL_PARENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-		lp.topMargin = y;
-		lp.width = LayoutUtil.getDetailDialogWidth();
-		
-		v.setLayoutParams(lp);
-		return v;
-	}
-	
 	private ScrollView createDescriptionPanel(int height)
 	{
 		ScrollView scrollView = new ScrollView(this.getContext());
