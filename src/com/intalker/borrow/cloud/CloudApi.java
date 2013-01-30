@@ -62,6 +62,7 @@ public class CloudAPI {
 	public final static String ServerReturnCode_Successful = "Successful";
 	public final static String ServerReturnCode_NoSuchUser = "NoSuchUser";
 	public final static String ServerReturnCode_BadSession = "BadSession";
+	public final static String ServerReturnCode_WrongUserNameOrPwd = "WrongUserNameOrPwd";
 	public final static String ServerReturnCode_UserNameOccupied = "UserNameOccupied";
 	public final static String ServerReturnCode_EmptyResult = "EmptyResult";
 
@@ -128,8 +129,11 @@ public class CloudAPI {
 						.getEntity());
 				if (setAccessToken(strResult)) {
 					return CloudAPI.Return_OK;
-				} else {
+				} else if (strResult
+						.compareTo(CloudAPI.ServerReturnCode_WrongUserNameOrPwd) == 0) {
 					return CloudAPI.Return_WrongUserNameOrPassword;
+				} else {
+					return CloudAPI.Return_NetworkError;
 				}
 			} else {
 				return CloudAPI.Return_NetworkError;
