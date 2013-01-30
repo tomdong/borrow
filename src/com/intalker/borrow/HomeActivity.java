@@ -15,6 +15,7 @@ import com.intalker.borrow.ui.control.sliding.SlidingMenu;
 import com.intalker.borrow.ui.login.LoginDialog;
 import com.intalker.borrow.ui.login.RegisterView;
 import com.intalker.borrow.ui.social.SocialPanel;
+import com.intalker.borrow.util.DBUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.StorageUtil;
@@ -49,7 +50,7 @@ public class HomeActivity extends Activity {
 	public void toggleLeftPanel() {
 		mSlidingMenu.toggleLeftView();
 	}
-	
+
 	public void toggleRightPanel() {
 		mSlidingMenu.toggleRightView();
 	}
@@ -61,7 +62,7 @@ public class HomeActivity extends Activity {
 	public BookGallery getBookGallery() {
 		return mBookGallery;
 	}
-	
+
 	public SocialPanel getSocialPanel() {
 		return mSocialPanel;
 	}
@@ -69,7 +70,6 @@ public class HomeActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.activity_home);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		app = this;
 		AppData.getInstance().initialize();
@@ -79,6 +79,21 @@ public class HomeActivity extends Activity {
 		CloudAPI.CloudToken = "";
 
 		setContentView(initializeWithSlidingStyle());
+		
+		tryAutoLogin();
+	}
+	
+	private void tryAutoLogin() {
+		if (CloudAPI.setAccessToken(DBUtil.loadToken())) {
+			CloudAPI.getLoggedInUserInfo(this, new ICloudAPITaskListener() {
+
+				@Override
+				public void onFinish(int returnCode) {
+					doAfterGetUserInfoByToken(returnCode);
+				}
+
+			});
+		}
 	}
 
 	private View initializeWithSlidingStyle() {
@@ -105,7 +120,7 @@ public class HomeActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//getMenuInflater().inflate(R.menu.activity_home, menu);
+		// getMenuInflater().inflate(R.menu.activity_home, menu);
 		menu.addSubMenu("Settings");
 		menu.addSubMenu("Help");
 		menu.addSubMenu("About");
@@ -131,15 +146,14 @@ public class HomeActivity extends Activity {
 			break;
 		}
 	}
-	
+
 	private void doAfterUplaod(int returnCode) {
 		switch (returnCode) {
 		case CloudAPI.Return_OK:
 			Toast.makeText(this, "Upload done!", Toast.LENGTH_SHORT).show();
 			break;
 		case CloudAPI.Return_BadToken:
-			Toast.makeText(this, "Bad token.", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(this, "Bad token.", Toast.LENGTH_SHORT).show();
 			break;
 		case CloudAPI.Return_NetworkError:
 			Toast.makeText(this, "Network error.", Toast.LENGTH_SHORT).show();
@@ -149,15 +163,14 @@ public class HomeActivity extends Activity {
 			break;
 		}
 	}
-	
+
 	private void doAfterGetOwnedBooks(int returnCode) {
 		switch (returnCode) {
 		case CloudAPI.Return_OK:
 			Toast.makeText(this, "Sync done!", Toast.LENGTH_SHORT).show();
 			break;
 		case CloudAPI.Return_BadToken:
-			Toast.makeText(this, "Bad token.", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(this, "Bad token.", Toast.LENGTH_SHORT).show();
 			break;
 		case CloudAPI.Return_NetworkError:
 			Toast.makeText(this, "Network error.", Toast.LENGTH_SHORT).show();
@@ -172,6 +185,7 @@ public class HomeActivity extends Activity {
 		switch (returnCode) {
 		case CloudAPI.Return_OK:
 			mBookGallery.updateTopPanel();
+			mSocialPanel.getFriendView().refreshList();
 			break;
 		case CloudAPI.Return_NoSuchUser:
 			Toast.makeText(this, "No such user.", Toast.LENGTH_SHORT).show();
@@ -206,21 +220,19 @@ public class HomeActivity extends Activity {
 		mainLayout.addView(mReg);
 		mReg.setVisibility(View.GONE);
 		mReg.setRegisterListener(new RegisterView.OnRegisterListener() {
-			
+
 			@Override
 			public void onSuccess() {
 				mReg.setVisibility(View.GONE);
 				mBookGallery.setVisibility(View.VISIBLE);
 			}
-			
+
 			@Override
-			public void onBack()
-			{
+			public void onBack() {
 				mReg.setVisibility(View.GONE);
 				mBookGallery.setVisibility(View.VISIBLE);
 			}
 		});
-
 
 		// Test settings
 		mainLayout.setBackgroundColor(Color.GRAY);
@@ -248,10 +260,9 @@ public class HomeActivity extends Activity {
 		logoLP.height = LayoutUtil.getNavigationPanelWidth();
 		navigationBar.addView(logoView, logoLP);
 
-		navigationBar.addView(ControlFactory.createHoriSeparatorForLinearLayout(this));
-		
-		
-		
+		navigationBar.addView(ControlFactory
+				.createHoriSeparatorForLinearLayout(this));
+
 		Button b = new Button(this);
 		b.setText("<<");
 		b.setOnClickListener(new OnClickListener() {
@@ -330,7 +341,7 @@ public class HomeActivity extends Activity {
 			});
 
 			navigationBar.addView(btn_loginbysession);
-			
+
 			Button btn_test = new Button(this);
 			btn_test.setText("Temp Test");
 			btn_test.setOnClickListener(new OnClickListener() {
@@ -338,16 +349,16 @@ public class HomeActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					// For any test code
-//					CloudAPI.uploadBooks(HomeActivity.getApp(),
-//							new ICloudAPITaskListener() {
-//
-//								@Override
-//								public void onFinish(int returnCode) {
-//									doAfterUplaod(returnCode);
-//								}
-//
-//							});
-					
+					// CloudAPI.uploadBooks(HomeActivity.getApp(),
+					// new ICloudAPITaskListener() {
+					//
+					// @Override
+					// public void onFinish(int returnCode) {
+					// doAfterUplaod(returnCode);
+					// }
+					//
+					// });
+
 					CloudAPI.getOwnedBooks(HomeActivity.getApp(),
 							new ICloudAPITaskListener() {
 
@@ -391,7 +402,7 @@ public class HomeActivity extends Activity {
 		}
 		return navigationBar;
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);

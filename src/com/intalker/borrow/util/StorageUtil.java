@@ -24,10 +24,12 @@ public class StorageUtil {
 	public final static String CacheImagePath = CachePath + "/image";
 	public final static String CacheXmlPath = CachePath + "/xml";
 	public final static String CacheBookIndexPath = CacheXmlPath + "/book.xml";
+	public final static String DatabasePath = AppPath + "/db";
 
 	public static void initialize() {
 		checkPath(CacheImagePath);
 		checkPath(CacheXmlPath);
+		checkPath(DatabasePath);
 	}
 
 	private static void checkPath(String path) {

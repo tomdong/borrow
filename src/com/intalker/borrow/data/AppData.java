@@ -2,6 +2,9 @@ package com.intalker.borrow.data;
 
 import java.util.ArrayList;
 
+import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.util.DBUtil;
+
 public class AppData {
 	private ArrayList<BookInfo> mBooks = null;
 	private ArrayList<FriendInfo> mFriends = null;
@@ -22,6 +25,7 @@ public class AppData {
 	public void initialize() {
 		mBooks.clear();
 		mFriends.clear();
+		DBUtil.initialize();
 	}
 
 	public ArrayList<BookInfo> getBooks() {

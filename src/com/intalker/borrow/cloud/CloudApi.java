@@ -14,6 +14,7 @@ import android.content.Context;
 
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.UserInfo;
+import com.intalker.borrow.util.DBUtil;
 import com.intalker.borrow.util.JSONUtil;
 
 public class CloudAPI {
@@ -149,7 +150,10 @@ public class CloudAPI {
 
 	public static boolean setAccessToken(String token) {
 		if (token.length() == 36) {
-			CloudToken = token;
+			if (token.compareTo(CloudToken) != 0) {
+				CloudToken = token;
+				DBUtil.saveToken(token);
+			}
 			return true;
 		}
 		return false;
