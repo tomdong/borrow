@@ -10,6 +10,7 @@ import com.intalker.borrow.friends.FriendsNavigationVertical;
 import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
+import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.sliding.SlidingMenu;
 import com.intalker.borrow.ui.login.LoginDialog;
 import com.intalker.borrow.ui.login.RegisterView;
@@ -247,18 +248,7 @@ public class HomeActivity extends Activity {
 		logoLP.height = LayoutUtil.getNavigationPanelWidth();
 		navigationBar.addView(logoView, logoLP);
 
-		
-		
-		//Temp code to specify the navigation panel's width
-		LinearLayout.LayoutParams tempLP = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT,
-				LinearLayout.LayoutParams.WRAP_CONTENT);
-
-		tempLP.width = LayoutUtil.getNavigationPanelWidth();
-		tempLP.height = LayoutUtil.getMediumMargin();
-		View separatorView = new View(this);
-		separatorView.setBackgroundResource(R.drawable.hori_separator);
-		navigationBar.addView(separatorView, tempLP);
+		navigationBar.addView(ControlFactory.createHoriSeparatorForLinearLayout(this));
 		
 		
 		

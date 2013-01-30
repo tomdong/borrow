@@ -97,14 +97,14 @@ public class BookDetailDialog extends Dialog {
 		mISBNTextView = addInfoTextView(R.string.isbn, 4);
 		
 		int separatorY = boundMargin + LayoutUtil.getDetailDialogHeight() / 2;
-		mLayout.addView(ControlFactory.createHoriSeparator(context,
+		mLayout.addView(ControlFactory.createHoriSeparatorForRelativeLayout(context,
 				LayoutUtil.getDetailDialogWidth(),
 				separatorY));
 		
 		int descriptionHeight = LayoutUtil.getDetailDialogHeight() * 3 / 10;
 		mLayout.addView(createDescriptionPanel(descriptionHeight));
 		
-		mLayout.addView(ControlFactory.createHoriSeparator(context,
+		mLayout.addView(ControlFactory.createHoriSeparatorForRelativeLayout(context,
 				LayoutUtil.getDetailDialogWidth(),
 				separatorY + descriptionHeight + boundMargin - DensityAdaptor.getDensityIndependentValue(8)));
 

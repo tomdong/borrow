@@ -2,7 +2,6 @@ package com.intalker.borrow.ui.social;
 
 import com.intalker.borrow.R;
 import com.intalker.borrow.data.FriendInfo;
-import com.intalker.borrow.util.ColorUtil;
 import com.intalker.borrow.util.DensityAdaptor;
 
 import android.content.Context;
@@ -19,7 +18,6 @@ public class FriendItemUI extends RelativeLayout {
 
 	public FriendItemUI(Context context) {
 		super(context);
-		this.setBackgroundColor(ColorUtil.generateRandomColor());
 		createUI();
 	}
 	

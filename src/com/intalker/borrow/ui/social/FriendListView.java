@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.FriendInfo;
+import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.util.DensityAdaptor;
+import com.intalker.borrow.util.LayoutUtil;
+
 import android.content.Context;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -20,8 +23,6 @@ public class FriendListView extends ScrollView {
 		mListView.setOrientation(LinearLayout.VERTICAL);
 
 		this.addView(mListView);
-
-		//this.setBackgroundColor(Color.BLACK);
 	}
 
 	public void refreshList() {
@@ -33,7 +34,13 @@ public class FriendListView extends ScrollView {
 		itemLP.height = DensityAdaptor.getDensityIndependentValue(40);
 
 		ArrayList<FriendInfo> friends = AppData.getInstance().getFriends();
+		boolean isFirst = true;
 		for (FriendInfo friendInfo : friends) {
+			if (!isFirst) {
+				mListView.addView(ControlFactory.createHoriSeparatorForLinearLayout(
+								this.getContext()));
+			}
+			isFirst = false;
 			FriendItemUI friendItemUI = new FriendItemUI(this.getContext());
 			friendItemUI.setInfo(friendInfo);
 			mListView.addView(friendItemUI, itemLP);

@@ -32,7 +32,7 @@ public class SocialPanel extends RelativeLayout {
 
 		this.addView(mMainLayout);
 		createButtons();
-		this.addView(ControlFactory.createHoriSeparator(context,
+		this.addView(ControlFactory.createHoriSeparatorForRelativeLayout(context,
 				LayoutUtil.getSocialPanelWidth(),
 				DensityAdaptor.getDensityIndependentValue(32)));
 		createFriendView();
