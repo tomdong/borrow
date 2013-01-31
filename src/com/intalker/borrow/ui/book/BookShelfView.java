@@ -3,7 +3,7 @@ package com.intalker.borrow.ui.book;
 import java.util.ArrayList;
 import com.intalker.borrow.R;
 import com.intalker.borrow.data.BookInfo;
-import com.intalker.borrow.ui.control.DragRefreshScroll;
+//import com.intalker.borrow.ui.control.DragRefreshScroll;
 import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;

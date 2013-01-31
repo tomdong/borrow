@@ -12,11 +12,13 @@ import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
+import com.intalker.borrow.util.DeviceUtil;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.ScanUtil;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -215,6 +217,18 @@ public class BookGallery extends RelativeLayout {
 		shelfViewLP.topMargin = LayoutUtil.getGalleryTopPanelHeight();
 		shelfViewLP.bottomMargin = LayoutUtil.getGalleryBottomPanelHeight();
 		this.addView(mShelfView, shelfViewLP);
+		
+		if(DeviceUtil.isFroyo())
+		{
+			mShelfView.setOnTouchListener(new OnTouchListener(){
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+				
+			});
+		}
 	}
 	
 	public void clearBooks()
