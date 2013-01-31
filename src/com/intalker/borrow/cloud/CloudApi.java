@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import android.content.Context;
 
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
+import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.util.DBUtil;
 import com.intalker.borrow.util.JSONUtil;
@@ -291,6 +292,7 @@ public class CloudAPI {
 
 	public static int _getFriends()
 	{
+		AppData.getInstance().clearFriends();
 		String url = API_BaseURL + API_GetFriends + CloudAPI.API_TOKEN + CloudAPI.CloudToken;;
 		HttpGet getReq = new HttpGet(url);
 		try {
