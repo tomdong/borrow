@@ -301,7 +301,7 @@ public class BookDetailDialog extends Dialog {
 				mPublisherTextView.setText(bookInfo.getPublisher());
 				mPageCountTextView.setText(bookInfo.getPageCount());
 				mISBNTextView.setText(bookInfo.getISBN());
-				mDescriptionTextView.setText(bookInfo.getDescription());
+				mDescriptionTextView.setText(bookInfo.getSummary());
 			}
 		}
 	}

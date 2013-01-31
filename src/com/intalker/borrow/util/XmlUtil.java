@@ -113,7 +113,7 @@ public class XmlUtil {
 					String descriptionTagName = subNode.getNodeName();
 					if (descriptionTagName.compareTo(DescriptionNodeName) == 0) {
 						String description = subNode.getTextContent();
-						book.setDescription(description);
+						book.setSummary(description);
 					}
 				}
 				books.add(book);
@@ -151,7 +151,7 @@ public class XmlUtil {
 			bookElement.appendChild(pageCountElement);
 			
 			Element descriptionElement = doc.createElement(DescriptionNodeName);
-			descriptionElement.setTextContent(book.getDescription());
+			descriptionElement.setTextContent(book.getSummary());
 			bookElement.appendChild(descriptionElement);
 			
 			rootElement.appendChild(bookElement);

@@ -9,7 +9,9 @@ public class BookInfo {
 	private String mAuthor = "";
 	private String mPublisher = "";
 	private String mPageCount = "";
-	private String mDescription = "";
+	private String mSummary = "";
+	private int mQuantity = 1;
+	
 	private Bitmap mCoverImage = null;
 	
 	//Currently, only used for synchronizing with cloud
@@ -50,8 +52,12 @@ public class BookInfo {
 		mPageCount = count;
 	}
 	
-	public void setDescription(String description) {
-		mDescription = description;
+	public void setQuantity(int quantity) {
+		mQuantity = quantity;
+	}
+	
+	public void setSummary(String summary) {
+		mSummary = summary;
 	}
 
 	public String getISBN() {
@@ -78,12 +84,16 @@ public class BookInfo {
 		return mPageCount;
 	}
 	
-	public String getDescription() {
-		return mDescription;
+	public String getSummary() {
+		return mSummary;
 	}
 	
 	public boolean getInitialized() {
 		return mInitialized;
+	}
+	
+	public int getQuantity() {
+		return mQuantity;
 	}
 	
 	public void setData(BookInfoParser parser)
@@ -92,7 +102,7 @@ public class BookInfo {
 		setBookName(parser.getBookName());
 		setAuthor(parser.getAuthor());
 		setCoverImage(parser.getCoverImage());
-		setDescription(parser.getDescription());
+		setSummary(parser.getDescription());
 		setPageCount(parser.getPageCount());
 		setPublisher(parser.getPublisher());
 		setInitialized(true);

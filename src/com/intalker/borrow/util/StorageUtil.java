@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
+import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
 
@@ -56,7 +57,13 @@ public class StorageUtil {
 	}
 	
 	public static void loadCachedBooks() {
-		ArrayList<BookInfo> cachedBooks = XmlUtil.parseCachedBooks();
+		ArrayList<BookInfo> cachedBooks = null;
+		if (AppConfig.useSQLiteForCache) {
+			cachedBooks = DBUtil.loadOwnedBooks();
+		} else {
+			cachedBooks = XmlUtil.parseCachedBooks();
+		}
+
 		AppData appData = AppData.getInstance();
 		appData.clearBooks();
 		for(BookInfo bookInfo : cachedBooks)
@@ -66,16 +73,23 @@ public class StorageUtil {
 	}
 	
 	public static void saveCachedBooks() {
-		//Save text info
-		try {
-			File file = new File(CacheBookIndexPath);
-			FileWriter fw = new FileWriter(file, false);
-			fw.write(XmlUtil.serializeCachedBooks(AppData.getInstance().getBooks()));
-			fw.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
+		if (AppConfig.useSQLiteForCache) {
+			DBUtil.clearOwnedBooks();
+			ArrayList<BookInfo> ownedBooks = AppData.getInstance().getBooks();
+			DBUtil.saveOwnedBooks(ownedBooks);
+		} else {
+			try {
+				File file = new File(CacheBookIndexPath);
+				FileWriter fw = new FileWriter(file, false);
+				fw.write(XmlUtil.serializeCachedBooks(AppData.getInstance()
+						.getBooks()));
+				fw.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 		//Save image info
 		ArrayList<BookInfo> books = AppData.getInstance().getBooks();
 		for(BookInfo bookInfo : books)

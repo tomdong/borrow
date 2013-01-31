@@ -1,14 +1,19 @@
 package com.intalker.borrow.util;
 
+import java.util.ArrayList;
+
+import com.intalker.borrow.data.BookInfo;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 
 public class DBUtil {
 
 	private static SQLiteDatabase openDatabase() {
-		return SQLiteDatabase.openOrCreateDatabase(StorageUtil.DatabasePath + "/openshelf.db",
-				null);
+		return SQLiteDatabase.openOrCreateDatabase(StorageUtil.DatabasePath
+				+ "/openshelf.db", null);
 	}
 
 	public static void initialize() {
@@ -18,7 +23,7 @@ public class DBUtil {
 
 			// Initialize bookinfo table
 			String sql = "CREATE TABLE IF NOT EXISTS `bookinfo` ("
-					+ "`id` INTEGER PRIMARY KEY," + "`isbn` TEXT,"
+					+ "`isbn` TEXT PRIMARY KEY,"
 					+ "`bookname` TEXT," + "`publisher` TEXT,"
 					+ "`pagecount` TEXT," + "`author` TEXT,"
 					+ "`summary` TEXT);";
@@ -80,5 +85,135 @@ public class DBUtil {
 			db.close();
 		}
 		return token;
+	}
+
+	private static void addBookData(BookInfo bookInfo, SQLiteDatabase db) {
+		if(null == bookInfo)
+		{
+			return;
+		}
+		String isbn = bookInfo.getISBN();
+		
+		ContentValues bookVals = new ContentValues();
+		bookVals.put("isbn", isbn);
+		bookVals.put("quantity", bookInfo.getQuantity());
+		bookVals.put("description", bookInfo.getSummary());
+
+		// Hard code now
+		bookVals.put("publiclevel", "all");
+		bookVals.put("status", "available");
+
+		db.insert("book", null, bookVals);
+		
+		ContentValues bookInfoVals = new ContentValues();
+		bookInfoVals.put("isbn", isbn);
+		bookInfoVals.put("bookname", bookInfo.getBookName());
+		bookInfoVals.put("publisher", bookInfo.getPublisher());
+		bookInfoVals.put("pagecount", bookInfo.getPageCount());
+		bookInfoVals.put("author", bookInfo.getAuthor());
+		bookInfoVals.put("summary", bookInfo.getSummary());
+		
+		db.insertWithOnConflict("bookinfo", null, bookInfoVals, SQLiteDatabase.CONFLICT_IGNORE);
+	}
+
+	public static void saveOwnedBook(BookInfo bookInfo) {
+		SQLiteDatabase db = null;
+		try {
+			db = openDatabase();
+			addBookData(bookInfo, db);
+		} catch (Exception ex) {
+		}
+		if (null != db && db.isOpen()) {
+			db.close();
+		}
+	}
+
+	public static void saveOwnedBooks(ArrayList<BookInfo> books) {
+		SQLiteDatabase db = null;
+		try {
+			db = openDatabase();
+
+			for (BookInfo bookInfo : books) {
+				addBookData(bookInfo, db);
+			}
+		} catch (Exception ex) {
+		}
+		if (null != db && db.isOpen()) {
+			db.close();
+		}
+	}
+
+	public static void clearOwnedBooks() {
+		SQLiteDatabase db = null;
+		try {
+			db = openDatabase();
+			db.delete("book", null, null);
+		} catch (Exception ex) {
+		}
+		if (null != db && db.isOpen()) {
+			db.close();
+		}
+	}
+
+	public static ArrayList<BookInfo> loadOwnedBooks() {
+		SQLiteDatabase db = null;
+		ArrayList<BookInfo> ownedBooks = new ArrayList<BookInfo>();
+		try {
+			db = openDatabase();
+			Cursor cursor = db.query("book", new String[] { "isbn", "quantity",
+					"description", "publiclevel", "status" }, "", null, null,
+					null, null);
+			while (cursor.moveToNext()) {
+				String isbn = cursor.getString(0);
+				BookInfo bookInfo = getBookInfo(isbn, db);
+				if (null != bookInfo) {
+					ownedBooks.add(bookInfo);
+				}
+			}
+		} catch (Exception ex) {
+		}
+		if (null != db && db.isOpen()) {
+			db.close();
+		}
+		return ownedBooks;
+	}
+	
+	private static BookInfo getBookInfo(String isbn, SQLiteDatabase db)
+	{
+		BookInfo bookInfo = new BookInfo(isbn);
+		bookInfo.setCoverImage(StorageUtil.loadCoverImageFromCache(isbn));
+		Cursor cursor = db.query("bookinfo", new String[] { "bookname",
+				"publisher", "pagecount", "author", "summary" }, "isbn=?",
+				new String[] { isbn }, null, null, null);
+		while (cursor.moveToNext()) {
+			String bookName = cursor.getString(0);
+			String publisher = cursor.getString(1);
+			String pageCount = cursor.getString(2);
+			String author = cursor.getString(3);
+			String summary = cursor.getString(4);
+
+			bookInfo.setBookName(bookName);
+			bookInfo.setPublisher(publisher);
+			bookInfo.setPageCount(pageCount);
+			bookInfo.setAuthor(author);
+			bookInfo.setSummary(summary);
+			break;
+		}
+		return bookInfo;
+	}
+	
+	public static BookInfo getBookInfo(String isbn)
+	{
+		BookInfo bookInfo = null;
+		SQLiteDatabase db = null;
+		try {
+			db = openDatabase();
+			bookInfo = getBookInfo(isbn, db);
+		} catch (Exception ex) {
+		}
+		if (null != db && db.isOpen()) {
+			db.close();
+		}
+		return bookInfo;
 	}
 }

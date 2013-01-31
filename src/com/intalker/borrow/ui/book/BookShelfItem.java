@@ -107,7 +107,7 @@ public class BookShelfItem extends RelativeLayout {
 		mInfo.setAuthor(author);
 		mInfo.setPublisher(publisher);
 		mInfo.setPageCount(pageCount);
-		mInfo.setDescription(description);
+		mInfo.setSummary(description);
 	}
 	
 	public BookInfo getInfo() {
