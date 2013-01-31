@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
+import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
@@ -57,12 +58,14 @@ public class StorageUtil {
 	}
 	
 	public static void loadCachedBooks() {
+		//DebugUtil.startTimeRecord();
 		ArrayList<BookInfo> cachedBooks = null;
 		if (AppConfig.useSQLiteForCache) {
 			cachedBooks = DBUtil.loadOwnedBooks();
 		} else {
 			cachedBooks = XmlUtil.parseCachedBooks();
 		}
+		//DebugUtil.showTimeRecordResult(HomeActivity.getApp());
 
 		AppData appData = AppData.getInstance();
 		appData.clearBooks();

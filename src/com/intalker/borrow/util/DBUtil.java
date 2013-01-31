@@ -79,6 +79,7 @@ public class DBUtil {
 			while (cursor.moveToNext()) {
 				token = cursor.getString(0);
 			}
+			cursor.close();
 		} catch (Exception ex) {
 		}
 		if (null != db && db.isOpen()) {
@@ -170,6 +171,7 @@ public class DBUtil {
 					ownedBooks.add(bookInfo);
 				}
 			}
+			cursor.close();
 		} catch (Exception ex) {
 		}
 		if (null != db && db.isOpen()) {
@@ -199,6 +201,7 @@ public class DBUtil {
 			bookInfo.setSummary(summary);
 			break;
 		}
+		cursor.close();
 		return bookInfo;
 	}
 	
