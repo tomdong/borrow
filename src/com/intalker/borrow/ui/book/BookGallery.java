@@ -220,7 +220,7 @@ public class BookGallery extends RelativeLayout {
 		
 		if(DeviceUtil.isFroyo())
 		{
-			mShelfView.setOnTouchListener(new OnTouchListener(){
+			this.setOnTouchListener(new OnTouchListener(){
 
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
