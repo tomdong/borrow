@@ -14,6 +14,7 @@ import com.intalker.borrow.isbn.parser.OpenISBNBookInfoParser;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.book.BookShelfView;
 import com.intalker.borrow.ui.control.TransparentProgressDialog;
+import com.intalker.borrow.util.DeviceUtil;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -44,8 +45,11 @@ public class ISBNResolver {
 
 	private BookInfoParser getParser() {
 		if (null == parser) {
-			// parser = new DoubanBookInfoParser();
-			parser = new DoubanBookInfoParserV2();
+			if (DeviceUtil.isFroyo()) {
+				parser = new DoubanBookInfoParser();
+			} else {
+				parser = new DoubanBookInfoParserV2();
+			}
 			// parser = new OpenISBNBookInfoParser();
 		}
 		return parser;
