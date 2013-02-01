@@ -173,11 +173,15 @@ public class ISBNResolver {
 			int length = mToProcessBookInfoList.size();
 			for (int i = 0; i < length; ++i) {
 				BookInfo bookInfo = mToProcessBookInfoList.get(i);
-				publishProgress(bookInfo);
 
-				mParser.reset(bookInfo.getISBN());
-				mParser.parse();
-				bookInfo.setData(mParser);
+				if (bookInfo.getFoundCacheData()) {
+					bookInfo.setInitialized(true);
+				} else {
+					publishProgress(bookInfo);
+					mParser.reset(bookInfo.getISBN());
+					mParser.parse();
+					bookInfo.setData(mParser);
+				}
 
 				mCurProgress = i;
 

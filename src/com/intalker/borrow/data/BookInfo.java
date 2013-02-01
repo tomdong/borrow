@@ -16,12 +16,17 @@ public class BookInfo {
 	
 	//Currently, only used for synchronizing with cloud
 	private boolean mInitialized = true;
+	private boolean mFoundCacheData = false;
 
 	public BookInfo() {
 	}
 
 	public BookInfo(String isbn) {
 		setISBN(isbn);
+	}
+	
+	public void setFoundCacheData(boolean foundCacheData) {
+		mFoundCacheData = foundCacheData;
 	}
 	
 	public void setInitialized(boolean initialized) {
@@ -90,6 +95,10 @@ public class BookInfo {
 	
 	public boolean getInitialized() {
 		return mInitialized;
+	}
+	
+	public boolean getFoundCacheData() {
+		return mFoundCacheData;
 	}
 	
 	public int getQuantity() {

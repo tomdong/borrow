@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.data.FriendInfo;
@@ -48,7 +49,18 @@ public class JSONUtil {
 						&& jsonBookItem.has(CloudAPI.DB_Book_ISBN)) {
 					String isbn = jsonBookItem.getString(CloudAPI.DB_Book_ISBN);
 					if (null != isbn && !appData.containsBook(isbn)) {
-						BookInfo bookInfo = new BookInfo(isbn);
+						BookInfo bookInfo = null;
+						if (AppConfig.useSQLiteForCache) {
+							bookInfo = DBUtil.getBookInfo(isbn);
+							if (null != bookInfo) {
+								bookInfo.setFoundCacheData(true);
+							}
+						}
+
+						if (null == bookInfo) {
+							bookInfo = new BookInfo(isbn);
+						}
+						
 						bookInfo.setInitialized(false);
 						curBooks.add(bookInfo);
 					}

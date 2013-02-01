@@ -182,18 +182,20 @@ public class DBUtil {
 	
 	private static BookInfo getBookInfo(String isbn, SQLiteDatabase db)
 	{
-		BookInfo bookInfo = new BookInfo(isbn);
-		bookInfo.setCoverImage(StorageUtil.loadCoverImageFromCache(isbn));
+		BookInfo bookInfo = null;
 		Cursor cursor = db.query("bookinfo", new String[] { "bookname",
 				"publisher", "pagecount", "author", "summary" }, "isbn=?",
 				new String[] { isbn }, null, null, null);
 		while (cursor.moveToNext()) {
+			bookInfo = new BookInfo(isbn);
+
 			String bookName = cursor.getString(0);
 			String publisher = cursor.getString(1);
 			String pageCount = cursor.getString(2);
 			String author = cursor.getString(3);
 			String summary = cursor.getString(4);
 
+			bookInfo.setCoverImage(StorageUtil.loadCoverImageFromCache(isbn));
 			bookInfo.setBookName(bookName);
 			bookInfo.setPublisher(publisher);
 			bookInfo.setPageCount(pageCount);

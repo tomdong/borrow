@@ -5,11 +5,13 @@ import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.data.AppData;
+import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.friends.FriendsNavigationVertical;
 import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
+import com.intalker.borrow.ui.book.BookShelfView;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.sliding.SlidingMenu;
 import com.intalker.borrow.ui.login.LoginDialog;
@@ -413,6 +415,16 @@ public class HomeActivity extends Activity {
 				String isbn = data.getStringExtra("SCAN_RESULT");
 				int length = isbn.length();
 				if (10 == length || 13 == length) {
+					if(AppConfig.useSQLiteForCache)
+					{
+						BookInfo bookInfo = DBUtil.getBookInfo(isbn);
+						if (null != bookInfo) {
+							AppData.getInstance().addBook(bookInfo);
+							BookShelfView.getInstance().addBookByExistingInfo(
+									bookInfo);
+							break;
+						}
+					}
 					ISBNResolver.getInstance().getBookInfoByISBN(this, isbn);
 				} else {
 					Toast.makeText(this, this.getString(R.string.invalid_isbn),
