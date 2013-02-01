@@ -21,9 +21,12 @@ public class HaloButton extends RelativeLayout {
 		
 		mButtonImageView = new ImageView(this.getContext());
 		mButtonImageView.setImageResource(imageResId);
+		
+		//Hard code now
+		mButtonImageView.setId(100000);
 		this.addView(mButtonImageView);
 		
-		//addHalo();
+		addHalo();
 	}
 	
 	private void setHalo(boolean b)
@@ -41,11 +44,15 @@ public class HaloButton extends RelativeLayout {
 	private void addHalo()
 	{
 		mHaloView = new ImageView(this.getContext());
-		mHaloView.setImageResource(R.drawable.halo);
+		mHaloView.setBackgroundResource(R.drawable.halo);
 		mHaloView.setScaleType(ScaleType.FIT_XY);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT,
-				RelativeLayout.LayoutParams.MATCH_PARENT);
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		lp.addRule(RelativeLayout.ALIGN_LEFT, mButtonImageView.getId());
+		lp.addRule(RelativeLayout.ALIGN_RIGHT, mButtonImageView.getId());
+		lp.addRule(RelativeLayout.ALIGN_TOP, mButtonImageView.getId());
+		lp.addRule(RelativeLayout.ALIGN_BOTTOM, mButtonImageView.getId());
 		this.addView(mHaloView, lp);
 		mHaloView.setVisibility(GONE);
 		this.setOnTouchListener(new OnTouchListener(){
