@@ -4,6 +4,7 @@ import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -184,15 +185,15 @@ public class LoginDialog extends Dialog {
 	public void show() {
 		// TODO Auto-generated method stub
 		super.show();
-		UserInfo userInfo = UserInfo.getCurLoggedinUser();
-		if (null != userInfo) {
-			this.mEmailInput.setText(userInfo.getEmail());
-			this.mPasswordInput.setText("");
-		}
-		else
-		{
-			this.mEmailInput.setText("tom.dong@openlib.com");
-			this.mPasswordInput.setText("dong");
+		if (!AppConfig.isDebugMode) {
+			UserInfo userInfo = UserInfo.getCurLoggedinUser();
+			if (null != userInfo) {
+				this.mEmailInput.setText(userInfo.getEmail());
+				this.mPasswordInput.setText("");
+			} else {
+				this.mEmailInput.setText("tom.dong@openlib.com");
+				this.mPasswordInput.setText("dong");
+			}
 		}
 	}
 
