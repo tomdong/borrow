@@ -144,7 +144,8 @@ public class SlidingView extends ViewGroup {
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
 			if (!mScroller.isFinished()) {
-				mScroller.abortAnimation();
+				break;
+				//mScroller.abortAnimation();
 			}
 			mLastMotionX = x;
 			mLastMotionY = y;
@@ -154,7 +155,7 @@ public class SlidingView extends ViewGroup {
 			}
 
 			if (getScrollX() == getRightViewWidth()
-					&& mLastMotionX > getLeftViewWidth()) {
+					&& mLastMotionX > getRightViewWidth()) {
 				return false;
 			}
 
