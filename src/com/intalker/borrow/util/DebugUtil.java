@@ -17,7 +17,7 @@ public class DebugUtil {
 			long timeSpan = System.currentTimeMillis() - startTime;
 			Toast.makeText(context,
 					"Time cost: " + String.valueOf(timeSpan) + " ms",
-					Toast.LENGTH_SHORT).show();
+					Toast.LENGTH_LONG).show();
 		}
 	}
 }

@@ -98,11 +98,11 @@ public class DBUtil {
 		ContentValues bookVals = new ContentValues();
 		bookVals.put("isbn", isbn);
 		bookVals.put("quantity", bookInfo.getQuantity());
-		bookVals.put("description", bookInfo.getSummary());
 
 		// Hard code now
 		bookVals.put("publiclevel", "all");
 		bookVals.put("status", "available");
+		bookVals.put("description", "");
 
 		db.insert("book", null, bookVals);
 		
