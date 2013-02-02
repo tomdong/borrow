@@ -5,8 +5,12 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
+import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
@@ -18,6 +22,7 @@ public class UserItemUI extends RelativeLayout {
 	private HaloButton mFollowBtn = null;
 	private TextView mNameTextView = null;
 	private UserInfo mInfo = null;
+	private boolean mAdded = false;
 
 	public UserItemUI(Context context) {
 		super(context);
@@ -88,6 +93,33 @@ public class UserItemUI extends RelativeLayout {
 		mFollowBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (mAdded) {
+					return;
+				}
+				CloudAPI.makeFriends(v.getContext(), mInfo.getId(), new ICloudAPITaskListener(){
+
+					@Override
+					public void onFinish(int returnCode) {
+						switch (returnCode) {
+						case CloudAPI.Return_OK:
+							mFollowBtn.setVisibility(GONE);
+							break;
+						case CloudAPI.Return_BadToken:
+							Toast.makeText(HomeActivity.getApp(), "Bad token.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						case CloudAPI.Return_NetworkError:
+							Toast.makeText(HomeActivity.getApp(), "Network error.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						default:
+							Toast.makeText(HomeActivity.getApp(), "Unknown error.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						}
+					}
+					
+				});
 			}
 		});
 	}

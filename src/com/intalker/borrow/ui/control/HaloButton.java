@@ -13,36 +13,35 @@ public class HaloButton extends RelativeLayout {
 
 	private ImageView mButtonImageView = null;
 	private ImageView mHaloView = null;
-	
+
 	public HaloButton(Context context, int imageResId) {
 		super(context);
-		
+
 		this.setBackgroundDrawable(null);
-		
+
 		mButtonImageView = new ImageView(this.getContext());
 		mButtonImageView.setImageResource(imageResId);
-		
-		//Hard code now
+
+		// Hard code now
 		mButtonImageView.setId(100000);
 		this.addView(mButtonImageView);
-		
+
 		addHalo();
 	}
-	
-	private void setHalo(boolean b)
-	{
-		if(b)
-		{
+
+	public void setButtonImage(int imageResId) {
+		mButtonImageView.setImageResource(imageResId);
+	}
+
+	private void setHalo(boolean b) {
+		if (b) {
 			mHaloView.setVisibility(VISIBLE);
-		}
-		else
-		{
+		} else {
 			mHaloView.setVisibility(GONE);
 		}
 	}
-	
-	private void addHalo()
-	{
+
+	private void addHalo() {
 		mHaloView = new ImageView(this.getContext());
 		mHaloView.setBackgroundResource(R.drawable.halo);
 		mHaloView.setScaleType(ScaleType.FIT_XY);
@@ -55,11 +54,11 @@ public class HaloButton extends RelativeLayout {
 		lp.addRule(RelativeLayout.ALIGN_BOTTOM, mButtonImageView.getId());
 		this.addView(mHaloView, lp);
 		mHaloView.setVisibility(GONE);
-		this.setOnTouchListener(new OnTouchListener(){
+		this.setOnTouchListener(new OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				HaloButton btn = (HaloButton)v;
+				HaloButton btn = (HaloButton) v;
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 				case MotionEvent.ACTION_MOVE:
@@ -71,7 +70,7 @@ public class HaloButton extends RelativeLayout {
 				}
 				return false;
 			}
-			
+
 		});
 	}
 

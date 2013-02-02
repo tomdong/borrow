@@ -6,7 +6,6 @@ import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.FriendInfo;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.util.DensityAdaptor;
-import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;
 import android.widget.LinearLayout;

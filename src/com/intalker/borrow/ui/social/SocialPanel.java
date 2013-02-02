@@ -4,18 +4,13 @@ import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
-import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
-import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import android.widget.ImageView.ScaleType;
 
 public class SocialPanel extends RelativeLayout {
 
@@ -126,7 +121,7 @@ public class SocialPanel extends RelativeLayout {
 					
 				});
 			}
-		});//mReturnBtn
+		});
 		
 		mReturnBtn = new HaloButton(this.getContext(), R.drawable.back);
 		mReturnBtn.setLayoutParams(bottomCenterLP);
@@ -135,10 +130,34 @@ public class SocialPanel extends RelativeLayout {
 		mReturnBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				turnOffUsersView();
+				CloudAPI.getFriends(v.getContext(), new ICloudAPITaskListener(){
+
+					@Override
+					public void onFinish(int returnCode) {
+						switch (returnCode) {
+						case CloudAPI.Return_OK:
+							turnOffUsersView();
+							mFriendsView.refreshList();
+							break;
+						case CloudAPI.Return_BadToken:
+							Toast.makeText(HomeActivity.getApp(), "Bad token.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						case CloudAPI.Return_NetworkError:
+							Toast.makeText(HomeActivity.getApp(), "Network error.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						default:
+							Toast.makeText(HomeActivity.getApp(), "Unknown error.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						}
+					}
+					
+				});
 			}
 		});
-		
+
 		mReturnBtn.setVisibility(GONE);
 	}
 
@@ -148,11 +167,8 @@ public class SocialPanel extends RelativeLayout {
 		RelativeLayout.LayoutParams friendsViewLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.FILL_PARENT);
-//		friendsViewLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
-//		friendsViewLP.rightMargin = DensityAdaptor.getDensityIndependentValue(5);
-		friendsViewLP.topMargin = DensityAdaptor.getDensityIndependentValue(36);
-		friendsViewLP.bottomMargin = DensityAdaptor
-				.getDensityIndependentValue(5);
+		friendsViewLP.topMargin = LayoutUtil.getGalleryTopPanelHeight();
+		friendsViewLP.bottomMargin = LayoutUtil.getGalleryBottomPanelHeight();
 
 		mFriendsView.setLayoutParams(friendsViewLP);
 
@@ -165,11 +181,8 @@ public class SocialPanel extends RelativeLayout {
 		RelativeLayout.LayoutParams usersViewLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.FILL_PARENT);
-//		usersViewLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
-//		usersViewLP.rightMargin = DensityAdaptor.getDensityIndependentValue(5);
-		usersViewLP.topMargin = DensityAdaptor.getDensityIndependentValue(36);
-		usersViewLP.bottomMargin = DensityAdaptor
-				.getDensityIndependentValue(5);
+		usersViewLP.topMargin = LayoutUtil.getGalleryTopPanelHeight();
+		usersViewLP.bottomMargin = LayoutUtil.getGalleryBottomPanelHeight();
 
 		mUsersView.setLayoutParams(usersViewLP);
 
