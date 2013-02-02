@@ -34,6 +34,18 @@ public class AppData {
 		return mBooks;
 	}
 	
+	public boolean isUnfollowed(String userId) {
+		if (UserInfo.getCurLoggedinUser().getId().compareTo(userId) == 0) {
+			return false;
+		}
+		for (FriendInfo friendInfo : mFriends) {
+			if (friendInfo.getUserInfo().getId().compareTo(userId) == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public ArrayList<UserInfo> getAllUsers() {
 		return mAllUsersOnServer;
 	}
