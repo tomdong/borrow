@@ -176,6 +176,25 @@ function getFriendsByHost($hostid)
     return $result;
 }
 
+function getFollowersByUserId($userId)
+{
+	$sql = "select " . makeUnifiedColName(DB_TABLE_USER, DB_USER_ID) . ", "
+	. makeUnifiedColName(DB_TABLE_USER, DB_USER_NICKNAME) . ", "
+	. makeUnifiedColName(DB_TABLE_USER, DB_USER_EMAIL) . ", "
+	. makeUnifiedColName(DB_TABLE_USER, DB_USER_REGISTERTIME) . ", "
+	. makeUnifiedColName(DB_TABLE_USER, DB_USER_PERMISSION) . ", "
+	. makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_ALIAS) . ", "
+	. makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_GROUP) . ", "
+	. makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_STATUS) . ", "
+	. makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_CONNECTTIME)
+	. " from " . DB_TABLE_USER . " inner join " . DB_TABLE_FRIEND
+	. " where " . makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_FRIENDID) . "=" . wrapStr($userId) 
+	. " and " . makeUnifiedColName(DB_TABLE_USER, DB_USER_ID) . "=" . makeUnifiedColName(DB_TABLE_FRIEND, DB_FRIEND_HOSTID);
+
+    $result = mysql_query($sql);
+    return $result;
+}
+
 function login($email, $local_pwd)
 {
     $sql = "select * from " . DB_TABLE_USER . " where "
@@ -265,6 +284,13 @@ function getUserInfoById($uid)
     return NULL;
 }
 
+function getAllUsers()
+{
+    $sql = "select * from " . DB_TABLE_USER . " where 1=1";
+    $result = mysql_query($sql);
+    return $result;
+}
+
 function getUserInfoByEmail($email)
 {
     $sql = "select * from " . DB_TABLE_USER . " where " . DB_USER_EMAIL . "=" . wrapStr($email);
@@ -298,6 +324,18 @@ function getBookOfficialInfo($isbn)
         }
     }
     return NULL;
+}
+
+function makeFriends($hostId, $friendId)
+{
+	if(NULL != $hostId && NULL != $friendId)
+	{
+	    $friendRecord[DB_FRIEND_HOSTID] = $hostId;
+        $friendRecord[DB_FRIEND_FRIENDID] = $friendId;
+        insertRecord(DB_TABLE_FRIEND, $friendRecord);
+        return SUCCESSFUL;
+	}
+	return UNKNOWN_ERROR;
 }
 
 function encodeUserInfo($data)
@@ -354,6 +392,8 @@ function encodeBooksQueryResult($result)
     return $encodedStr;
 }
 
+
+
 function encodeFriendsQueryResult($result)
 {
     $encodedStr = "";
@@ -375,10 +415,38 @@ function encodeFriendsQueryResult($result)
 			$item[DB_FRIEND_STATUS] = $row[DB_FRIEND_STATUS];
 			$item[DB_FRIEND_CONNECTTIME] = $row[DB_FRIEND_CONNECTTIME];
 			
-            $friendsList[$index] = $item;
+            $friendList[$index] = $item;
             ++$index;
         }
-        $encodedStr = json_encode($friendsList);
+        $encodedStr = json_encode($friendList);
+    }
+    else
+    {
+        $encodedStr = EMPTY_RESULT;
+	}
+    return $encodedStr;
+}
+
+function encodeUsersQueryResult($result)
+{
+    $encodedStr = "";
+    if(mysql_num_rows($result) > 0)
+    {
+        $index = 0;
+        while($row = mysql_fetch_array($result))
+        {
+            unset($item);
+            
+			$item[DB_USER_ID] = $row[DB_USER_ID];
+			$item[DB_USER_NICKNAME] = htmlspecialchars_decode($row[DB_USER_NICKNAME], ENT_QUOTES);
+			$item[DB_USER_EMAIL] = $row[DB_USER_EMAIL];
+			$item[DB_USER_REGISTERTIME] = $row[DB_USER_REGISTERTIME];
+			$item[DB_USER_PERMISSION] = $row[DB_USER_PERMISSION];
+			
+            $userList[$index] = $item;
+            ++$index;
+        }
+        $encodedStr = json_encode($userList);
     }
     else
     {

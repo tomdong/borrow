@@ -249,6 +249,20 @@ switch($op)
         	echo BAD_SESSION;
         }
     	break;
+    case "GetAllUsers":
+       	$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+        if(NULL != $sessionId)
+        {
+            $con = connectDB();
+            $allUsers = getAllUsers();
+			echo encodeUsersQueryResult($allUsers);
+            disconnectDB($con);
+        }
+        else
+        {
+        	echo BAD_SESSION;
+        }
+    	break;
     case "GetFriendsBySession":
         $sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
         if(NULL != $sessionId)
@@ -282,6 +296,57 @@ switch($op)
             	$isbn = getValueFromRequest(DB_BOOK_ISBN);
 				deleteBookByOwnerIdAndISBN($uid, $isbn);
 				echo SUCCESSFUL;
+            }
+            else
+            {
+                echo BAD_SESSION;
+            }
+            disconnectDB($con);
+        }
+        else
+        {
+        	echo BAD_SESSION;
+        }
+		break;
+	case "MakeFriends":
+		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+		if(NULL != $sessionId)
+		{
+		    $con = connectDB();
+		    $hostId = getUserIdBySession($sessionId);
+		    if(NULL != $hostId)
+		    {
+				$friendId = getValueFromRequest(DB_FRIEND_FRIENDID);
+				if(NULL != $hostId)
+		        {
+		        	echo makeFriends($hostId, $friendId);
+		        }
+		        else
+		        {
+		        	echo UNKNOWN_ERROR;
+		        }
+		    }
+		    else
+		    {
+		        echo BAD_SESSION;
+		    }
+		    disconnectDB($con);
+		}
+		else
+		{
+			echo BAD_SESSION;
+		}
+		break;
+	case "GetFollowersBySession":
+	    $sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+        if(NULL != $sessionId)
+        {
+            $con = connectDB();
+            $userId = getUserIdBySession($sessionId);
+            if(NULL != $userId)
+            {
+				$followers = getFollowersByUserId($userId);
+				echo encodeFriendsQueryResult($followers);
             }
             else
             {
