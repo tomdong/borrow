@@ -30,6 +30,7 @@ public class CloudAPI {
 	public final static String API_SynchronizeOwnedBooks = "SynchronizeOwnedBooks";
 	public final static String API_GetFriends = "GetFriendsBySession";
 	public final static String API_DeleteBookFromServer = "DeleteBookByOwnerIdAndISBN";
+	public final static String API_GetAllUsers = "GetAllUsers";
 	
 	// API params
 	public final static String API_Email = "&email=";
@@ -347,6 +348,41 @@ public class CloudAPI {
 			return CloudAPI.Return_NetworkError;
 		}
 	}
+	
+	public static int _getAllUsers()
+	{
+		AppData.getInstance().clearAllUsers();
+		String url = API_BaseURL + API_GetAllUsers + CloudAPI.API_TOKEN + CloudAPI.CloudToken;;
+		HttpGet getReq = new HttpGet(url);
+		try {
+			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+				if (null != strResult && strResult.length() > 0) {
+					if (strResult.compareTo(CloudAPI.ServerReturnCode_EmptyResult) == 0)
+					{
+						return CloudAPI.Return_OK;
+					}
+					else if (strResult.compareTo(CloudAPI.ServerReturnCode_BadSession) == 0)
+					{
+						return CloudAPI.Return_BadToken;
+					}
+					else
+					{
+						JSONUtil.parseAllUsersInfo(strResult);
+					}
+					return CloudAPI.Return_OK;
+				} else {
+					return CloudAPI.Return_UnknownError;
+				}
+			} else {
+				return CloudAPI.Return_NetworkError;
+			}
+		} catch (Exception e) {
+			return CloudAPI.Return_NetworkError;
+		}
+	}
 	// Client should not call any of the methods above.
 	public static void login(Context context, String email, String pwd,
 			ICloudAPITaskListener apiListener) {
@@ -410,6 +446,13 @@ public class CloudAPI {
 		String url = API_BaseURL + API_DeleteBookFromServer + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_ISBN + isbn;
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
 				API_DeleteBookFromServer, apiListener);
+		task.execute();
+	}
+	
+	public static void getAllUsers(Context context,
+			ICloudAPITaskListener apiListener) {
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, "",
+				API_GetAllUsers, apiListener);
 		task.execute();
 	}
 }

@@ -184,7 +184,7 @@ public class NavigationPanel extends RelativeLayout{
 		switch (returnCode) {
 		case CloudAPI.Return_OK:
 			HomeActivity.getApp().getBookGallery().updateTopPanel();
-			HomeActivity.getApp().getSocialPanel().getFriendView().refreshList();
+			HomeActivity.getApp().getSocialPanel().getFriendsView().refreshList();
 			break;
 		case CloudAPI.Return_NoSuchUser:
 			Toast.makeText(mContext, "No such user.", Toast.LENGTH_SHORT).show();

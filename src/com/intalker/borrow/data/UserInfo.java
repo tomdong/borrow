@@ -1,5 +1,7 @@
 package com.intalker.borrow.data;
 
+import com.intalker.borrow.util.StringUtil;
+
 public class UserInfo {
 	private String mId = "";
 	private String mNickName = "";
@@ -63,5 +65,15 @@ public class UserInfo {
 				+ "\nEmail      : " + mEmail
 				+ "\nRegTime    : " + mRegTime
 				+ "\nPermission : " + mPermission;
+	}
+	
+	public String getDisplayName() {
+		if (!StringUtil.isEmpty(mNickName)) {
+			return mNickName;
+		} else if (!StringUtil.isEmpty(mEmail)) {
+			return mEmail;
+		} else {
+			return "?"; // [TODO] Move to resource file later
+		}
 	}
 }

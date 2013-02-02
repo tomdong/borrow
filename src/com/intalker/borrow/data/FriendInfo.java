@@ -23,12 +23,7 @@ public class FriendInfo {
 			return mAlias;
 		}
 		if (null != mUserInfo) {
-			String nickName = mUserInfo.getNickName();
-			if (!StringUtil.isEmpty(nickName)) {
-				return nickName;
-			} else {
-				return mUserInfo.getEmail();
-			}
+			return mUserInfo.getDisplayName();
 		}
 		return "?"; // [TODO] Move to resource file later
 	}

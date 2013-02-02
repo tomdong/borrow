@@ -73,12 +73,12 @@ public class JSONUtil {
 	
 	public static void parseFriendsInfo(String strJSON) {
 		try {
-			JSONArray jsonBookArray = new JSONArray(strJSON);
-			int length = jsonBookArray.length();
+			JSONArray jsonFriendArray = new JSONArray(strJSON);
+			int length = jsonFriendArray.length();
 			AppData appData = AppData.getInstance();
 			ArrayList<FriendInfo> curFriends = appData.getFriends();
 			for (int i = 0; i < length; ++i) {
-				JSONObject jsonFriendItem = (JSONObject) jsonBookArray.get(i);
+				JSONObject jsonFriendItem = (JSONObject) jsonFriendArray.get(i);
 				if (null != jsonFriendItem) {
 					String id = jsonFriendItem.getString(CloudAPI.DB_User_Id);
 					String nickName = jsonFriendItem.getString(CloudAPI.DB_User_NickName);
@@ -95,6 +95,30 @@ public class JSONUtil {
 					FriendInfo friendInfo = new FriendInfo(userInfo, alias, group, status, connectTime);
 					
 					curFriends.add(friendInfo);
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void parseAllUsersInfo(String strJSON) {
+		try {
+			JSONArray jsonFriendArray = new JSONArray(strJSON);
+			int length = jsonFriendArray.length();
+			AppData appData = AppData.getInstance();
+			ArrayList<UserInfo> curAllUsers = appData.getAllUsers();
+			for (int i = 0; i < length; ++i) {
+				JSONObject jsonFriendItem = (JSONObject) jsonFriendArray.get(i);
+				if (null != jsonFriendItem) {
+					String id = jsonFriendItem.getString(CloudAPI.DB_User_Id);
+					String nickName = jsonFriendItem.getString(CloudAPI.DB_User_NickName);
+					String email = jsonFriendItem.getString(CloudAPI.DB_User_Email);
+					String regTime = jsonFriendItem.getString(CloudAPI.DB_User_RegTime);
+					String permission = jsonFriendItem.getString(CloudAPI.DB_User_Permission);
+
+					UserInfo userInfo = new UserInfo(id, nickName, email, regTime, permission);
+					curAllUsers.add(userInfo);
 				}
 			}
 		} catch (Exception ex) {

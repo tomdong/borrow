@@ -1,6 +1,9 @@
 package com.intalker.borrow.ui.social;
 
+import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
+import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
@@ -11,6 +14,7 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
 
 public class SocialPanel extends RelativeLayout {
@@ -18,7 +22,8 @@ public class SocialPanel extends RelativeLayout {
 	private RelativeLayout mMainLayout = null;
 	private HaloButton mFriendBtn = null;
 	private HaloButton mMessageBtn = null;
-	private FriendListView mFriendView = null;
+	private FriendListView mFriendsView = null;
+	private UsersView mUsersView = null;
 
 	public SocialPanel(Context context) {
 		super(context);
@@ -35,7 +40,9 @@ public class SocialPanel extends RelativeLayout {
 		this.addView(ControlFactory.createHoriSeparatorForRelativeLayout(context,
 				LayoutUtil.getSocialPanelWidth(),
 				DensityAdaptor.getDensityIndependentValue(32)));
-		createFriendView();
+		createFriendsView();
+		createUsersView();
+		mUsersView.setVisibility(INVISIBLE);
 	}
 
 	private void createButtons() {
@@ -49,6 +56,37 @@ public class SocialPanel extends RelativeLayout {
 		friendBtnLP.topMargin = smallMargin;
 		mFriendBtn.setLayoutParams(friendBtnLP);
 		mMainLayout.addView(mFriendBtn);
+		mFriendBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CloudAPI.getAllUsers(v.getContext(), new ICloudAPITaskListener(){
+
+					@Override
+					public void onFinish(int returnCode) {
+						switch (returnCode) {
+						case CloudAPI.Return_OK:
+							mUsersView.setVisibility(VISIBLE);
+							mFriendsView.setVisibility(GONE);
+							mUsersView.refreshList();
+							break;
+						case CloudAPI.Return_BadToken:
+							Toast.makeText(HomeActivity.getApp(), "Bad token.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						case CloudAPI.Return_NetworkError:
+							Toast.makeText(HomeActivity.getApp(), "Network error.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						default:
+							Toast.makeText(HomeActivity.getApp(), "Unknown error.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						}
+					}
+					
+				});
+			}
+		});
 
 		mMessageBtn = new HaloButton(this.getContext(), R.drawable.message);
 		RelativeLayout.LayoutParams msgBtnLP = new RelativeLayout.LayoutParams(
@@ -61,25 +99,46 @@ public class SocialPanel extends RelativeLayout {
 		mMainLayout.addView(mMessageBtn);
 	}
 
-	private void createFriendView() {
-		mFriendView = new FriendListView(this.getContext());
+	private void createFriendsView() {
+		mFriendsView = new FriendListView(this.getContext());
 
-		RelativeLayout.LayoutParams friendViewLP = new RelativeLayout.LayoutParams(
+		RelativeLayout.LayoutParams friendsViewLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.FILL_PARENT);
-		friendViewLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
-		friendViewLP.rightMargin = DensityAdaptor.getDensityIndependentValue(5);
-		friendViewLP.topMargin = DensityAdaptor.getDensityIndependentValue(36);
-		friendViewLP.bottomMargin = DensityAdaptor
+		friendsViewLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
+		friendsViewLP.rightMargin = DensityAdaptor.getDensityIndependentValue(5);
+		friendsViewLP.topMargin = DensityAdaptor.getDensityIndependentValue(36);
+		friendsViewLP.bottomMargin = DensityAdaptor
 				.getDensityIndependentValue(5);
 
-		mFriendView.setLayoutParams(friendViewLP);
+		mFriendsView.setLayoutParams(friendsViewLP);
 
-		mMainLayout.addView(mFriendView);
+		mMainLayout.addView(mFriendsView);
+	}
+	
+	private void createUsersView() {
+		mUsersView = new UsersView(this.getContext());
+
+		RelativeLayout.LayoutParams usersViewLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.FILL_PARENT,
+				RelativeLayout.LayoutParams.FILL_PARENT);
+		usersViewLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
+		usersViewLP.rightMargin = DensityAdaptor.getDensityIndependentValue(5);
+		usersViewLP.topMargin = DensityAdaptor.getDensityIndependentValue(36);
+		usersViewLP.bottomMargin = DensityAdaptor
+				.getDensityIndependentValue(5);
+
+		mUsersView.setLayoutParams(usersViewLP);
+
+		mMainLayout.addView(mUsersView);
 	}
 
-	public FriendListView getFriendView() {
-		return mFriendView;
+	public FriendListView getFriendsView() {
+		return mFriendsView;
+	}
+	
+	public UsersView getUsersView() {
+		return mUsersView;
 	}
 
 }

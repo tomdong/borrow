@@ -129,7 +129,7 @@ public class HomeActivity extends Activity {
 		switch (returnCode) {
 		case CloudAPI.Return_OK:
 			mBookGallery.updateTopPanel();
-			mSocialPanel.getFriendView().refreshList();
+			mSocialPanel.getFriendsView().refreshList();
 			break;
 		case CloudAPI.Return_NoSuchUser:
 			Toast.makeText(this, "No such user.", Toast.LENGTH_SHORT).show();

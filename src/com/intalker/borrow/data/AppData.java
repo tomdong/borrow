@@ -2,11 +2,11 @@ package com.intalker.borrow.data;
 
 import java.util.ArrayList;
 
-import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.util.DBUtil;
 
 public class AppData {
 	private ArrayList<BookInfo> mBooks = null;
+	private ArrayList<UserInfo> mAllUsersOnServer = null;
 	private ArrayList<FriendInfo> mFriends = null;
 	private static AppData instance = null;
 
@@ -19,17 +19,23 @@ public class AppData {
 
 	public AppData() {
 		mBooks = new ArrayList<BookInfo>();
+		mAllUsersOnServer = new ArrayList<UserInfo>();
 		mFriends = new ArrayList<FriendInfo>();
 	}
 	
 	public void initialize() {
 		mBooks.clear();
+		mAllUsersOnServer.clear();
 		mFriends.clear();
 		DBUtil.initialize();
 	}
 
 	public ArrayList<BookInfo> getBooks() {
 		return mBooks;
+	}
+	
+	public ArrayList<UserInfo> getAllUsers() {
+		return mAllUsersOnServer;
 	}
 
 	public ArrayList<FriendInfo> getFriends() {
@@ -85,6 +91,10 @@ public class AppData {
 
 	public void clearBooks() {
 		mBooks.clear();
+	}
+	
+	public void clearAllUsers() {
+		mAllUsersOnServer.clear();
 	}
 
 	public void clearFriends() {

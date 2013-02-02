@@ -155,7 +155,7 @@ public class SlidingView extends ViewGroup {
 			}
 
 			if (getScrollX() == getRightViewWidth()
-					&& mLastMotionX > getRightViewWidth()) {
+					&& mLastMotionX > getLeftViewWidth()) {
 				return false;
 			}
 
