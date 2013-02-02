@@ -2,17 +2,20 @@ package com.intalker.borrow.ui.social;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.widget.ImageView;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.intalker.borrow.R;
 import com.intalker.borrow.data.UserInfo;
+import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
+import com.intalker.borrow.util.LayoutUtil;
 
 public class UserItemUI extends RelativeLayout {
 
-	private ImageView mAvatar = null;
+	private HaloButton mAvatarBtn = null;
+	private HaloButton mFollowBtn = null;
 	private TextView mNameTextView = null;
 	private UserInfo mInfo = null;
 
@@ -31,23 +34,27 @@ public class UserItemUI extends RelativeLayout {
 	}
 
 	private void createUI() {
-		mAvatar = new ImageView(this.getContext());
-		mAvatar.setImageResource(R.drawable.avatar_2);
+		mAvatarBtn = new HaloButton(this.getContext(), R.drawable.avatar_2);
 
 		RelativeLayout.LayoutParams avatarLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		int margin = DensityAdaptor.getDensityIndependentValue(2);
-		avatarLP.leftMargin = margin;
+		int largeMargin = LayoutUtil.getLargeMargin();
+		avatarLP.leftMargin = largeMargin;
 		avatarLP.topMargin = margin;
 		avatarLP.bottomMargin = margin;
 		avatarLP.width = DensityAdaptor.getDensityIndependentValue(32);
 		avatarLP.height = DensityAdaptor.getDensityIndependentValue(32);
 		avatarLP.addRule(RelativeLayout.CENTER_VERTICAL);
-
-		mAvatar.setLayoutParams(avatarLP);
-
-		this.addView(mAvatar);
+		mAvatarBtn.setLayoutParams(avatarLP);
+		this.addView(mAvatarBtn);
+		
+		mAvatarBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			}
+		});
 
 		mNameTextView = new TextView(this.getContext());
 		mNameTextView.setTextSize(16.0f);
@@ -56,12 +63,33 @@ public class UserItemUI extends RelativeLayout {
 		RelativeLayout.LayoutParams nameTextLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		nameTextLP.leftMargin = DensityAdaptor.getDensityIndependentValue(40);
+		nameTextLP.leftMargin = DensityAdaptor.getDensityIndependentValue(70);
 		nameTextLP.addRule(RelativeLayout.CENTER_VERTICAL);
 
 		mNameTextView.setLayoutParams(nameTextLP);
 
 		this.addView(mNameTextView);
+		
+		mFollowBtn = new HaloButton(this.getContext(), R.drawable.add);
+
+		RelativeLayout.LayoutParams followBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		followBtnLP.rightMargin = largeMargin;
+		followBtnLP.topMargin = margin;
+		followBtnLP.bottomMargin = margin;
+		followBtnLP.width = DensityAdaptor.getDensityIndependentValue(32);
+		followBtnLP.height = DensityAdaptor.getDensityIndependentValue(32);
+		followBtnLP.addRule(RelativeLayout.CENTER_VERTICAL);
+		followBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		mFollowBtn.setLayoutParams(followBtnLP);
+		this.addView(mFollowBtn);
+		
+		mFollowBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			}
+		});
 	}
 
 }

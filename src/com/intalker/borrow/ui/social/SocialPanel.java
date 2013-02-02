@@ -20,8 +20,12 @@ import android.widget.ImageView.ScaleType;
 public class SocialPanel extends RelativeLayout {
 
 	private RelativeLayout mMainLayout = null;
+	private RelativeLayout mTopBanner = null;
+	private RelativeLayout mBottomBanner = null;
 	private HaloButton mFriendBtn = null;
 	private HaloButton mMessageBtn = null;
+	private HaloButton mMakeFriendsBtn = null;
+	private HaloButton mReturnBtn = null;
 	private FriendListView mFriendsView = null;
 	private UsersView mUsersView = null;
 
@@ -34,15 +38,33 @@ public class SocialPanel extends RelativeLayout {
 		mainLP.width = LayoutUtil.getSocialPanelWidth();
 		mMainLayout.setLayoutParams(mainLP);
 		mMainLayout.setBackgroundResource(R.drawable.stone_bg);
-
 		this.addView(mMainLayout);
-		createButtons();
-		this.addView(ControlFactory.createHoriSeparatorForRelativeLayout(context,
-				LayoutUtil.getSocialPanelWidth(),
-				DensityAdaptor.getDensityIndependentValue(32)));
+		
+		mTopBanner = new RelativeLayout(this.getContext());
+		mTopBanner.setBackgroundResource(R.drawable.stone_bg);
+		RelativeLayout.LayoutParams topBannerLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.FILL_PARENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		topBannerLP.height = LayoutUtil.getGalleryTopPanelHeight();
+		mMainLayout.addView(mTopBanner, topBannerLP);
+		
+//		this.addView(ControlFactory.createHoriSeparatorForRelativeLayout(context,
+//				LayoutUtil.getSocialPanelWidth(),
+//				DensityAdaptor.getDensityIndependentValue(32)));
 		createFriendsView();
 		createUsersView();
 		mUsersView.setVisibility(INVISIBLE);
+		
+		mBottomBanner = new RelativeLayout(this.getContext());
+		mBottomBanner.setBackgroundResource(R.drawable.stone_bg);
+		RelativeLayout.LayoutParams bottomBannerLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.FILL_PARENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		bottomBannerLP.height = LayoutUtil.getGalleryBottomPanelHeight();
+		bottomBannerLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		mMainLayout.addView(mBottomBanner, bottomBannerLP);
+		
+		createButtons();
 	}
 
 	private void createButtons() {
@@ -55,8 +77,27 @@ public class SocialPanel extends RelativeLayout {
 		friendBtnLP.leftMargin = largeMargin;
 		friendBtnLP.topMargin = smallMargin;
 		mFriendBtn.setLayoutParams(friendBtnLP);
-		mMainLayout.addView(mFriendBtn);
-		mFriendBtn.setOnClickListener(new View.OnClickListener() {
+		mTopBanner.addView(mFriendBtn);
+
+		mMessageBtn = new HaloButton(this.getContext(), R.drawable.message);
+		RelativeLayout.LayoutParams msgBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		msgBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		msgBtnLP.rightMargin = largeMargin;
+		msgBtnLP.topMargin = smallMargin;
+		mMessageBtn.setLayoutParams(msgBtnLP);
+		mTopBanner.addView(mMessageBtn);
+		
+		mMakeFriendsBtn = new HaloButton(this.getContext(), R.drawable.group);
+		RelativeLayout.LayoutParams bottomCenterLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		bottomCenterLP.addRule(RelativeLayout.CENTER_IN_PARENT);
+		mMakeFriendsBtn.setLayoutParams(bottomCenterLP);
+		mBottomBanner.addView(mMakeFriendsBtn);
+		
+		mMakeFriendsBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				CloudAPI.getAllUsers(v.getContext(), new ICloudAPITaskListener(){
@@ -65,8 +106,7 @@ public class SocialPanel extends RelativeLayout {
 					public void onFinish(int returnCode) {
 						switch (returnCode) {
 						case CloudAPI.Return_OK:
-							mUsersView.setVisibility(VISIBLE);
-							mFriendsView.setVisibility(GONE);
+							turnOnUsersView();
 							mUsersView.refreshList();
 							break;
 						case CloudAPI.Return_BadToken:
@@ -86,17 +126,20 @@ public class SocialPanel extends RelativeLayout {
 					
 				});
 			}
+		});//mReturnBtn
+		
+		mReturnBtn = new HaloButton(this.getContext(), R.drawable.back);
+		mReturnBtn.setLayoutParams(bottomCenterLP);
+		mBottomBanner.addView(mReturnBtn);
+		
+		mReturnBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				turnOffUsersView();
+			}
 		});
-
-		mMessageBtn = new HaloButton(this.getContext(), R.drawable.message);
-		RelativeLayout.LayoutParams msgBtnLP = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		msgBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		msgBtnLP.rightMargin = largeMargin;
-		msgBtnLP.topMargin = smallMargin;
-		mMessageBtn.setLayoutParams(msgBtnLP);
-		mMainLayout.addView(mMessageBtn);
+		
+		mReturnBtn.setVisibility(GONE);
 	}
 
 	private void createFriendsView() {
@@ -105,8 +148,8 @@ public class SocialPanel extends RelativeLayout {
 		RelativeLayout.LayoutParams friendsViewLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.FILL_PARENT);
-		friendsViewLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
-		friendsViewLP.rightMargin = DensityAdaptor.getDensityIndependentValue(5);
+//		friendsViewLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
+//		friendsViewLP.rightMargin = DensityAdaptor.getDensityIndependentValue(5);
 		friendsViewLP.topMargin = DensityAdaptor.getDensityIndependentValue(36);
 		friendsViewLP.bottomMargin = DensityAdaptor
 				.getDensityIndependentValue(5);
@@ -122,8 +165,8 @@ public class SocialPanel extends RelativeLayout {
 		RelativeLayout.LayoutParams usersViewLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.FILL_PARENT);
-		usersViewLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
-		usersViewLP.rightMargin = DensityAdaptor.getDensityIndependentValue(5);
+//		usersViewLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
+//		usersViewLP.rightMargin = DensityAdaptor.getDensityIndependentValue(5);
 		usersViewLP.topMargin = DensityAdaptor.getDensityIndependentValue(36);
 		usersViewLP.bottomMargin = DensityAdaptor
 				.getDensityIndependentValue(5);
@@ -141,4 +184,17 @@ public class SocialPanel extends RelativeLayout {
 		return mUsersView;
 	}
 
+	public void turnOnUsersView() {
+		mUsersView.setVisibility(VISIBLE);
+		mFriendsView.setVisibility(GONE);
+		mMakeFriendsBtn.setVisibility(GONE);
+		mReturnBtn.setVisibility(VISIBLE);
+	}
+
+	public void turnOffUsersView() {
+		mUsersView.setVisibility(GONE);
+		mFriendsView.setVisibility(VISIBLE);
+		mMakeFriendsBtn.setVisibility(VISIBLE);
+		mReturnBtn.setVisibility(GONE);
+	}
 }
