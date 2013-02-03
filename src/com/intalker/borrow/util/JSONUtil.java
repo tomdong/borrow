@@ -37,7 +37,7 @@ public class JSONUtil {
 		return jsonData;
 	}
 
-	public static void parseBooksInfo(String strJSON) {
+	public static void parseOwnedBooksInfo(String strJSON) {
 		try {
 			JSONArray jsonBookArray = new JSONArray(strJSON);
 			int length = jsonBookArray.length();
@@ -66,10 +66,47 @@ public class JSONUtil {
 					}
 				}
 			}
+			//DBUtil.saveBooksOfficialInfo(curBooks);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
+	
+	public static void parseOthersBooksInfo(String strJSON) {
+		try {
+			JSONArray jsonBookArray = new JSONArray(strJSON);
+			int length = jsonBookArray.length();
+			AppData appData = AppData.getInstance();
+			ArrayList<BookInfo> othersBooks = appData.getOthersBooks();
+			for (int i = 0; i < length; ++i) {
+				JSONObject jsonBookItem = (JSONObject) jsonBookArray.get(i);
+				if (null != jsonBookItem
+						&& jsonBookItem.has(CloudAPI.DB_Book_ISBN)) {
+					String isbn = jsonBookItem.getString(CloudAPI.DB_Book_ISBN);
+					if (null != isbn && !appData.containsOthersBook(isbn)) {
+						BookInfo bookInfo = null;
+						if (AppConfig.useSQLiteForCache) {
+							bookInfo = DBUtil.getBookInfo(isbn);
+							if (null != bookInfo) {
+								bookInfo.setFoundCacheData(true);
+							}
+						}
+
+						if (null == bookInfo) {
+							bookInfo = new BookInfo(isbn);
+						}
+						
+						bookInfo.setInitialized(false);
+						othersBooks.add(bookInfo);
+					}
+				}
+			}
+			//DBUtil.saveBooksOfficialInfo(othersBooks);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 	
 	public static void parseFriendsInfo(String strJSON) {
 		try {

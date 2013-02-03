@@ -6,6 +6,7 @@ import com.intalker.borrow.util.DBUtil;
 
 public class AppData {
 	private ArrayList<BookInfo> mBooks = null;
+	private ArrayList<BookInfo> mOthersBooks = null;
 	private ArrayList<UserInfo> mAllUsersOnServer = null;
 	private ArrayList<FriendInfo> mFriends = null;
 	private static AppData instance = null;
@@ -19,12 +20,14 @@ public class AppData {
 
 	public AppData() {
 		mBooks = new ArrayList<BookInfo>();
+		mOthersBooks = new ArrayList<BookInfo>();
 		mAllUsersOnServer = new ArrayList<UserInfo>();
 		mFriends = new ArrayList<FriendInfo>();
 	}
 	
 	public void initialize() {
 		mBooks.clear();
+		mOthersBooks.clear();
 		mAllUsersOnServer.clear();
 		mFriends.clear();
 		DBUtil.initialize();
@@ -32,6 +35,10 @@ public class AppData {
 
 	public ArrayList<BookInfo> getBooks() {
 		return mBooks;
+	}
+	
+	public ArrayList<BookInfo> getOthersBooks() {
+		return mOthersBooks;
 	}
 	
 	public boolean isUnfollowed(String userId) {
@@ -105,6 +112,10 @@ public class AppData {
 		mBooks.clear();
 	}
 	
+	public void clearOthersBooks() {
+		mOthersBooks.clear();
+	}
+	
 	public void clearAllUsers() {
 		mAllUsersOnServer.clear();
 	}
@@ -116,6 +127,15 @@ public class AppData {
 	// [TODO] User another implementation to improve the performance later
 	public boolean containsBook(String isbn) {
 		for (BookInfo bookInfo : mBooks) {
+			if (bookInfo.getISBN().compareTo(isbn) == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean containsOthersBook(String isbn) {
+		for (BookInfo bookInfo : mOthersBooks) {
 			if (bookInfo.getISBN().compareTo(isbn) == 0) {
 				return true;
 			}

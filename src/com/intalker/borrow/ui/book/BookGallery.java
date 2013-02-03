@@ -89,7 +89,7 @@ public class BookGallery extends RelativeLayout {
 								Context context = HomeActivity.getApp();
 								switch (returnCode) {
 								case CloudAPI.Return_OK:
-									ISBNResolver.getInstance().batchGetBookInfo(context);
+									ISBNResolver.getInstance().batchGetBookInfo(context, true);
 									break;
 								case CloudAPI.Return_BadToken:
 									Toast.makeText(context, "Bad token.", Toast.LENGTH_SHORT)
@@ -103,7 +103,6 @@ public class BookGallery extends RelativeLayout {
 									break;
 								}
 							}
-
 						});
 
 			}
@@ -240,6 +239,7 @@ public class BookGallery extends RelativeLayout {
 	{
 		mShelfView.initializeShelfRows();
 		AppData.getInstance().clearBooks();
+		AppData.getInstance().clearOthersBooks();
 	}
 	
 	// for test

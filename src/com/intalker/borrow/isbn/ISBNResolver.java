@@ -38,8 +38,8 @@ public class ISBNResolver {
 		task.execute();
 	}
 
-	public void batchGetBookInfo(Context context) {
-		BatchGetBookInfoTask task = new BatchGetBookInfoTask(context);
+	public void batchGetBookInfo(Context context, boolean isProcessOwnedBooks) {
+		BatchGetBookInfoTask task = new BatchGetBookInfoTask(context, isProcessOwnedBooks);
 		task.execute();
 	}
 
@@ -118,17 +118,26 @@ public class ISBNResolver {
 		private TransparentProgressDialog mProgressDialog = null;
 		private ArrayList<BookInfo> mToProcessBookInfoList = null;
 		private int mCurProgress = 0;
+		private boolean mIsProcessOwnedBooks = true;
 
-		public BatchGetBookInfoTask(Context context) {
+		public BatchGetBookInfoTask(Context context, boolean isProcessOwnedBooks) {
 			super();
 			mContext = context;
+			mIsProcessOwnedBooks = isProcessOwnedBooks;
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			mToProcessBookInfoList = new ArrayList<BookInfo>();
-			ArrayList<BookInfo> bookInfoList = AppData.getInstance().getBooks();
+			
+			ArrayList<BookInfo> bookInfoList = null;
+			if (mIsProcessOwnedBooks) {
+				bookInfoList = AppData.getInstance().getBooks();
+			} else {
+				bookInfoList = AppData.getInstance().getOthersBooks();
+			}
+			
 			int length = bookInfoList.size();
 
 			for (int i = 0; i < length; ++i) {

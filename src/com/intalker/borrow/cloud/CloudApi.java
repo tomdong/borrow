@@ -33,6 +33,7 @@ public class CloudAPI {
 	public final static String API_GetAllUsers = "GetAllUsers";
 	public final static String API_Follow = "Follow";
 	public final static String API_UnFollow = "UnFollow";
+	public final static String API_GetBooksByOwner = "GetBooksByOwner";
 	
 	// API params
 	public final static String API_Email = "&email=";
@@ -40,7 +41,8 @@ public class CloudAPI {
 	public final static String API_NickName = "&nickname=";
 	public final static String API_TOKEN = "&sessionid=";
 	public final static String API_ISBN = "&isbn=";
-	public final static String API_FRIENDID = "&friendid=";
+	public final static String API_FriendId = "&friendid=";
+	public final static String API_OwnerId = "&ownerid=";
 	
 	public final static String API_POST_BookInfoList = "bookinfolist";
 	
@@ -280,7 +282,7 @@ public class CloudAPI {
 					}
 					else
 					{
-						JSONUtil.parseBooksInfo(strResult);
+						JSONUtil.parseOwnedBooksInfo(strResult);
 					}
 					return CloudAPI.Return_OK;
 				} else {
@@ -432,6 +434,39 @@ public class CloudAPI {
 			return CloudAPI.Return_NetworkError;
 		}
 	}
+	
+	public static int _getBooksByOwner(String url)
+	{
+		HttpGet getReq = new HttpGet(url);
+		try {
+			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+				if (null != strResult && strResult.length() > 0) {
+					if (strResult.compareTo(CloudAPI.ServerReturnCode_EmptyResult) == 0)
+					{
+						return CloudAPI.Return_OK;
+					}
+					else if (strResult.compareTo(CloudAPI.ServerReturnCode_BadSession) == 0)
+					{
+						return CloudAPI.Return_BadToken;
+					}
+					else
+					{
+						JSONUtil.parseOthersBooksInfo(strResult);
+					}
+					return CloudAPI.Return_OK;
+				} else {
+					return CloudAPI.Return_UnknownError;
+				}
+			} else {
+				return CloudAPI.Return_NetworkError;
+			}
+		} catch (Exception e) {
+			return CloudAPI.Return_NetworkError;
+		}
+	}
 	// Client should not call any of the methods above.
 	public static void login(Context context, String email, String pwd,
 			ICloudAPITaskListener apiListener) {
@@ -507,7 +542,7 @@ public class CloudAPI {
 	
 	public static void follow(Context context, String friendId,
 			ICloudAPITaskListener apiListener) {
-		String url = API_BaseURL + API_Follow + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_FRIENDID + friendId;
+		String url = API_BaseURL + API_Follow + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_FriendId + friendId;
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
 				API_Follow, apiListener);
 		task.execute();
@@ -515,9 +550,17 @@ public class CloudAPI {
 	
 	public static void unFollow(Context context, String friendId,
 			ICloudAPITaskListener apiListener) {
-		String url = API_BaseURL + API_UnFollow + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_FRIENDID + friendId;
+		String url = API_BaseURL + API_UnFollow + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_FriendId + friendId;
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
 				API_UnFollow, apiListener);
+		task.execute();
+	}
+	
+	public static void getBooksByOwner(Context context, String ownerId,
+			ICloudAPITaskListener apiListener) {
+		String url = API_BaseURL + API_GetBooksByOwner + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_OwnerId + ownerId;
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
+				API_GetBooksByOwner, apiListener);
 		task.execute();
 	}
 }

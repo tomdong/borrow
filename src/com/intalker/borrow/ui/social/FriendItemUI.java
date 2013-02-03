@@ -6,6 +6,7 @@ import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.FriendInfo;
+import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -58,6 +59,28 @@ public class FriendItemUI extends RelativeLayout {
 		mAvatarBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				HomeActivity.getApp().getBookGallery().resetBookShelf();
+				CloudAPI.getBooksByOwner(v.getContext(), mInfo.getUserInfo().getId(), new ICloudAPITaskListener() {
+							@Override
+							public void onFinish(int returnCode) {
+								Context context = HomeActivity.getApp();
+								switch (returnCode) {
+								case CloudAPI.Return_OK:
+									ISBNResolver.getInstance().batchGetBookInfo(context, false);
+									break;
+								case CloudAPI.Return_BadToken:
+									Toast.makeText(context, "Bad token.", Toast.LENGTH_SHORT)
+											.show();
+									break;
+								case CloudAPI.Return_NetworkError:
+									Toast.makeText(context, "Network error.", Toast.LENGTH_SHORT).show();
+									break;
+								default:
+									Toast.makeText(context, "Unknown error.", Toast.LENGTH_SHORT).show();
+									break;
+								}
+							}
+						});
 			}
 		});
 

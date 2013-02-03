@@ -77,6 +77,8 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 			mReturnCode = CloudAPI._follow(mUrl);
 		} else if (mOp.compareTo(CloudAPI.API_UnFollow) == 0) {
 			mReturnCode = CloudAPI._unFollow(mUrl);
+		} else if (mOp.compareTo(CloudAPI.API_GetBooksByOwner) == 0) {
+			mReturnCode = CloudAPI._getBooksByOwner(mUrl);
 		}
 		
 		return null;

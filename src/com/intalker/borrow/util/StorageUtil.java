@@ -81,6 +81,9 @@ public class StorageUtil {
 			DBUtil.clearOwnedBooks();
 			ArrayList<BookInfo> ownedBooks = AppData.getInstance().getBooks();
 			DBUtil.saveOwnedBooks(ownedBooks);
+			
+			ArrayList<BookInfo> othersBooks = AppData.getInstance().getBooks();
+			DBUtil.saveBooksOfficialInfo(othersBooks);
 		} else {
 			try {
 				File file = new File(CacheBookIndexPath);
@@ -93,8 +96,20 @@ public class StorageUtil {
 			}
 		}
 
-		//Save image info
+		//Save cover images
 		ArrayList<BookInfo> books = AppData.getInstance().getBooks();
+		for(BookInfo bookInfo : books)
+		{
+			String isbn = bookInfo.getISBN();
+			Bitmap coverImage = bookInfo.getCoverImage();
+			if(isbn.length() > 0 && null != coverImage)
+			{
+				String path = StorageUtil.CacheImagePath + "/" + isbn + ".png";
+				saveImage(path, coverImage);
+			}
+		}
+		
+		books = AppData.getInstance().getOthersBooks();
 		for(BookInfo bookInfo : books)
 		{
 			String isbn = bookInfo.getISBN();

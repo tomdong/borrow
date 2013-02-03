@@ -93,10 +93,8 @@ public class DBUtil {
 		{
 			return;
 		}
-		String isbn = bookInfo.getISBN();
-		
 		ContentValues bookVals = new ContentValues();
-		bookVals.put("isbn", isbn);
+		bookVals.put("isbn", bookInfo.getISBN());
 		bookVals.put("quantity", bookInfo.getQuantity());
 
 		// Hard code now
@@ -106,8 +104,17 @@ public class DBUtil {
 
 		db.insert("book", null, bookVals);
 		
+		addBookOfficialInfo(bookInfo, db);
+	}
+	
+	private static void addBookOfficialInfo(BookInfo bookInfo, SQLiteDatabase db) {
+		if(null == bookInfo)
+		{
+			return;
+		}
+
 		ContentValues bookInfoVals = new ContentValues();
-		bookInfoVals.put("isbn", isbn);
+		bookInfoVals.put("isbn", bookInfo.getISBN());
 		bookInfoVals.put("bookname", bookInfo.getBookName());
 		bookInfoVals.put("publisher", bookInfo.getPublisher());
 		bookInfoVals.put("pagecount", bookInfo.getPageCount());
@@ -122,6 +129,22 @@ public class DBUtil {
 		try {
 			db = openDatabase();
 			addBookData(bookInfo, db);
+		} catch (Exception ex) {
+		}
+		if (null != db && db.isOpen()) {
+			db.close();
+		}
+	}
+	
+	public static void saveBooksOfficialInfo(ArrayList<BookInfo> othersBooks)
+	{
+		SQLiteDatabase db = null;
+		try {
+			db = openDatabase();
+
+			for (BookInfo bookInfo : othersBooks) {
+				addBookOfficialInfo(bookInfo, db);
+			}
 		} catch (Exception ex) {
 		}
 		if (null != db && db.isOpen()) {

@@ -16,11 +16,16 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class NavigationPanel extends RelativeLayout{
 
 	private Context mContext = null;
+	private HaloButton mSignUpBtn = null;
+	private HaloButton mLoginBtn = null;
+	private HaloButton mLogOffBtn = null;
+	private TextView mCurUserNameTextView = null;
 	
 	public NavigationPanel(Context context) {
 		super(context);
@@ -55,8 +60,8 @@ public class NavigationPanel extends RelativeLayout{
 		
 		//Create buttons
 		// Sign up
-		HaloButton btn0 = new HaloButton(mContext, R.drawable.register);
-		btn0.setOnClickListener(new OnClickListener() {
+		mSignUpBtn = new HaloButton(mContext, R.drawable.register);
+		mSignUpBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -72,14 +77,14 @@ public class NavigationPanel extends RelativeLayout{
 		int buttonGap = DensityAdaptor.getDensityIndependentValue(34);
 		regBtnLP.topMargin = y;
 		regBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		this.addView(btn0, regBtnLP);
+		this.addView(mSignUpBtn, regBtnLP);
 		
 		this.addView(ControlFactory
 				.createHoriSeparatorForRelativeLayout(mContext, panelWidth, y + regBtnLP.height + buttonGap));
 		
 		// Login
-		HaloButton loginBtn = new HaloButton(mContext, R.drawable.login);
-		loginBtn.setOnClickListener(new OnClickListener() {
+		mLoginBtn = new HaloButton(mContext, R.drawable.login);
+		mLoginBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -93,7 +98,7 @@ public class NavigationPanel extends RelativeLayout{
 		y += buttonGap + DensityAdaptor.getDensityIndependentValue(8);
 		loginBtnLP.topMargin = y;
 		loginBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		this.addView(loginBtn, loginBtnLP);
+		this.addView(mLoginBtn, loginBtnLP);
 		
 		this.addView(ControlFactory
 				.createHoriSeparatorForRelativeLayout(mContext, panelWidth, y + loginBtnLP.height + buttonGap));

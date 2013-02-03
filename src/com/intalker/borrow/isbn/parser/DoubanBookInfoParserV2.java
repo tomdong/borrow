@@ -19,7 +19,7 @@ public class DoubanBookInfoParserV2 extends BookInfoParser {
 
 	@Override
 	public void parse() {
-		String url = ISBN_SEARCHURL_DOUBAN_V2 + mISBN;
+		String url = ISBN_SEARCHURL_DOUBAN_V2 + mISBN + "?apikey=0080892112afdc6801819b63380f9538";
 		try {
 
 			HttpURLConnection conn = (HttpURLConnection) new URL(url)
