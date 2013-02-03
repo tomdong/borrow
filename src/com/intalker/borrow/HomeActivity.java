@@ -6,7 +6,6 @@ import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
-import com.intalker.borrow.friends.FriendsNavigationVertical;
 import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
@@ -35,12 +34,7 @@ public class HomeActivity extends Activity {
 	private SocialPanel mSocialPanel = null;
 
 	private RegisterView mReg = null;
-	private FriendsNavigationVertical mFriendsNavigation = null; // it also
-																	// contains
-																	// self info
-																	// and
-																	// action
-																	// button!
+
 	private SlidingMenu mSlidingMenu = null;
 
 	public void toggleLeftPanel() {
@@ -146,10 +140,16 @@ public class HomeActivity extends Activity {
 		}
 	}
 	
-	public void switchToSignUpPanel() {
-		mSlidingMenu.toggleLeftView();
-		mBookGallery.setVisibility(View.GONE);
-		mReg.setVisibility(View.VISIBLE);
+	public void toggleSignUpPanel(boolean show) {
+		if (show) {
+			mSlidingMenu.toggleLeftView();
+			mBookGallery.setVisibility(View.GONE);
+			mReg.setVisibility(View.VISIBLE);
+		} else {
+			mSlidingMenu.toggleLeftView();
+			mBookGallery.setVisibility(View.VISIBLE);
+			mReg.setVisibility(View.GONE);
+		}
 	}
 
 	public View createHomeUI() {
@@ -173,14 +173,16 @@ public class HomeActivity extends Activity {
 
 			@Override
 			public void onSuccess() {
-				mReg.setVisibility(View.GONE);
-				mBookGallery.setVisibility(View.VISIBLE);
+				HomeActivity app = HomeActivity.getApp();
+				app.toggleSignUpPanel(false);
+				app.getBookGallery().updateTopPanel();
+				app.getSocialPanel().getFriendsView().refreshList();
 			}
 
 			@Override
 			public void onBack() {
-				mReg.setVisibility(View.GONE);
-				mBookGallery.setVisibility(View.VISIBLE);
+//				mReg.setVisibility(View.GONE);
+//				mBookGallery.setVisibility(View.VISIBLE);
 			}
 		});
 

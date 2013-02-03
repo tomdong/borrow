@@ -60,7 +60,7 @@ public class NavigationPanel extends RelativeLayout{
 
 			@Override
 			public void onClick(View v) {
-				HomeActivity.getApp().switchToSignUpPanel();
+				HomeActivity.getApp().toggleSignUpPanel(true);
 			}
 		});
 

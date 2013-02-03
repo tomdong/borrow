@@ -1,8 +1,12 @@
 package com.intalker.borrow.ui.login;
 
+import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
+import com.intalker.borrow.ui.control.HaloButton;
+import com.intalker.borrow.util.LayoutUtil;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Editable;
@@ -11,6 +15,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,12 +34,7 @@ public class RegisterView extends LinearLayout implements OnClickListener{
 		public abstract void onSuccess();
 		public abstract void onBack();
 	}
-//	private final static int LEFTMARGIN = 20;
-//	private final static int TOPMARGIN = 20;
-//	private final static int BETWEENMARGIN = 5;
 	
-	private TextView mTitleLabel = null;
-	private TextView mTitleBack = null;
 	private TextView mNameLabel = null;
 	private EditText mNameInput = null;
 	private TextView mNickNameLabel = null;
@@ -78,35 +79,30 @@ public class RegisterView extends LinearLayout implements OnClickListener{
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		rpwwl.addRule(RelativeLayout.ALIGN_LEFT);
 		this.setBackgroundResource(R.drawable.wood_bk);
-//		this.setAlpha(0.7f);
 		this.setOrientation(LinearLayout.VERTICAL);		
 		this.setLayoutParams(lpff); 
 		
-		RelativeLayout titleLine = new RelativeLayout(c);		
-		titleLine.setLayoutParams(lpfw);
-		titleLine.setBackgroundColor(Color.DKGRAY);
-		this.addView(titleLine);
-		mTitleBack = new TextView(c);
-		mTitleBack.setText(R.string.reg_back);
-		mTitleBack.setTextSize(12);
-		mTitleBack.setTextColor(Color.WHITE);
-		mTitleBack.setLayoutParams(rpwwl);	
-		mTitleBack.setOnClickListener(new OnClickListener()
-		{
+		RelativeLayout titleBar = new RelativeLayout(c);
+		titleBar.setBackgroundResource(R.drawable.hori_bar_wood);
+		LinearLayout.LayoutParams titleBarLP = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		titleBarLP.height = LayoutUtil.getGalleryTopPanelHeight();
+		this.addView(titleBar, titleBarLP);
+		
+		HaloButton backBtn = new HaloButton(c, R.drawable.back);
+		RelativeLayout.LayoutParams backBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.FILL_PARENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		backBtnLP.leftMargin = LayoutUtil.getLargeMargin();
+		titleBar.addView(backBtn, backBtnLP);
+		backBtn.setOnClickListener(new View.OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
-				hide_keyboard();
-				if(mRegListener!=null)
-					mRegListener.onBack();
+				HomeActivity.getApp().toggleSignUpPanel(false);
 			}
 		});
-		titleLine.addView(mTitleBack);	
-		mTitleLabel = new TextView(c);
-		mTitleLabel.setText(R.string.reg_title);
-		mTitleLabel.setTextSize(12);
-		mTitleLabel.setTextColor(Color.WHITE);	
-		mTitleLabel.setLayoutParams(rpwwc);	
-		titleLine.addView(mTitleLabel);
 		
 		mNameLabel = new TextView(c);
 		mNameLabel.setText(R.string.reg_name); 
@@ -239,6 +235,13 @@ public class RegisterView extends LinearLayout implements OnClickListener{
 		mAgreementCheck.setChecked(true);
 		this.addView(mAgreementCheck);
 		
+		mAgreementCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				tryEnableRegButton();
+			}
+		});
+		
 		ImageView sep = new ImageView(this.getContext());
 		sep.setImageResource(R.drawable.hori_separator);
 		sep.setScaleType(ScaleType.FIT_XY);
@@ -272,8 +275,11 @@ public class RegisterView extends LinearLayout implements OnClickListener{
 	}
 	private void tryEnableRegButton()
 	{
-		if(mPassword.contentEquals(mConfirmPassword) && this.mAgreementCheck.isChecked())
-			mRegisterButton.setEnabled(true);
+		boolean enable = isValidName(mName) && isValidPassword(mPassword)
+				&& mPassword.contentEquals(mConfirmPassword)
+				&& this.mAgreementCheck.isChecked();
+		mRegisterButton.setEnabled(enable);
+		
 	}
 
 

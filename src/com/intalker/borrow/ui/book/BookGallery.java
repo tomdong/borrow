@@ -60,7 +60,7 @@ public class BookGallery extends RelativeLayout {
 	private void createTopPanel()
 	{
 		mTopPanel = new RelativeLayout(this.getContext());
-		mTopPanel.setBackgroundResource(R.drawable.hori_bar);
+		mTopPanel.setBackgroundResource(R.drawable.hori_bar_wood);
 		RelativeLayout.LayoutParams topPanelLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -136,7 +136,7 @@ public class BookGallery extends RelativeLayout {
 	{
 		mBottomPanel = new RelativeLayout(this.getContext());
 		View imageBackground = new View(this.getContext());
-		imageBackground.setBackgroundResource(R.drawable.hori_bar);
+		imageBackground.setBackgroundResource(R.drawable.hori_bar_wood);
 		imageBackground.setId(10000);
 		RelativeLayout.LayoutParams imageBGLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,

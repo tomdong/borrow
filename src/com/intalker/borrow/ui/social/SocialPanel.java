@@ -36,7 +36,7 @@ public class SocialPanel extends RelativeLayout {
 		this.addView(mMainLayout);
 		
 		mTopBanner = new RelativeLayout(this.getContext());
-		mTopBanner.setBackgroundResource(R.drawable.stone_bg);
+		mTopBanner.setBackgroundResource(R.drawable.hori_bar_metal);
 		RelativeLayout.LayoutParams topBannerLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -51,7 +51,7 @@ public class SocialPanel extends RelativeLayout {
 		mUsersView.setVisibility(INVISIBLE);
 		
 		mBottomBanner = new RelativeLayout(this.getContext());
-		mBottomBanner.setBackgroundResource(R.drawable.stone_bg);
+		mBottomBanner.setBackgroundResource(R.drawable.hori_bar_metal);
 		RelativeLayout.LayoutParams bottomBannerLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -83,6 +83,14 @@ public class SocialPanel extends RelativeLayout {
 		msgBtnLP.topMargin = smallMargin;
 		mMessageBtn.setLayoutParams(msgBtnLP);
 		mTopBanner.addView(mMessageBtn);
+		
+		mMessageBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(v.getContext(), "Coming soon...",
+						Toast.LENGTH_SHORT).show();
+			}
+		});
 		
 		mMakeFriendsBtn = new HaloButton(this.getContext(), R.drawable.group);
 		RelativeLayout.LayoutParams bottomCenterLP = new RelativeLayout.LayoutParams(

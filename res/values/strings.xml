@@ -27,10 +27,10 @@
     <string name="reg_nickname">Your nick name</string>
     <string name="reg_nickname_hint">Your display name(optinal)</string>
     <string name="reg_passowrd">Your Password</string>
-    <string name="reg_password_hint">5-20 letters</string>
+    <string name="reg_password_hint">5~20 letters</string>
     <string name="reg_password_confirm">Please Repeat your password</string>
-     <string name="reg_password_confirm_hint">Repeat your password</string>
-    <string name="reg_agreement">Agree with the Law</string>
+    <string name="reg_password_confirm_hint">Repeat your password</string>
+    <string name="reg_agreement">Agree with the Terms</string>
     <string name="reg_commit">Commit</string>
     <string name="invalid_isbn">Invalid ISBN</string>
 
