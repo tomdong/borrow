@@ -75,6 +75,8 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 			mReturnCode = CloudAPI._getAllUsers();
 		} else if (mOp.compareTo(CloudAPI.API_MakeFriends) == 0) {
 			mReturnCode = CloudAPI._makeFriends(mUrl);
+		} else if (mOp.compareTo(CloudAPI.API_UnFollow) == 0) {
+			mReturnCode = CloudAPI._unFollow(mUrl);
 		}
 		
 		return null;

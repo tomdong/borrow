@@ -32,6 +32,7 @@ public class CloudAPI {
 	public final static String API_DeleteBookFromServer = "DeleteBookByOwnerIdAndISBN";
 	public final static String API_GetAllUsers = "GetAllUsers";
 	public final static String API_MakeFriends = "MakeFriends";
+	public final static String API_UnFollow = "UnFollow";
 	
 	// API params
 	public final static String API_Email = "&email=";
@@ -408,6 +409,29 @@ public class CloudAPI {
 			return CloudAPI.Return_NetworkError;
 		}
 	}
+	
+	public static int _unFollow(String url) {
+		HttpGet getReq = new HttpGet(url);
+		try {
+			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+				if (strResult.compareTo(CloudAPI.ServerReturnCode_Successful) == 0) {
+					return CloudAPI.Return_OK;
+				} else if (strResult
+						.compareTo(CloudAPI.ServerReturnCode_BadSession) == 0) {
+					return CloudAPI.Return_BadToken;
+				} else {
+					return CloudAPI.Return_NetworkError;
+				}
+			} else {
+				return CloudAPI.Return_NetworkError;
+			}
+		} catch (Exception e) {
+			return CloudAPI.Return_NetworkError;
+		}
+	}
 	// Client should not call any of the methods above.
 	public static void login(Context context, String email, String pwd,
 			ICloudAPITaskListener apiListener) {
@@ -486,6 +510,14 @@ public class CloudAPI {
 		String url = API_BaseURL + API_MakeFriends + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_FRIENDID + friendId;
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
 				API_MakeFriends, apiListener);
+		task.execute();
+	}
+	
+	public static void unFollow(Context context, String friendId,
+			ICloudAPITaskListener apiListener) {
+		String url = API_BaseURL + API_UnFollow + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_FRIENDID + friendId;
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
+				API_UnFollow, apiListener);
 		task.execute();
 	}
 }

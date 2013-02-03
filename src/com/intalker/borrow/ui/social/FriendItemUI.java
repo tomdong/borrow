@@ -1,6 +1,10 @@
 package com.intalker.borrow.ui.social;
 
+import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
+import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
+import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.FriendInfo;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
@@ -11,6 +15,7 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FriendItemUI extends RelativeLayout {
 
@@ -88,6 +93,31 @@ public class FriendItemUI extends RelativeLayout {
 		mUnFollowBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				CloudAPI.unFollow(v.getContext(), mInfo.getUserInfo().getId(), new ICloudAPITaskListener(){
+
+					@Override
+					public void onFinish(int returnCode) {
+						switch (returnCode) {
+						case CloudAPI.Return_OK:
+							AppData.getInstance().removeFriend(mInfo);
+							HomeActivity.getApp().getSocialPanel().getFriendsView().refreshList();
+							break;
+						case CloudAPI.Return_BadToken:
+							Toast.makeText(HomeActivity.getApp(), "Bad token.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						case CloudAPI.Return_NetworkError:
+							Toast.makeText(HomeActivity.getApp(), "Network error.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						default:
+							Toast.makeText(HomeActivity.getApp(), "Unknown error.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						}
+					}
+					
+				});
 			}
 		});
 	}
