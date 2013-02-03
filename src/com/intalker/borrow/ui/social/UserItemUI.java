@@ -96,7 +96,7 @@ public class UserItemUI extends RelativeLayout {
 				if (mAdded) {
 					return;
 				}
-				CloudAPI.makeFriends(v.getContext(), mInfo.getId(), new ICloudAPITaskListener(){
+				CloudAPI.follow(v.getContext(), mInfo.getId(), new ICloudAPITaskListener(){
 
 					@Override
 					public void onFinish(int returnCode) {

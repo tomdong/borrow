@@ -67,14 +67,14 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 			if (CloudAPI.Return_OK == mReturnCode) {
 				mReturnCode = CloudAPI._getOwnedBooks();
 			}
-		} else if (mOp.compareTo(CloudAPI.API_GetFriends) == 0) {
+		} else if (mOp.compareTo(CloudAPI.API_GetFollowings) == 0) {
 			mReturnCode = CloudAPI._getFriends();
-		} else if (mOp.compareTo(CloudAPI.API_DeleteBookFromServer) == 0) {
-			mReturnCode = CloudAPI._deleteBookFromServer(mUrl);
+		} else if (mOp.compareTo(CloudAPI.API_DeleteBook) == 0) {
+			mReturnCode = CloudAPI._deleteBook(mUrl);
 		} else if (mOp.compareTo(CloudAPI.API_GetAllUsers) == 0) {
 			mReturnCode = CloudAPI._getAllUsers();
-		} else if (mOp.compareTo(CloudAPI.API_MakeFriends) == 0) {
-			mReturnCode = CloudAPI._makeFriends(mUrl);
+		} else if (mOp.compareTo(CloudAPI.API_Follow) == 0) {
+			mReturnCode = CloudAPI._follow(mUrl);
 		} else if (mOp.compareTo(CloudAPI.API_UnFollow) == 0) {
 			mReturnCode = CloudAPI._unFollow(mUrl);
 		}

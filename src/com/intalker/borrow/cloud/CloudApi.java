@@ -24,14 +24,14 @@ public class CloudAPI {
 	// API operations
 	public final static String API_Login = "Login";
 	public final static String API_SignUp = "SignUp";
-	public final static String API_GetUserInfo = "GetUserInfoBySession";
+	public final static String API_GetUserInfo = "GetUserInfo";
 	public final static String API_UploadBooks = "UploadBooks";
-	public final static String API_GetOwnedBooks = "GetBooksBySession";
+	public final static String API_GetOwnedBooks = "GetOwnedBooks";
 	public final static String API_SynchronizeOwnedBooks = "SynchronizeOwnedBooks";
-	public final static String API_GetFriends = "GetFriendsBySession";
-	public final static String API_DeleteBookFromServer = "DeleteBookByOwnerIdAndISBN";
+	public final static String API_GetFollowings = "GetFollowings";
+	public final static String API_DeleteBook = "DeleteBook";
 	public final static String API_GetAllUsers = "GetAllUsers";
-	public final static String API_MakeFriends = "MakeFriends";
+	public final static String API_Follow = "Follow";
 	public final static String API_UnFollow = "UnFollow";
 	
 	// API params
@@ -297,7 +297,7 @@ public class CloudAPI {
 	public static int _getFriends()
 	{
 		AppData.getInstance().clearFriends();
-		String url = API_BaseURL + API_GetFriends + CloudAPI.API_TOKEN + CloudAPI.CloudToken;;
+		String url = API_BaseURL + API_GetFollowings + CloudAPI.API_TOKEN + CloudAPI.CloudToken;;
 		HttpGet getReq = new HttpGet(url);
 		try {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
@@ -329,7 +329,7 @@ public class CloudAPI {
 		}
 	}
 	
-	public static int _deleteBookFromServer(String url) {
+	public static int _deleteBook(String url) {
 		HttpGet getReq = new HttpGet(url);
 		try {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
@@ -387,7 +387,7 @@ public class CloudAPI {
 		}
 	}
 	
-	public static int _makeFriends(String url) {
+	public static int _follow(String url) {
 		HttpGet getReq = new HttpGet(url);
 		try {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
@@ -483,18 +483,18 @@ public class CloudAPI {
 		task.execute();
 	}
 	
-	public static void getFriends(Context context,
+	public static void getFollowings(Context context,
 			ICloudAPITaskListener apiListener) {
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, "",
-				API_GetFriends, apiListener);
+				API_GetFollowings, apiListener);
 		task.execute();
 	}
 	
-	public static void deleteBookFromServer(Context context, String isbn,
+	public static void deleteBook(Context context, String isbn,
 			ICloudAPITaskListener apiListener) {
-		String url = API_BaseURL + API_DeleteBookFromServer + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_ISBN + isbn;
+		String url = API_BaseURL + API_DeleteBook + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_ISBN + isbn;
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
-				API_DeleteBookFromServer, apiListener);
+				API_DeleteBook, apiListener);
 		task.execute();
 	}
 	
@@ -505,11 +505,11 @@ public class CloudAPI {
 		task.execute();
 	}
 	
-	public static void makeFriends(Context context, String friendId,
+	public static void follow(Context context, String friendId,
 			ICloudAPITaskListener apiListener) {
-		String url = API_BaseURL + API_MakeFriends + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_FRIENDID + friendId;
+		String url = API_BaseURL + API_Follow + CloudAPI.API_TOKEN + CloudAPI.CloudToken + CloudAPI.API_FRIENDID + friendId;
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
-				API_MakeFriends, apiListener);
+				API_Follow, apiListener);
 		task.execute();
 	}
 	

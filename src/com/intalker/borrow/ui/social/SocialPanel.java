@@ -130,7 +130,7 @@ public class SocialPanel extends RelativeLayout {
 		mReturnBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CloudAPI.getFriends(v.getContext(), new ICloudAPITaskListener(){
+				CloudAPI.getFollowings(v.getContext(), new ICloudAPITaskListener(){
 
 					@Override
 					public void onFinish(int returnCode) {

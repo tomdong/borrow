@@ -143,7 +143,7 @@ public class BookDetailDialog extends Dialog {
 										String isbn = mBookItem.getInfo()
 												.getISBN();
 
-										CloudAPI.deleteBookFromServer(
+										CloudAPI.deleteBook(
 												HomeActivity.getApp(), isbn,
 												new ICloudAPITaskListener() {
 
