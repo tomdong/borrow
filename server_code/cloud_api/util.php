@@ -153,6 +153,15 @@ function deleteBookByOwnerIdAndISBN($ownerid, $isbn)
     return $result;
 }
 
+function unFollow($hostId, $friendId)
+{
+	$sql = "delete from " . DB_TABLE_FRIEND
+	. " where " . DB_FRIEND_HOSTID . "=" . wrapStr($hostId)
+	. " and " . DB_FRIEND_FRIENDID . "=" . wrapStr($friendId);
+    $result = mysql_query($sql);
+    return $result;
+}
+
 function getFriendsByHost($hostid)
 {
 //select user.id, user.nickname, user.email, user.registertime, user.permission,

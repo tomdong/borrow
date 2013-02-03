@@ -359,6 +359,32 @@ switch($op)
         	echo BAD_SESSION;
         }
 		break;
+	case "UnFollow":
+		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+        if(NULL != $sessionId)
+        {
+            $con = connectDB();
+            $hostId = getUserIdBySession($sessionId);
+            if(NULL != $hostId)
+            {
+            	$friendId = getValueFromRequest(DB_FRIEND_FRIENDID);
+				unFollow($hostId, $friendId);
+				echo SUCCESSFUL;
+            }
+            else
+            {
+                echo BAD_SESSION;
+            }
+            disconnectDB($con);
+        }
+        else
+        {
+        	echo BAD_SESSION;
+        }
+		break;
+	default:
+		echo UNKNOWN_ERROR;
+		break;
 	/*	
     case "Signup":
         $con = connectDB();
