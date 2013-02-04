@@ -6,6 +6,7 @@ import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.data.UserInfo;
+import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 
@@ -27,8 +28,8 @@ public class LoginDialog extends Dialog {
 	private RelativeLayout mMainLayout = null;
 	private EditText mEmailInput = null;
 	private EditText mPasswordInput = null;
-	private Button mLoginBtn = null;
-	private Button mCancelBtn = null;
+	private HaloButton mLoginBtn = null;
+	private HaloButton mCancelBtn = null;
 
 	public LoginDialog(Context context) {
 		super(context, R.style.Theme_TransparentDialog);
@@ -37,11 +38,11 @@ public class LoginDialog extends Dialog {
 		this.setContentView(mContent);
 
 		mMainLayout = new RelativeLayout(context);
-		mMainLayout.setBackgroundResource(R.drawable.wood_bk);
+		mMainLayout.setBackgroundResource(R.drawable.login_bg);
 		RelativeLayout.LayoutParams mainLayoutLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		mainLayoutLP.width = DensityAdaptor.getDensityIndependentValue(260);
+		mainLayoutLP.width = DensityAdaptor.getDensityIndependentValue(280);
 		mainLayoutLP.height = DensityAdaptor.getDensityIndependentValue(250);
 
 		mContent.addView(mMainLayout, mainLayoutLP);
@@ -64,14 +65,14 @@ public class LoginDialog extends Dialog {
 		mMainLayout.addView(createSeparator(DensityAdaptor
 				.getDensityIndependentValue(160)));
 
-		mLoginBtn = new Button(context);
-		mLoginBtn.setText(R.string.login);
+		int largeMargin = LayoutUtil.getLargeMargin();
+		mLoginBtn = new HaloButton(context, R.drawable.ok);
 		RelativeLayout.LayoutParams loginBtnLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		loginBtnLP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		loginBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		loginBtnLP.leftMargin = margin;
+		loginBtnLP.leftMargin = largeMargin;
 		loginBtnLP.bottomMargin = margin;
 		mMainLayout.addView(mLoginBtn, loginBtnLP);
 		mLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -83,14 +84,13 @@ public class LoginDialog extends Dialog {
 
 		});
 
-		mCancelBtn = new Button(context);
-		mCancelBtn.setText(R.string.cancel);
+		mCancelBtn = new HaloButton(context, R.drawable.back);
 		RelativeLayout.LayoutParams cancelBtnLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		cancelBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		cancelBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		cancelBtnLP.rightMargin = margin;
+		cancelBtnLP.rightMargin = largeMargin;
 		cancelBtnLP.bottomMargin = margin;
 		mMainLayout.addView(mCancelBtn, cancelBtnLP);
 		mCancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +122,7 @@ public class LoginDialog extends Dialog {
 			int topMargin) {
 		Context context = this.getContext();
 		TextView label = new TextView(context);
-		label.setTextColor(Color.BLACK);
+		label.setTextColor(Color.WHITE);
 		label.setText(labelTextResId);
 		RelativeLayout.LayoutParams labelLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
