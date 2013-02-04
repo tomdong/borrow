@@ -123,7 +123,7 @@ public class HomeActivity extends Activity {
 	private void doAfterGetUserInfoByToken(int returnCode) {
 		switch (returnCode) {
 		case CloudAPI.Return_OK:
-			mBookGallery.updateTopPanel(UserInfo.getCurLoggedinUser().getDisplayName());
+			mBookGallery.updateTopPanel(UserInfo.getCurLoggedinUser());
 			mSocialPanel.getFriendsView().refreshList();
 			break;
 		case CloudAPI.Return_NoSuchUser:
@@ -176,7 +176,7 @@ public class HomeActivity extends Activity {
 			public void onSuccess() {
 				HomeActivity app = HomeActivity.getApp();
 				app.toggleSignUpPanel(false);
-				app.getBookGallery().updateTopPanel(UserInfo.getCurLoggedinUser().getDisplayName());
+				app.getBookGallery().updateTopPanel(UserInfo.getCurLoggedinUser());
 				app.getSocialPanel().getFriendsView().refreshList();
 			}
 

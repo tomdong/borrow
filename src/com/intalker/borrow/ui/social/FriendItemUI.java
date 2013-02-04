@@ -68,7 +68,6 @@ public class FriendItemUI extends RelativeLayout {
 								Context context = HomeActivity.getApp();
 								switch (returnCode) {
 								case CloudAPI.Return_OK:
-									HomeActivity.getApp().toggleRightPanel();
 									ISBNResolver.getInstance().batchGetBookInfo(context, mInfo);
 									break;
 								case CloudAPI.Return_BadToken:

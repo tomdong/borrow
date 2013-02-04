@@ -33,6 +33,7 @@ public class BookGallery extends RelativeLayout {
 	private HaloButton mToggleLeftPanelBtn = null;
 	private HaloButton mToggleRightPanelBtn = null;
 	private HaloButton mRefreshBtn = null;
+	private UserInfo mCurOwner = null;
 	
 	public BookGallery(Context context) {
 		super(context);
@@ -40,10 +41,15 @@ public class BookGallery extends RelativeLayout {
 		createUI();
 	}
 	
-	public void updateTopPanel(String curOwner)
+	public void updateTopPanel(UserInfo curOwner)
 	{
-		mShelfOwnerTextView.setText(curOwner
-				+ this.getContext().getString(R.string.shelf_owner_suffix));
+		mCurOwner = curOwner;
+		if (null != curOwner) {
+			mShelfOwnerTextView.setText(curOwner.getDisplayName()
+					+ this.getContext().getString(R.string.shelf_owner_suffix));
+		} else {
+			mShelfOwnerTextView.setText(R.string.app_name);
+		}
 	}
 
 	private void createUI()
@@ -77,6 +83,11 @@ public class BookGallery extends RelativeLayout {
 
 			@Override
 			public void onClick(View v) {
+				if (null != mCurOwner
+						&& mCurOwner.getId().compareTo(
+								UserInfo.getCurLoggedinUser().getId()) != 0) {
+					HomeActivity.getApp().getBookGallery().resetBookShelf();
+				}
 				CloudAPI.sychronizeOwnedBooks(HomeActivity.getApp(),
 						new ICloudAPITaskListener() {
 

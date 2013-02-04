@@ -136,13 +136,13 @@ public class ISBNResolver {
 			mToProcessBookInfoList = new ArrayList<BookInfo>();
 			
 			ArrayList<BookInfo> bookInfoList = null;
-			String curGalleryOwner = "";
+			UserInfo curGalleryOwner = null;
 			if (mIsProcessOwnedBooks) {
 				bookInfoList = AppData.getInstance().getBooks();
-				curGalleryOwner = UserInfo.getCurLoggedinUser().getDisplayName();
+				curGalleryOwner = UserInfo.getCurLoggedinUser();
 			} else {
 				bookInfoList = AppData.getInstance().getOthersBooks();
-				curGalleryOwner = mFriendInfo.getDisplayName();
+				curGalleryOwner = mFriendInfo.getUserInfo();
 			}
 			HomeActivity.getApp().getBookGallery().updateTopPanel(curGalleryOwner);
 			
@@ -215,6 +215,10 @@ public class ISBNResolver {
 				mProgressDialog.dismiss();
 			}
 			mToProcessBookInfoList.clear();
+			
+			if (!mIsProcessOwnedBooks) {
+				HomeActivity.getApp().toggleRightPanel();
+			}
 			Toast.makeText(mContext, "Synchronize done!", Toast.LENGTH_SHORT)
 					.show();
 		}
