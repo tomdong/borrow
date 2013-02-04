@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
-import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
@@ -76,20 +75,19 @@ public class StorageUtil {
 	}
 	
 	public static void saveCachedBooks() {
-		
+		AppData appData = AppData.getInstance();
 		if (AppConfig.useSQLiteForCache) {
 			DBUtil.clearOwnedBooks();
-			ArrayList<BookInfo> ownedBooks = AppData.getInstance().getBooks();
+			ArrayList<BookInfo> ownedBooks = appData.getBooks();
 			DBUtil.saveOwnedBooks(ownedBooks);
 			
-			ArrayList<BookInfo> othersBooks = AppData.getInstance().getBooks();
+			ArrayList<BookInfo> othersBooks = appData.getBooks();
 			DBUtil.saveBooksOfficialInfo(othersBooks);
 		} else {
 			try {
 				File file = new File(CacheBookIndexPath);
 				FileWriter fw = new FileWriter(file, false);
-				fw.write(XmlUtil.serializeCachedBooks(AppData.getInstance()
-						.getBooks()));
+				fw.write(XmlUtil.serializeCachedBooks(appData.getBooks()));
 				fw.close();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -97,7 +95,7 @@ public class StorageUtil {
 		}
 
 		//Save cover images
-		ArrayList<BookInfo> books = AppData.getInstance().getBooks();
+		ArrayList<BookInfo> books = appData.getBooks();
 		for(BookInfo bookInfo : books)
 		{
 			String isbn = bookInfo.getISBN();
@@ -120,6 +118,8 @@ public class StorageUtil {
 				saveImage(path, coverImage);
 			}
 		}
+		
+		appData.clearBooks();
 	}
 	
 	private static void saveImage(String path, Bitmap image) {

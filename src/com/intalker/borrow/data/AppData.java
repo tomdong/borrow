@@ -2,6 +2,8 @@ package com.intalker.borrow.data;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
+
 import com.intalker.borrow.util.DBUtil;
 
 public class AppData {
@@ -107,12 +109,26 @@ public class AppData {
 			mBooks.remove(indexToRemove);
 		}
 	}
+	
+	private void recycleCoverImages(ArrayList<BookInfo> books) {
+		int count = books.size();
+		for(int i = 0; i < count; ++i)
+		{
+			BookInfo bookInfo = books.get(i);
+			Bitmap image = bookInfo.getCoverImage();
+			if (null != image && !image.isRecycled()) {
+				bookInfo.getCoverImage().recycle();
+			}
+		}
+	}
 
 	public void clearBooks() {
+		recycleCoverImages(mBooks);
 		mBooks.clear();
 	}
 	
 	public void clearOthersBooks() {
+		recycleCoverImages(mOthersBooks);
 		mOthersBooks.clear();
 	}
 	
