@@ -9,6 +9,7 @@ import java.util.zip.GZIPInputStream;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.intalker.borrow.util.StringUtil;
 import com.intalker.borrow.util.WebUtil;
 
 public class DoubanBookInfoParserV2 extends BookInfoParser {
@@ -45,8 +46,25 @@ public class DoubanBookInfoParserV2 extends BookInfoParser {
 				JSONObject jsonObject = new JSONObject(strResult);
 
 				if (null == mCoverImage) {
-					String imageURL = jsonObject.getString("image");
-					mCoverImage = WebUtil.getImageFromURL(imageURL);
+					String imageURL = null;
+					JSONObject jsonImages = jsonObject.getJSONObject("images");
+					if (null != jsonImages) {
+						imageURL = jsonImages.getString("large");
+
+						if (StringUtil.isEmpty(imageURL)) {
+							imageURL = jsonImages.getString("medium");
+						}
+
+						if (StringUtil.isEmpty(imageURL)) {
+							imageURL = jsonImages.getString("small");
+						}
+					}
+					if (StringUtil.isEmpty(imageURL)) {
+						imageURL = jsonObject.getString("image");
+					}
+					if (!StringUtil.isEmpty(imageURL)) {
+						mCoverImage = WebUtil.getImageFromURL(imageURL);
+					}
 				}
 				mBookName = jsonObject.getString("title");
 				JSONArray jsonAuthorList = jsonObject.getJSONArray("author");
