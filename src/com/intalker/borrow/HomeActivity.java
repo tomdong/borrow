@@ -6,6 +6,7 @@ import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.data.InitialCachedDataAsyncTask;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.ui.book.BookGallery;
@@ -70,7 +71,11 @@ public class HomeActivity extends Activity {
 		CloudAPI.CloudToken = "";
 
 		setContentView(initializeWithSlidingStyle());
+		this.mSlidingMenu.invalidate();
 		
+		//Continue to investigate this Async task later
+//		InitialCachedDataAsyncTask initCachedDataTask = new InitialCachedDataAsyncTask();
+//		initCachedDataTask.execute();
 		tryAutoLogin();
 	}
 	
