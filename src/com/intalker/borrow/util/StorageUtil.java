@@ -119,7 +119,7 @@ public class StorageUtil {
 			}
 		}
 		
-		appData.clearBooks();
+		//appData.clearBooks();
 	}
 	
 	private static void saveImage(String path, Bitmap image) {
