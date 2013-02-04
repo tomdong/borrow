@@ -19,7 +19,7 @@ import com.intalker.borrow.util.DBUtil;
 import com.intalker.borrow.util.JSONUtil;
 
 public class CloudAPI {
-	public final static String API_BaseURL = "http://services.sketchbook.cn/test/openshelf/api?op=";
+	public final static String API_BaseURL = "http://services.sketchbook.cn/test/openshelf/api/index.php?op=";
 
 	// API operations
 	public final static String API_Login = "Login";
