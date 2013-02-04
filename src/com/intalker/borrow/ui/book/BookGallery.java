@@ -40,14 +40,10 @@ public class BookGallery extends RelativeLayout {
 		createUI();
 	}
 	
-	public void updateTopPanel()
+	public void updateTopPanel(String curOwner)
 	{
-		UserInfo curLoginUser = UserInfo.getCurLoggedinUser();
-		if(null != curLoginUser)
-		{
-			mShelfOwnerTextView.setText(curLoginUser.getNickName()
-					+ this.getContext().getString(R.string.shelf_owner_suffix));
-		}
+		mShelfOwnerTextView.setText(curOwner
+				+ this.getContext().getString(R.string.shelf_owner_suffix));
 	}
 
 	private void createUI()
@@ -89,7 +85,7 @@ public class BookGallery extends RelativeLayout {
 								Context context = HomeActivity.getApp();
 								switch (returnCode) {
 								case CloudAPI.Return_OK:
-									ISBNResolver.getInstance().batchGetBookInfo(context, true);
+									ISBNResolver.getInstance().batchGetBookInfo(context, null);
 									break;
 								case CloudAPI.Return_BadToken:
 									Toast.makeText(context, "Bad token.", Toast.LENGTH_SHORT)

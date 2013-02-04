@@ -4,6 +4,7 @@ import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
+import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.ui.login.LoginDialog;
@@ -188,7 +189,7 @@ public class NavigationPanel extends RelativeLayout{
 	private void doAfterGetUserInfoByToken(int returnCode) {
 		switch (returnCode) {
 		case CloudAPI.Return_OK:
-			HomeActivity.getApp().getBookGallery().updateTopPanel();
+			HomeActivity.getApp().getBookGallery().updateTopPanel(UserInfo.getCurLoggedinUser().getDisplayName());
 			HomeActivity.getApp().getSocialPanel().getFriendsView().refreshList();
 			break;
 		case CloudAPI.Return_NoSuchUser:

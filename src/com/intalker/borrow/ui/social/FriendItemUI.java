@@ -21,9 +21,11 @@ import android.widget.Toast;
 public class FriendItemUI extends RelativeLayout {
 
 	private HaloButton mAvatarBtn = null;
+	private HaloButton mViewShelfBtn = null;
 	private HaloButton mUnFollowBtn = null;
 	private TextView mNameTextView = null;
 	private FriendInfo mInfo = null;
+	private View.OnClickListener mOnClickListener = null;
 
 	public FriendItemUI(Context context) {
 		super(context);
@@ -56,7 +58,7 @@ public class FriendItemUI extends RelativeLayout {
 		mAvatarBtn.setLayoutParams(avatarLP);
 		this.addView(mAvatarBtn);
 		
-		mAvatarBtn.setOnClickListener(new View.OnClickListener() {
+		mOnClickListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				HomeActivity.getApp().getBookGallery().resetBookShelf();
@@ -66,7 +68,8 @@ public class FriendItemUI extends RelativeLayout {
 								Context context = HomeActivity.getApp();
 								switch (returnCode) {
 								case CloudAPI.Return_OK:
-									ISBNResolver.getInstance().batchGetBookInfo(context, false);
+									HomeActivity.getApp().toggleRightPanel();
+									ISBNResolver.getInstance().batchGetBookInfo(context, mInfo);
 									break;
 								case CloudAPI.Return_BadToken:
 									Toast.makeText(context, "Bad token.", Toast.LENGTH_SHORT)
@@ -82,7 +85,9 @@ public class FriendItemUI extends RelativeLayout {
 							}
 						});
 			}
-		});
+		};
+		
+		mAvatarBtn.setOnClickListener(mOnClickListener);
 
 		mNameTextView = new TextView(this.getContext());
 		mNameTextView.setTextSize(16.0f);
@@ -97,6 +102,8 @@ public class FriendItemUI extends RelativeLayout {
 		mNameTextView.setLayoutParams(nameTextLP);
 
 		this.addView(mNameTextView);
+		
+		mNameTextView.setOnClickListener(mOnClickListener);
 		
 		mUnFollowBtn = new HaloButton(this.getContext(), R.drawable.sub);
 

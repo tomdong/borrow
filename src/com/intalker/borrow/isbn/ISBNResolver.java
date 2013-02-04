@@ -7,6 +7,8 @@ import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.data.FriendInfo;
+import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.isbn.parser.DoubanBookInfoParser;
 import com.intalker.borrow.isbn.parser.BookInfoParser;
 import com.intalker.borrow.isbn.parser.DoubanBookInfoParserV2;
@@ -38,8 +40,8 @@ public class ISBNResolver {
 		task.execute();
 	}
 
-	public void batchGetBookInfo(Context context, boolean isProcessOwnedBooks) {
-		BatchGetBookInfoTask task = new BatchGetBookInfoTask(context, isProcessOwnedBooks);
+	public void batchGetBookInfo(Context context, FriendInfo friendInfo) {
+		BatchGetBookInfoTask task = new BatchGetBookInfoTask(context, friendInfo);
 		task.execute();
 	}
 
@@ -119,11 +121,13 @@ public class ISBNResolver {
 		private ArrayList<BookInfo> mToProcessBookInfoList = null;
 		private int mCurProgress = 0;
 		private boolean mIsProcessOwnedBooks = true;
+		private FriendInfo mFriendInfo = null;
 
-		public BatchGetBookInfoTask(Context context, boolean isProcessOwnedBooks) {
+		public BatchGetBookInfoTask(Context context, FriendInfo friendInfo) {
 			super();
 			mContext = context;
-			mIsProcessOwnedBooks = isProcessOwnedBooks;
+			mFriendInfo = friendInfo;
+			mIsProcessOwnedBooks = null == mFriendInfo;
 		}
 
 		@Override
@@ -132,11 +136,15 @@ public class ISBNResolver {
 			mToProcessBookInfoList = new ArrayList<BookInfo>();
 			
 			ArrayList<BookInfo> bookInfoList = null;
+			String curGalleryOwner = "";
 			if (mIsProcessOwnedBooks) {
 				bookInfoList = AppData.getInstance().getBooks();
+				curGalleryOwner = UserInfo.getCurLoggedinUser().getDisplayName();
 			} else {
 				bookInfoList = AppData.getInstance().getOthersBooks();
+				curGalleryOwner = mFriendInfo.getDisplayName();
 			}
+			HomeActivity.getApp().getBookGallery().updateTopPanel(curGalleryOwner);
 			
 			int length = bookInfoList.size();
 

@@ -6,6 +6,7 @@ import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
@@ -122,7 +123,7 @@ public class HomeActivity extends Activity {
 	private void doAfterGetUserInfoByToken(int returnCode) {
 		switch (returnCode) {
 		case CloudAPI.Return_OK:
-			mBookGallery.updateTopPanel();
+			mBookGallery.updateTopPanel(UserInfo.getCurLoggedinUser().getDisplayName());
 			mSocialPanel.getFriendsView().refreshList();
 			break;
 		case CloudAPI.Return_NoSuchUser:
@@ -175,7 +176,7 @@ public class HomeActivity extends Activity {
 			public void onSuccess() {
 				HomeActivity app = HomeActivity.getApp();
 				app.toggleSignUpPanel(false);
-				app.getBookGallery().updateTopPanel();
+				app.getBookGallery().updateTopPanel(UserInfo.getCurLoggedinUser().getDisplayName());
 				app.getSocialPanel().getFriendsView().refreshList();
 			}
 

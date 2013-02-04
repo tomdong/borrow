@@ -149,7 +149,7 @@ public class LoginDialog extends Dialog {
 	private void doAfterLogin(int returnCode) {
 		switch (returnCode) {
 		case CloudAPI.Return_OK:
-			HomeActivity.getApp().getBookGallery().updateTopPanel();
+			HomeActivity.getApp().getBookGallery().updateTopPanel(UserInfo.getCurLoggedinUser().getDisplayName());
 			HomeActivity.getApp().getSocialPanel().getFriendsView().refreshList();
 			this.dismiss();
 			break;
