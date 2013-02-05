@@ -62,27 +62,31 @@ public class FriendItemUI extends RelativeLayout {
 			@Override
 			public void onClick(View v) {
 				HomeActivity.getApp().getBookGallery().resetBookShelf();
-				CloudAPI.getBooksByOwner(v.getContext(), mInfo.getUserInfo().getId(), new ICloudAPITaskListener() {
-							@Override
-							public void onFinish(int returnCode) {
-								Context context = HomeActivity.getApp();
-								switch (returnCode) {
-								case CloudAPI.Return_OK:
-									ISBNResolver.getInstance().batchGetBookInfo(context, mInfo);
-									break;
-								case CloudAPI.Return_BadToken:
-									Toast.makeText(context, "Bad token.", Toast.LENGTH_SHORT)
-											.show();
-									break;
-								case CloudAPI.Return_NetworkError:
-									Toast.makeText(context, "Network error.", Toast.LENGTH_SHORT).show();
-									break;
-								default:
-									Toast.makeText(context, "Unknown error.", Toast.LENGTH_SHORT).show();
-									break;
-								}
-							}
-						});
+				CloudAPI.getBooksByOwner(v.getContext(), mInfo.getUserInfo()
+						.getId(), new ICloudAPITaskListener() {
+					@Override
+					public void onFinish(int returnCode) {
+						Context context = HomeActivity.getApp();
+						switch (returnCode) {
+						case CloudAPI.Return_OK:
+							ISBNResolver.getInstance().batchGetBookInfo(
+									context, mInfo);
+							break;
+						case CloudAPI.Return_BadToken:
+							Toast.makeText(context, "Bad token.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						case CloudAPI.Return_NetworkError:
+							Toast.makeText(context, "Network error.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						default:
+							Toast.makeText(context, "Unknown error.",
+									Toast.LENGTH_SHORT).show();
+							break;
+						}
+					}
+				});
 			}
 		};
 		

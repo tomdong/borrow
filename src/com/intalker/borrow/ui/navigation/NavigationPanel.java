@@ -135,21 +135,21 @@ public class NavigationPanel extends RelativeLayout{
 				.createHoriSeparatorForRelativeLayout(mContext, panelWidth, y + loginBtnLP.height + buttonGap));
 		
 		// Clear button
-		HaloButton clearBtn = new HaloButton(mContext, R.drawable.clear);
-		clearBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				HomeActivity.getApp().getBookGallery().resetBookShelf();
-			}
-		});
-		RelativeLayout.LayoutParams clearBtnLP = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		y += buttonGap + DensityAdaptor.getDensityIndependentValue(8);
-		clearBtnLP.topMargin = y;
-		clearBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		this.addView(clearBtn, clearBtnLP);
+//		HaloButton clearBtn = new HaloButton(mContext, R.drawable.clear);
+//		clearBtn.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				HomeActivity.getApp().getBookGallery().resetBookShelf();
+//			}
+//		});
+//		RelativeLayout.LayoutParams clearBtnLP = new RelativeLayout.LayoutParams(
+//				RelativeLayout.LayoutParams.WRAP_CONTENT,
+//				RelativeLayout.LayoutParams.WRAP_CONTENT);
+//		y += buttonGap + DensityAdaptor.getDensityIndependentValue(8);
+//		clearBtnLP.topMargin = y;
+//		clearBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
+//		this.addView(clearBtn, clearBtnLP);
 	}
 	
 	private void doAfterUplaod(int returnCode) {

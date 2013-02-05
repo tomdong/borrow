@@ -33,6 +33,7 @@ public class BookGallery extends RelativeLayout {
 	private HaloButton mToggleLeftPanelBtn = null;
 	private HaloButton mToggleRightPanelBtn = null;
 	private HaloButton mRefreshBtn = null;
+	private HaloButton mClearBtn = null;
 	private UserInfo mCurOwner = null;
 	
 	public BookGallery(Context context) {
@@ -49,6 +50,17 @@ public class BookGallery extends RelativeLayout {
 					+ this.getContext().getString(R.string.shelf_owner_suffix));
 		} else {
 			mShelfOwnerTextView.setText(R.string.app_name);
+		}
+		
+		UserInfo loggedInUser = UserInfo.getCurLoggedinUser();
+		if (null != loggedInUser) {
+			if (mCurOwner.getId().compareTo(loggedInUser.getId()) != 0) {
+				mRefreshBtn.setButtonImage(R.drawable.home);
+			} else {
+				mRefreshBtn.setButtonImage(R.drawable.refresh);
+			}
+		} else {
+			mRefreshBtn.setButtonImage(R.drawable.refresh);
 		}
 	}
 
@@ -122,6 +134,22 @@ public class BookGallery extends RelativeLayout {
 		refreshBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		refreshBtnLP.rightMargin = DensityAdaptor.getDensityIndependentValue(5);
 		mTopPanel.addView(mRefreshBtn, refreshBtnLP);
+		
+		mClearBtn = new HaloButton(this.getContext(), R.drawable.clear);
+		mClearBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				HomeActivity.getApp().getBookGallery().resetBookShelf();
+			}
+
+		});
+		RelativeLayout.LayoutParams clearBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		clearBtnLP.addRule(RelativeLayout.CENTER_VERTICAL);
+		clearBtnLP.leftMargin = DensityAdaptor.getDensityIndependentValue(5);
+		mTopPanel.addView(mClearBtn, clearBtnLP);
 	}
 	
 //	private void updateGalleryAfterSync() {
