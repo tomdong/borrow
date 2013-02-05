@@ -111,15 +111,15 @@ public class AppData {
 	}
 	
 	private void recycleCoverImages(ArrayList<BookInfo> books) {
-//		int count = books.size();
-//		for(int i = 0; i < count; ++i)
-//		{
-//			BookInfo bookInfo = books.get(i);
-//			Bitmap image = bookInfo.getCoverImage();
-//			if (null != image && !image.isRecycled()) {
-//				bookInfo.getCoverImage().recycle();
-//			}
-//		}
+		int count = books.size();
+		for(int i = 0; i < count; ++i)
+		{
+			BookInfo bookInfo = books.get(i);
+			Bitmap image = bookInfo.getCoverImage();
+			if (null != image && !image.isRecycled()) {
+				bookInfo.getCoverImage().recycle();
+			}
+		}
 	}
 
 	public void clearBooks() {

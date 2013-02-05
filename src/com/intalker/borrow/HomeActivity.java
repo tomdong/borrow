@@ -232,9 +232,16 @@ public class HomeActivity extends Activity {
 	}
 
 	@Override
-	protected void onStop() {
+	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		super.onStop();
+		super.onDestroy();
 		StorageUtil.saveCachedBooks();
 	}
+
+//	@Override
+//	protected void onStop() {
+//		// TODO Auto-generated method stub
+//		super.onStop();
+//		StorageUtil.saveCachedBooks();
+//	}
 }
