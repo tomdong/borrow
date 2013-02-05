@@ -147,24 +147,11 @@ public class LoginDialog extends Dialog {
 	}
 
 	private void doAfterLogin(int returnCode) {
-		switch (returnCode) {
-		case CloudAPI.Return_OK:
+		if (CloudAPI.isSuccessful(this.getContext(), returnCode)) {
 			HomeActivity.getApp().getBookGallery().updateTopPanel(UserInfo.getCurLoggedinUser());
 			HomeActivity.getApp().getSocialPanel().getFriendsView().refreshList();
 			this.dismiss();
-			break;
-		case CloudAPI.Return_WrongUserNameOrPassword:
-			Toast.makeText(this.getContext(), "Wrong username or pwd.",
-					Toast.LENGTH_SHORT).show();
-			break;
-		case CloudAPI.Return_NetworkError:
-			Toast.makeText(this.getContext(), "Network error.",
-					Toast.LENGTH_SHORT).show();
-			break;
-		default:
-			Toast.makeText(this.getContext(), "Unknown error.",
-					Toast.LENGTH_SHORT).show();
-			break;
+			HomeActivity.getApp().toggleSignUpPanel(false);
 		}
 	}
 

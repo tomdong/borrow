@@ -11,10 +11,13 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.widget.Toast;
 
+import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.UserInfo;
+import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.util.DBUtil;
 import com.intalker.borrow.util.JSONUtil;
 
@@ -562,5 +565,42 @@ public class CloudAPI {
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
 				API_GetBooksByOwner, apiListener);
 		task.execute();
+	}
+	
+	public static boolean isSuccessful(Context context, int returnCode) {
+		String errorMsg = "";
+		switch (returnCode) {
+		case CloudAPI.Return_OK:
+			return true;
+		case CloudAPI.Return_TimeOut:
+			errorMsg = context.getString(R.string.api_error_timeout);
+			break;
+		case CloudAPI.Return_NoNetworkConnection:
+			errorMsg = context.getString(R.string.api_error_noconnection);
+			break;
+		case CloudAPI.Return_NoSuchUser:
+			errorMsg = context.getString(R.string.api_error_nosuchuser);
+			break;
+		case CloudAPI.Return_WrongUserNameOrPassword:
+			errorMsg = context.getString(R.string.api_error_wrongusernameorpwd);
+			break;
+		case CloudAPI.Return_UserNameOccupied:
+			errorMsg = context.getString(R.string.api_error_usernameoccupied);
+			break;
+		case CloudAPI.Return_BadToken:
+			errorMsg = context.getString(R.string.api_error_badtoken);
+			break;
+		case CloudAPI.Return_NetworkError:
+			errorMsg = context.getString(R.string.api_error_networkerror);
+			break;
+		case CloudAPI.Return_UnknownError:
+			errorMsg = context.getString(R.string.api_error_unknownerror);
+			break;
+		default:
+			errorMsg = context.getString(R.string.api_error_unknownerror);
+			break;
+		}
+		Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
+		return false;
 	}
 }

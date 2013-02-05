@@ -33,5 +33,25 @@
     <string name="reg_agreement">Agree with the Terms</string>
     <string name="reg_commit">Commit</string>
     <string name="invalid_isbn">Invalid ISBN</string>
+    <string name="api_msg_login">Login to cloud, please wait.</string>
+    <string name="api_msg_signup">Signup to cloud, please wait.</string>
+    <string name="api_msg_getuserinfo">Getting user info, please wait.</string>
+    <string name="api_msg_upload">Uploading data to cloud, please wait.</string>
+    <string name="api_msg_download">Downloading from cloud, please wait.</string>
+    <string name="api_msg_sync">Synchronizing, please wait.</string>
+    <string name="api_msg_getfollowings">Getting followings, please wait.</string>
+    <string name="api_msg_deletebook">Deleting book, please wait.</string>
+    <string name="api_msg_getallusers">Getting user list, please wait.</string>
+    <string name="api_msg_follow">Adding friend, please wait.</string>
+    <string name="api_msg_unfollow">Removing friend, please wait.</string>
+    <string name="api_msg_getbooksbyowner">Get book list, please wait.</string>
 
+    <string name="api_error_timeout">Connection timeout.</string>
+    <string name="api_error_noconnection">No network connection found.</string>
+    <string name="api_error_nosuchuser">No such user.</string>
+    <string name="api_error_wrongusernameorpwd">Wrong user name or password.</string>
+    <string name="api_error_usernameoccupied">This user name has been occupied.</string>
+    <string name="api_error_badtoken">Please login.</string>
+    <string name="api_error_networkerror">Network error.</string>
+    <string name="api_error_unknownerror">Unknown error.</string>
 </resources>

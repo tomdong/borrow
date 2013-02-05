@@ -151,59 +151,30 @@ public class NavigationPanel extends RelativeLayout{
 //		clearBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
 //		this.addView(clearBtn, clearBtnLP);
 	}
-	
-	private void doAfterUplaod(int returnCode) {
-		switch (returnCode) {
-		case CloudAPI.Return_OK:
-			Toast.makeText(mContext, "Upload done!", Toast.LENGTH_SHORT).show();
-			break;
-		case CloudAPI.Return_BadToken:
-			Toast.makeText(mContext, "Bad token.", Toast.LENGTH_SHORT).show();
-			break;
-		case CloudAPI.Return_NetworkError:
-			Toast.makeText(mContext, "Network error.", Toast.LENGTH_SHORT).show();
-			break;
-		default:
-			Toast.makeText(mContext, "Unknown error.", Toast.LENGTH_SHORT).show();
-			break;
-		}
-	}
-
-	private void doAfterGetOwnedBooks(int returnCode) {
-		switch (returnCode) {
-		case CloudAPI.Return_OK:
-			Toast.makeText(mContext, "Sync done!", Toast.LENGTH_SHORT).show();
-			break;
-		case CloudAPI.Return_BadToken:
-			Toast.makeText(mContext, "Bad token.", Toast.LENGTH_SHORT).show();
-			break;
-		case CloudAPI.Return_NetworkError:
-			Toast.makeText(mContext, "Network error.", Toast.LENGTH_SHORT).show();
-			break;
-		default:
-			Toast.makeText(mContext, "Unknown error.", Toast.LENGTH_SHORT).show();
-			break;
-		}
-	}
+//	
+//	private void doAfterUplaod(int returnCode) {
+//		switch (returnCode) {
+//		case CloudAPI.Return_OK:
+//			Toast.makeText(mContext, "Upload done!", Toast.LENGTH_SHORT).show();
+//			break;
+//		case CloudAPI.Return_BadToken:
+//			Toast.makeText(mContext, "Bad token.", Toast.LENGTH_SHORT).show();
+//			break;
+//		case CloudAPI.Return_NetworkError:
+//			Toast.makeText(mContext, "Network error.", Toast.LENGTH_SHORT).show();
+//			break;
+//		default:
+//			Toast.makeText(mContext, "Unknown error.", Toast.LENGTH_SHORT).show();
+//			break;
+//		}
+//	}
 
 	private void doAfterGetUserInfoByToken(int returnCode) {
-		switch (returnCode) {
-		case CloudAPI.Return_OK:
-			HomeActivity.getApp().getBookGallery().updateTopPanel(UserInfo.getCurLoggedinUser());
-			HomeActivity.getApp().getSocialPanel().getFriendsView().refreshList();
-			break;
-		case CloudAPI.Return_NoSuchUser:
-			Toast.makeText(mContext, "No such user.", Toast.LENGTH_SHORT).show();
-			break;
-		case CloudAPI.Return_BadToken:
-			Toast.makeText(mContext, "Bad token.", Toast.LENGTH_SHORT).show();
-			break;
-		case CloudAPI.Return_NetworkError:
-			Toast.makeText(mContext, "Network error.", Toast.LENGTH_SHORT).show();
-			break;
-		default:
-			Toast.makeText(mContext, "Unknown error.", Toast.LENGTH_SHORT).show();
-			break;
+		if (CloudAPI.isSuccessful(mContext, returnCode)) {
+			HomeActivity.getApp().getBookGallery()
+					.updateTopPanel(UserInfo.getCurLoggedinUser());
+			HomeActivity.getApp().getSocialPanel().getFriendsView()
+					.refreshList();
 		}
 	}
 

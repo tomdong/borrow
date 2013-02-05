@@ -103,31 +103,19 @@ public class SocialPanel extends RelativeLayout {
 		mMakeFriendsBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CloudAPI.getAllUsers(v.getContext(), new ICloudAPITaskListener(){
+				CloudAPI.getAllUsers(v.getContext(),
+						new ICloudAPITaskListener() {
 
-					@Override
-					public void onFinish(int returnCode) {
-						switch (returnCode) {
-						case CloudAPI.Return_OK:
-							turnOnUsersView();
-							mUsersView.refreshList();
-							break;
-						case CloudAPI.Return_BadToken:
-							Toast.makeText(HomeActivity.getApp(), "Bad token.",
-									Toast.LENGTH_SHORT).show();
-							break;
-						case CloudAPI.Return_NetworkError:
-							Toast.makeText(HomeActivity.getApp(), "Network error.",
-									Toast.LENGTH_SHORT).show();
-							break;
-						default:
-							Toast.makeText(HomeActivity.getApp(), "Unknown error.",
-									Toast.LENGTH_SHORT).show();
-							break;
-						}
-					}
-					
-				});
+							@Override
+							public void onFinish(int returnCode) {
+								if (CloudAPI.isSuccessful(
+										HomeActivity.getApp(), returnCode)) {
+									turnOnUsersView();
+									mUsersView.refreshList();
+								}
+							}
+
+						});
 			}
 		});
 		
@@ -142,23 +130,9 @@ public class SocialPanel extends RelativeLayout {
 
 					@Override
 					public void onFinish(int returnCode) {
-						switch (returnCode) {
-						case CloudAPI.Return_OK:
+						if (CloudAPI.isSuccessful(HomeActivity.getApp(), returnCode)) {
 							turnOffUsersView();
 							mFriendsView.refreshList();
-							break;
-						case CloudAPI.Return_BadToken:
-							Toast.makeText(HomeActivity.getApp(), "Bad token.",
-									Toast.LENGTH_SHORT).show();
-							break;
-						case CloudAPI.Return_NetworkError:
-							Toast.makeText(HomeActivity.getApp(), "Network error.",
-									Toast.LENGTH_SHORT).show();
-							break;
-						default:
-							Toast.makeText(HomeActivity.getApp(), "Unknown error.",
-									Toast.LENGTH_SHORT).show();
-							break;
 						}
 					}
 					

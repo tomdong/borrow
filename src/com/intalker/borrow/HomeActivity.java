@@ -126,23 +126,9 @@ public class HomeActivity extends Activity {
 	}
 
 	private void doAfterGetUserInfoByToken(int returnCode) {
-		switch (returnCode) {
-		case CloudAPI.Return_OK:
+		if (CloudAPI.isSuccessful(this, returnCode)) {
 			mBookGallery.updateTopPanel(UserInfo.getCurLoggedinUser());
 			mSocialPanel.getFriendsView().refreshList();
-			break;
-		case CloudAPI.Return_NoSuchUser:
-			Toast.makeText(this, "No such user.", Toast.LENGTH_SHORT).show();
-			break;
-		case CloudAPI.Return_BadToken:
-			Toast.makeText(this, "Bad token.", Toast.LENGTH_SHORT).show();
-			break;
-		case CloudAPI.Return_NetworkError:
-			Toast.makeText(this, "Network error.", Toast.LENGTH_SHORT).show();
-			break;
-		default:
-			Toast.makeText(this, "Unknown error.", Toast.LENGTH_SHORT).show();
-			break;
 		}
 	}
 	

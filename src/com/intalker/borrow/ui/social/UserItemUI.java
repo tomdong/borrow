@@ -100,22 +100,8 @@ public class UserItemUI extends RelativeLayout {
 
 					@Override
 					public void onFinish(int returnCode) {
-						switch (returnCode) {
-						case CloudAPI.Return_OK:
+						if (CloudAPI.isSuccessful(HomeActivity.getApp(), returnCode)) {
 							mFollowBtn.setVisibility(GONE);
-							break;
-						case CloudAPI.Return_BadToken:
-							Toast.makeText(HomeActivity.getApp(), "Bad token.",
-									Toast.LENGTH_SHORT).show();
-							break;
-						case CloudAPI.Return_NetworkError:
-							Toast.makeText(HomeActivity.getApp(), "Network error.",
-									Toast.LENGTH_SHORT).show();
-							break;
-						default:
-							Toast.makeText(HomeActivity.getApp(), "Unknown error.",
-									Toast.LENGTH_SHORT).show();
-							break;
 						}
 					}
 					

@@ -291,27 +291,15 @@ public class RegisterView extends LinearLayout implements OnClickListener{
 		 mNickNameInput.getText().toString(),
 		 new ICloudAPITaskListener(){
 		
-			 @Override
-			 public void onFinish(int returnCode) {
-				 switch (returnCode) {
-					case CloudAPI.Return_OK:
-						hide_keyboard();
-						if(mRegListener!=null)
-							mRegListener.onSuccess();
-						break;
-					case CloudAPI.Return_UserNameOccupied:
-						Toast.makeText(mNameInput.getContext(), "User name occupied.", Toast.LENGTH_SHORT)
-								.show();
-						break;
-					case CloudAPI.Return_NetworkError:
-						Toast.makeText(mNameInput.getContext(), "Network error.", Toast.LENGTH_SHORT).show();
-						break;
-					default:
-						Toast.makeText(mNameInput.getContext(), "Unknown error.", Toast.LENGTH_SHORT).show();
-						break;
-				 }	
-			 }		
-		 });
+			@Override
+			public void onFinish(int returnCode) {
+				if (CloudAPI.isSuccessful(mNameInput.getContext(), returnCode)) {
+					hide_keyboard();
+					if (mRegListener != null)
+						mRegListener.onSuccess();
+				}
+			}
+		});
 	}
 
 	private void hide_keyboard() {

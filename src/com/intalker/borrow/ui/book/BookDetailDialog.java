@@ -150,38 +150,12 @@ public class BookDetailDialog extends Dialog {
 													@Override
 													public void onFinish(
 															int returnCode) {
+
 														Context context = HomeActivity
 																.getApp();
-														switch (returnCode) {
-														case CloudAPI.Return_OK:
-															Toast.makeText(
-																	context,
-																	"Removed from server",
-																	Toast.LENGTH_SHORT)
-																	.show();
-															break;
-														case CloudAPI.Return_BadToken:
-															Toast.makeText(
-																	context,
-																	"Bad token.",
-																	Toast.LENGTH_SHORT)
-																	.show();
-															break;
-														case CloudAPI.Return_NetworkError:
-															Toast.makeText(
-																	context,
-																	"Network error.",
-																	Toast.LENGTH_SHORT)
-																	.show();
-															break;
-														default:
-															Toast.makeText(
-																	context,
-																	"Unknown error.",
-																	Toast.LENGTH_SHORT)
-																	.show();
-															break;
-														}
+														CloudAPI.isSuccessful(
+																context,
+																returnCode);
 													}
 
 												});

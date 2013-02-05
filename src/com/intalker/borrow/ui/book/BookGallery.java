@@ -106,20 +106,8 @@ public class BookGallery extends RelativeLayout {
 							@Override
 							public void onFinish(int returnCode) {
 								Context context = HomeActivity.getApp();
-								switch (returnCode) {
-								case CloudAPI.Return_OK:
+								if (CloudAPI.isSuccessful(context, returnCode)) {
 									ISBNResolver.getInstance().batchGetBookInfo(context, null);
-									break;
-								case CloudAPI.Return_BadToken:
-									Toast.makeText(context, "Bad token.", Toast.LENGTH_SHORT)
-											.show();
-									break;
-								case CloudAPI.Return_NetworkError:
-									Toast.makeText(context, "Network error.", Toast.LENGTH_SHORT).show();
-									break;
-								default:
-									Toast.makeText(context, "Unknown error.", Toast.LENGTH_SHORT).show();
-									break;
 								}
 							}
 						});

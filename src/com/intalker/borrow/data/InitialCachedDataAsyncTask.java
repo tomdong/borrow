@@ -27,23 +27,9 @@ public class InitialCachedDataAsyncTask extends AsyncTask<Void, Void, Void> {
 				@Override
 				public void onFinish(int returnCode) {
 					HomeActivity app = HomeActivity.getApp();
-					switch (returnCode) {
-					case CloudAPI.Return_OK:
+					if (CloudAPI.isSuccessful(app, returnCode)) {
 						app.getBookGallery().updateTopPanel(UserInfo.getCurLoggedinUser());
 						app.getSocialPanel().getFriendsView().refreshList();
-						break;
-					case CloudAPI.Return_NoSuchUser:
-						Toast.makeText(app, "No such user.", Toast.LENGTH_SHORT).show();
-						break;
-					case CloudAPI.Return_BadToken:
-						Toast.makeText(app, "Bad token.", Toast.LENGTH_SHORT).show();
-						break;
-					case CloudAPI.Return_NetworkError:
-						Toast.makeText(app, "Network error.", Toast.LENGTH_SHORT).show();
-						break;
-					default:
-						Toast.makeText(app, "Unknown error.", Toast.LENGTH_SHORT).show();
-						break;
 					}
 				}
 
