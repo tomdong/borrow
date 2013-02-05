@@ -1,0 +1,57 @@
+<resources>
+
+    <string name="app_name">OpenShelf</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">设置</string>
+    <string name="title_activity_home">Open Shelf</string>
+    <string name="please_wait">请稍候</string>
+    <string name="searching_book_info">正在查找书籍信息\n条件: ISBN = "</string>
+    <string name="book_name">书名</string>
+    <string name="author">作者</string>
+    <string name="publisher">出版社</string>
+    <string name="page_count">页数</string>
+    <string name="isbn">ISBN</string>
+    <string name="delete">删除</string>
+    <string name="email">邮件</string>
+    <string name="password">密码</string>
+    <string name="login">登录</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
+    <string name="delete_book_confirm">将这本书从书架删除?</string>
+    <string name="shelf_owner_suffix"> 的书架</string>
+    <string name="reg_back">&lt;&lt; 返回</string>
+    <string name="reg_title">注册</string>
+    <string name="reg_name">邮件</string>
+    <string name="reg_name_hint">常用邮箱地址</string>
+    <string name="reg_nickname">昵称</string>
+    <string name="reg_nickname_hint">非必填</string>
+    <string name="reg_passowrd">密码</string>
+    <string name="reg_password_hint">5到20个字符</string>
+    <string name="reg_password_confirm">再次输入</string>
+    <string name="reg_password_confirm_hint">请再次输入</string>
+    <string name="reg_agreement">同意注册条款</string>
+    <string name="reg_commit">提交</string>
+    <string name="invalid_isbn">无效的ISBN</string>
+    <string name="api_msg_login">登录中,请稍候.</string>
+    <string name="api_msg_signup">注册中,请稍候.</string>
+    <string name="api_msg_getuserinfo">获取用户信息,请稍候.</string>
+    <string name="api_msg_upload">上传数据到云端,请稍候.</string>
+    <string name="api_msg_download">从云端获取数据,请稍候.</string>
+    <string name="api_msg_sync">和云端数据同步中,请稍候.</string>
+    <string name="api_msg_getfollowings">获取关注用户列表,请稍候.</string>
+    <string name="api_msg_deletebook">正在从云端删除这本书,请稍候.</string>
+    <string name="api_msg_getallusers">获取公共用户列表,请稍候.</string>
+    <string name="api_msg_follow">正在添加关注,请稍候.</string>
+    <string name="api_msg_unfollow">正在删除关注,请稍候.</string>
+    <string name="api_msg_getbooksbyowner">获取该用户书籍列表,请稍候.</string>
+
+    <string name="api_error_timeout">网络连接超时.</string>
+    <string name="api_error_noconnection">网络未连接.</string>
+    <string name="api_error_nosuchuser">无此用户.</string>
+    <string name="api_error_wrongusernameorpwd">用户名或密码错误.</string>
+    <string name="api_error_usernameoccupied">该用户名已经被使用.</string>
+    <string name="api_error_badtoken">当前未登录.</string>
+    <string name="api_error_networkerror">网络传输故障.</string>
+    <string name="api_error_unknownerror">发生未知错误.</string>
+</resources>
