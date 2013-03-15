@@ -7,6 +7,8 @@ import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.isbn.ISBNResolver;
+import com.intalker.borrow.ui.FullSizeImageDialog;
+import com.intalker.borrow.ui.UIConfig;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
@@ -16,6 +18,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.View;
 import android.view.Window;
@@ -31,7 +34,7 @@ public class BookDetailDialog extends Dialog {
 
 	private RelativeLayout mContent = null;
 	private RelativeLayout mLayout = null;
-	private ImageView mCoverImage = null;
+	private ImageView mCoverImageView = null;
 	private RelativeLayout mDetailInfoPanel = null;
 	
 	private BookShelfItem mBookItem = null;
@@ -46,6 +49,9 @@ public class BookDetailDialog extends Dialog {
 	private HaloButton mDeleteButton = null;
 	private HaloButton mCloseButton = null;
 	
+	private FullSizeImageDialog mFullSizeImageDialog = null;
+	
+	private Bitmap mCoverImage = null;
 	private BookDetailDialog mDialog = null;
 	
 	public BookDetailDialog(Context context) {
@@ -54,7 +60,14 @@ public class BookDetailDialog extends Dialog {
 		
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setCanceledOnTouchOutside(true);
-
+		
+		mFullSizeImageDialog = new FullSizeImageDialog(context);
+		
+		createUI(context);
+		addListeners();
+	}
+	
+	private void createUI(Context context) {
 		mContent = new RelativeLayout(context);
 		this.setContentView(mContent);
 		
@@ -67,7 +80,7 @@ public class BookDetailDialog extends Dialog {
 		mainLayoutLP.height = LayoutUtil.getDetailDialogHeight();
 		mContent.addView(mLayout, mainLayoutLP);
 		
-		mCoverImage = new ImageView(context);
+		mCoverImageView = new ImageView(context);
 		RelativeLayout.LayoutParams coverImageLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -76,11 +89,11 @@ public class BookDetailDialog extends Dialog {
 		int boundMargin = LayoutUtil.getDetailDialogBoundMargin();
 		coverImageLP.leftMargin = boundMargin;
 		coverImageLP.topMargin = boundMargin;
-		mCoverImage.setImageResource(R.drawable.bookcover_unknown);
+		mCoverImageView.setImageResource(R.drawable.bookcover_unknown);
 		//mCoverImage.setScaleType(ScaleType.FIT_START);
-		mCoverImage.setScaleType(ScaleType.FIT_CENTER);
+		mCoverImageView.setScaleType(ScaleType.FIT_CENTER);
 		//mCoverImage.setBackgroundColor(Color.BLUE);
-		mLayout.addView(mCoverImage, coverImageLP);
+		mLayout.addView(mCoverImageView, coverImageLP);
 		
 		mDetailInfoPanel = new RelativeLayout(context);
 		//mDetailInfoPanel.setBackgroundColor(Color.WHITE);
@@ -115,6 +128,32 @@ public class BookDetailDialog extends Dialog {
 
 		// Buttons
 		mDeleteButton = new HaloButton(context, R.drawable.trash);
+		
+		RelativeLayout.LayoutParams deleteBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		deleteBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		deleteBtnLP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		deleteBtnLP.leftMargin = boundMargin;
+		deleteBtnLP.bottomMargin = boundMargin;
+		
+		mLayout.addView(mDeleteButton, deleteBtnLP);
+		
+		//Close button.
+		mCloseButton = new HaloButton(context, R.drawable.close);
+		
+		RelativeLayout.LayoutParams closeBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		closeBtnLP.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		closeBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//		closeBtnLP.rightMargin = boundMargin;
+//		closeBtnLP.topMargin = boundMargin;
+		
+		mLayout.addView(mCloseButton, closeBtnLP);
+	}
+	
+	private void addListeners() {
 		mDeleteButton.setOnClickListener(new View.OnClickListener(){
 
 			@Override
@@ -173,18 +212,6 @@ public class BookDetailDialog extends Dialog {
 			}
 		});
 		
-		RelativeLayout.LayoutParams deleteBtnLP = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		deleteBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		deleteBtnLP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		deleteBtnLP.leftMargin = boundMargin;
-		deleteBtnLP.bottomMargin = boundMargin;
-		
-		mLayout.addView(mDeleteButton, deleteBtnLP);
-		
-		//Close button.
-		mCloseButton = new HaloButton(context, R.drawable.close);
 		mCloseButton.setOnClickListener(new View.OnClickListener(){
 
 			@Override
@@ -193,21 +220,20 @@ public class BookDetailDialog extends Dialog {
 			}
 		});
 		
-		RelativeLayout.LayoutParams closeBtnLP = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		closeBtnLP.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		closeBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-//		closeBtnLP.rightMargin = boundMargin;
-//		closeBtnLP.topMargin = boundMargin;
-		
-		mLayout.addView(mCloseButton, closeBtnLP);
+		mCoverImageView.setOnClickListener(new View.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				mFullSizeImageDialog.show();
+			}
+		});
 	}
 	
 	private TextView addInfoTextView(int textResId, int index)
 	{
 		Context context = this.getContext();
 		TextView label = new TextView(context);
+		label.setTextColor(UIConfig.getNormalTextColor());
 		label.setText(textResId);
 		
 		RelativeLayout.LayoutParams labelLP = new RelativeLayout.LayoutParams(
@@ -269,7 +295,17 @@ public class BookDetailDialog extends Dialog {
 			mBookItem = bookItem;
 			BookInfo bookInfo = bookItem.getInfo();
 			if (null != bookInfo) {
-				mCoverImage.setImageBitmap(bookInfo.getCoverImage());
+				mCoverImage = bookInfo.getCoverImage();
+				if(null != mCoverImage)
+				{
+				mCoverImageView.setImageBitmap(mCoverImage);
+				mFullSizeImageDialog.setImage(mCoverImage);
+				}
+				else
+				{
+					mCoverImageView.setImageResource(R.drawable.bookcover_unknown);
+					mFullSizeImageDialog.setImage(R.drawable.bookcover_unknown);
+				}
 				mNameTextView.setText(bookInfo.getBookName());
 				mAuthorTextView.setText(bookInfo.getAuthor());
 				mPublisherTextView.setText(bookInfo.getPublisher());
