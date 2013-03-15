@@ -4,6 +4,7 @@ import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
+import com.intalker.borrow.cloud.CloudUtility;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
@@ -111,7 +112,7 @@ public class NavigationPanel extends RelativeLayout{
 			@Override
 			public void onClick(View v) {
 				String testToken = "7a3cf000-0662-715b-a6a8-89feb8466014";
-				CloudAPI.setAccessToken(testToken);
+				CloudUtility.setAccessToken(testToken);
 				CloudAPI.getLoggedInUserInfo(v.getContext(),
 						new ICloudAPITaskListener() {
 

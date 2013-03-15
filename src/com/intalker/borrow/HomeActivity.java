@@ -2,6 +2,7 @@ package com.intalker.borrow;
 
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
+import com.intalker.borrow.cloud.CloudUtility;
 import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.data.AppData;
@@ -80,7 +81,7 @@ public class HomeActivity extends Activity {
 	}
 	
 	private void tryAutoLogin() {
-		if (CloudAPI.setAccessToken(DBUtil.loadToken())) {
+		if (CloudUtility.setAccessToken(DBUtil.loadToken())) {
 			CloudAPI.getLoggedInUserInfo(this, new ICloudAPITaskListener() {
 
 				@Override

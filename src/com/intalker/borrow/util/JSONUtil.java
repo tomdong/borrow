@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.cloud.CloudConfig;
 import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
@@ -19,18 +20,18 @@ public class JSONUtil {
 			ArrayList<BookInfo> bookInfoList = AppData.getInstance().getBooks();
 			for (BookInfo bookInfo : bookInfoList) {
 				JSONObject jsonBookInfo = new JSONObject();
-				jsonBookInfo.put(CloudAPI.DB_Book_ISBN, bookInfo.getISBN());
+				jsonBookInfo.put(CloudConfig.DB_Book_ISBN, bookInfo.getISBN());
 
 				// Hardcode now, will improve later
-				jsonBookInfo.put(CloudAPI.DB_Book_Quantity, "1");
-				jsonBookInfo.put(CloudAPI.DB_Book_PublicLevel, "all");
-				jsonBookInfo.put(CloudAPI.DB_Book_Status, "available");
+				jsonBookInfo.put(CloudConfig.DB_Book_Quantity, "1");
+				jsonBookInfo.put(CloudConfig.DB_Book_PublicLevel, "all");
+				jsonBookInfo.put(CloudConfig.DB_Book_Status, "available");
 				// This is not book's official description, it is from owner
-				jsonBookInfo.put(CloudAPI.DB_Book_Description, "");
+				jsonBookInfo.put(CloudConfig.DB_Book_Description, "");
 				
 				jsonBookInfoList.put(jsonBookInfo);
 			}
-			jsonData.put(CloudAPI.API_POST_BookInfoList, jsonBookInfoList);
+			jsonData.put(CloudConfig.API_POST_BookInfoList, jsonBookInfoList);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -46,8 +47,8 @@ public class JSONUtil {
 			for (int i = 0; i < length; ++i) {
 				JSONObject jsonBookItem = (JSONObject) jsonBookArray.get(i);
 				if (null != jsonBookItem
-						&& jsonBookItem.has(CloudAPI.DB_Book_ISBN)) {
-					String isbn = jsonBookItem.getString(CloudAPI.DB_Book_ISBN);
+						&& jsonBookItem.has(CloudConfig.DB_Book_ISBN)) {
+					String isbn = jsonBookItem.getString(CloudConfig.DB_Book_ISBN);
 					if (null != isbn && !appData.containsBook(isbn)) {
 						BookInfo bookInfo = null;
 						if (AppConfig.useSQLiteForCache) {
@@ -81,8 +82,8 @@ public class JSONUtil {
 			for (int i = 0; i < length; ++i) {
 				JSONObject jsonBookItem = (JSONObject) jsonBookArray.get(i);
 				if (null != jsonBookItem
-						&& jsonBookItem.has(CloudAPI.DB_Book_ISBN)) {
-					String isbn = jsonBookItem.getString(CloudAPI.DB_Book_ISBN);
+						&& jsonBookItem.has(CloudConfig.DB_Book_ISBN)) {
+					String isbn = jsonBookItem.getString(CloudConfig.DB_Book_ISBN);
 					if (null != isbn && !appData.containsOthersBook(isbn)) {
 						BookInfo bookInfo = null;
 						if (AppConfig.useSQLiteForCache) {
@@ -117,16 +118,16 @@ public class JSONUtil {
 			for (int i = 0; i < length; ++i) {
 				JSONObject jsonFriendItem = (JSONObject) jsonFriendArray.get(i);
 				if (null != jsonFriendItem) {
-					String id = jsonFriendItem.getString(CloudAPI.DB_User_Id);
-					String nickName = jsonFriendItem.getString(CloudAPI.DB_User_NickName);
-					String email = jsonFriendItem.getString(CloudAPI.DB_User_Email);
-					String regTime = jsonFriendItem.getString(CloudAPI.DB_User_RegTime);
-					String permission = jsonFriendItem.getString(CloudAPI.DB_User_Permission);
+					String id = jsonFriendItem.getString(CloudConfig.DB_User_Id);
+					String nickName = jsonFriendItem.getString(CloudConfig.DB_User_NickName);
+					String email = jsonFriendItem.getString(CloudConfig.DB_User_Email);
+					String regTime = jsonFriendItem.getString(CloudConfig.DB_User_RegTime);
+					String permission = jsonFriendItem.getString(CloudConfig.DB_User_Permission);
 					
-					String alias = jsonFriendItem.getString(CloudAPI.DB_Friend_Alias);
-					String group = jsonFriendItem.getString(CloudAPI.DB_Friend_Group);
-					String status = jsonFriendItem.getString(CloudAPI.DB_Friend_Status);
-					String connectTime = jsonFriendItem.getString(CloudAPI.DB_Friend_ConnectTime);
+					String alias = jsonFriendItem.getString(CloudConfig.DB_Friend_Alias);
+					String group = jsonFriendItem.getString(CloudConfig.DB_Friend_Group);
+					String status = jsonFriendItem.getString(CloudConfig.DB_Friend_Status);
+					String connectTime = jsonFriendItem.getString(CloudConfig.DB_Friend_ConnectTime);
 					
 					UserInfo userInfo = new UserInfo(id, nickName, email, regTime, permission);
 					FriendInfo friendInfo = new FriendInfo(userInfo, alias, group, status, connectTime);
@@ -148,11 +149,11 @@ public class JSONUtil {
 			for (int i = 0; i < length; ++i) {
 				JSONObject jsonFriendItem = (JSONObject) jsonFriendArray.get(i);
 				if (null != jsonFriendItem) {
-					String id = jsonFriendItem.getString(CloudAPI.DB_User_Id);
-					String nickName = jsonFriendItem.getString(CloudAPI.DB_User_NickName);
-					String email = jsonFriendItem.getString(CloudAPI.DB_User_Email);
-					String regTime = jsonFriendItem.getString(CloudAPI.DB_User_RegTime);
-					String permission = jsonFriendItem.getString(CloudAPI.DB_User_Permission);
+					String id = jsonFriendItem.getString(CloudConfig.DB_User_Id);
+					String nickName = jsonFriendItem.getString(CloudConfig.DB_User_NickName);
+					String email = jsonFriendItem.getString(CloudConfig.DB_User_Email);
+					String regTime = jsonFriendItem.getString(CloudConfig.DB_User_RegTime);
+					String permission = jsonFriendItem.getString(CloudConfig.DB_User_Permission);
 
 					UserInfo userInfo = new UserInfo(id, nickName, email, regTime, permission);
 					if (appData.isUnfollowed(id)) {

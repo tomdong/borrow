@@ -2,6 +2,7 @@ package com.intalker.borrow.data;
 
 import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.cloud.CloudUtility;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.util.DBUtil;
 import com.intalker.borrow.util.StorageUtil;
@@ -21,7 +22,7 @@ public class InitialCachedDataAsyncTask extends AsyncTask<Void, Void, Void> {
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
 		HomeActivity.getApp().getBookGallery().initialWithCachedData();
-		if (CloudAPI.setAccessToken(DBUtil.loadToken())) {
+		if (CloudUtility.setAccessToken(DBUtil.loadToken())) {
 			CloudAPI.getLoggedInUserInfo(HomeActivity.getApp(), new ICloudAPITaskListener() {
 
 				@Override
