@@ -22,7 +22,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class BookGallery extends RelativeLayout {
 
@@ -42,6 +41,20 @@ public class BookGallery extends RelativeLayout {
 		createUI();
 	}
 	
+	public UserInfo getCurOwner() {
+		return mCurOwner;
+	}
+
+	public boolean isMyGallery() {
+		UserInfo loggedInUser = UserInfo.getCurLoggedinUser();
+		if (null != loggedInUser) {
+			if (mCurOwner.getId().compareTo(loggedInUser.getId()) != 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public void updateTopPanel(UserInfo curOwner)
 	{
 		mCurOwner = curOwner;
@@ -52,15 +65,10 @@ public class BookGallery extends RelativeLayout {
 			mShelfOwnerTextView.setText(R.string.app_name);
 		}
 		
-		UserInfo loggedInUser = UserInfo.getCurLoggedinUser();
-		if (null != loggedInUser) {
-			if (mCurOwner.getId().compareTo(loggedInUser.getId()) != 0) {
-				mRefreshBtn.setButtonImage(R.drawable.home);
-			} else {
-				mRefreshBtn.setButtonImage(R.drawable.refresh);
-			}
-		} else {
+		if (isMyGallery()) {
 			mRefreshBtn.setButtonImage(R.drawable.refresh);
+		} else {
+			mRefreshBtn.setButtonImage(R.drawable.home);
 		}
 	}
 

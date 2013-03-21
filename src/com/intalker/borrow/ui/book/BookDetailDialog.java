@@ -6,6 +6,7 @@ import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.isbn.ISBNResolver;
 import com.intalker.borrow.ui.FullSizeImageDialog;
 import com.intalker.borrow.ui.UIConfig;
@@ -312,6 +313,12 @@ public class BookDetailDialog extends Dialog {
 				mPageCountTextView.setText(bookInfo.getPageCount());
 				mISBNTextView.setText(bookInfo.getISBN());
 				mDescriptionTextView.setText(bookInfo.getSummary());
+			}
+			
+			if (HomeActivity.getApp().getBookGallery().isMyGallery()) {
+				this.mDeleteButton.setVisibility(View.VISIBLE);
+			} else {
+				this.mDeleteButton.setVisibility(View.GONE);
 			}
 		}
 	}
