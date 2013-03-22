@@ -4,6 +4,7 @@ import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudUtility;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
+import com.intalker.borrow.ui.control.TransparentProgressDialog;
 import com.intalker.borrow.util.DBUtil;
 import com.intalker.borrow.util.StorageUtil;
 
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 public class InitialCachedDataAsyncTask extends AsyncTask<Void, Void, Void> {
 
+	private TransparentProgressDialog mProgressDialog = null;
+	
 	@Override
 	protected Void doInBackground(Void... params) {
 		StorageUtil.loadCachedBooks();
@@ -32,6 +35,7 @@ public class InitialCachedDataAsyncTask extends AsyncTask<Void, Void, Void> {
 						app.getBookGallery().updateTopPanel(UserInfo.getCurLoggedinUser());
 						app.getSocialPanel().getFriendsView().refreshList();
 					}
+					mProgressDialog.dismiss();
 				}
 
 			});
@@ -42,6 +46,10 @@ public class InitialCachedDataAsyncTask extends AsyncTask<Void, Void, Void> {
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		super.onPreExecute();
+		mProgressDialog = new TransparentProgressDialog(HomeActivity.getApp(), false);
+		mProgressDialog.setCancelable(false);
+		mProgressDialog.setMessage("Loading");
+		mProgressDialog.show();
 	}
 
 }

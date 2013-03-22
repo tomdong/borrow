@@ -15,7 +15,6 @@ import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.DeviceUtil;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.ScanUtil;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.view.MotionEvent;

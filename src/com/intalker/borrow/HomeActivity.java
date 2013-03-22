@@ -22,6 +22,8 @@ import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.StorageUtil;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.Menu;
@@ -68,15 +70,15 @@ public class HomeActivity extends Activity {
 		StorageUtil.initialize();
 		AppData.getInstance().initialize();
 		DensityAdaptor.init(this);
-		StorageUtil.loadCachedBooks();
+		if (!AppConfig.disableAutoLoadCache) {
+			StorageUtil.loadCachedBooks();
+		}
 		CloudAPI.CloudToken = "";
 
 		setContentView(initializeWithSlidingStyle());
 		this.mSlidingMenu.invalidate();
 		
-		//Continue to investigate this Async task later
-//		InitialCachedDataAsyncTask initCachedDataTask = new InitialCachedDataAsyncTask();
-//		initCachedDataTask.execute();
+		//enable later
 		tryAutoLogin();
 	}
 	
@@ -130,6 +132,32 @@ public class HomeActivity extends Activity {
 		if (CloudAPI.isSuccessful(this, returnCode)) {
 			mBookGallery.updateTopPanel(UserInfo.getCurLoggedinUser());
 			mSocialPanel.getFriendsView().refreshList();
+
+			if (AppConfig.disableAutoLoadCache) {
+				AlertDialog alertDialog = new AlertDialog.Builder(this)
+						.setTitle("test")
+						.setMessage("msg")
+						.setIcon(R.drawable.question)
+						.setPositiveButton("OK",
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										InitialCachedDataAsyncTask initCachedDataTask = new InitialCachedDataAsyncTask();
+										initCachedDataTask.execute();
+									}
+								})
+						.setNegativeButton("cancel",
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+									}
+								}).create();
+				alertDialog.show();
+			}
 		}
 	}
 	
