@@ -15,6 +15,11 @@ public class DBUtil {
 		return SQLiteDatabase.openOrCreateDatabase(StorageUtil.DatabasePath
 				+ "/openshelf.db", null);
 	}
+	
+	public static void uninitialize() {
+		//Continue investigation...
+		//SQLiteDatabase.releaseMemory();
+	}
 
 	public static void initialize() {
 		SQLiteDatabase db = null;

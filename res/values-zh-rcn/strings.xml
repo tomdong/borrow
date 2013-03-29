@@ -5,7 +5,7 @@
     <string name="menu_settings">设置</string>
     <string name="title_activity_home">Open Shelf</string>
     <string name="please_wait">请稍候</string>
-    <string name="searching_book_info">正在查找书籍信息\n条件: ISBN = "</string>
+    <string name="searching_book_info">正在获取书籍信息\n条件: ISBN = "</string>
     <string name="book_name">书名</string>
     <string name="author">作者</string>
     <string name="publisher">出版社</string>

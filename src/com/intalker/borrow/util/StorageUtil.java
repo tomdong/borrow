@@ -125,6 +125,9 @@ public class StorageUtil {
 	
 	private static void saveImage(String path, Bitmap image) {
 		File file = new File(path);
+		if (file.exists()) {
+			return;
+		}
 		try {
 			BufferedOutputStream bos = new BufferedOutputStream(
 					new FileOutputStream(file));

@@ -5,6 +5,7 @@ import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.cloud.CloudUtility;
+import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
@@ -105,52 +106,36 @@ public class NavigationPanel extends RelativeLayout{
 		this.addView(ControlFactory
 				.createHoriSeparatorForRelativeLayout(mContext, panelWidth, y + loginBtnLP.height + buttonGap));
 		
-		// Test token
-		HaloButton testTokenBtn = new HaloButton(mContext, R.drawable.test);
-		testTokenBtn.setOnClickListener(new OnClickListener() {
+		if (AppConfig.isDebugMode) {
+			HaloButton testTokenBtn = new HaloButton(mContext, R.drawable.test);
+			testTokenBtn.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				String testToken = "7a3cf000-0662-715b-a6a8-89feb8466014";
-				CloudUtility.setAccessToken(testToken);
-				CloudAPI.getLoggedInUserInfo(v.getContext(),
-						new ICloudAPITaskListener() {
+				@Override
+				public void onClick(View v) {
+					String testToken = "7a3cf000-0662-715b-a6a8-89feb8466014";
+					CloudUtility.setAccessToken(testToken);
+					CloudAPI.getLoggedInUserInfo(v.getContext(),
+							new ICloudAPITaskListener() {
 
-							@Override
-							public void onFinish(int returnCode) {
-								doAfterGetUserInfoByToken(returnCode);
-							}
+								@Override
+								public void onFinish(int returnCode) {
+									doAfterGetUserInfoByToken(returnCode);
+								}
 
-						});
-			}
-		});
-		RelativeLayout.LayoutParams testTokenBtnLP = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		y += buttonGap + DensityAdaptor.getDensityIndependentValue(8);
-		testTokenBtnLP.topMargin = y;
-		testTokenBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		this.addView(testTokenBtn, testTokenBtnLP);
-		
-		this.addView(ControlFactory
-				.createHoriSeparatorForRelativeLayout(mContext, panelWidth, y + loginBtnLP.height + buttonGap));
-		
-		// Clear button
-//		HaloButton clearBtn = new HaloButton(mContext, R.drawable.clear);
-//		clearBtn.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				HomeActivity.getApp().getBookGallery().resetBookShelf();
-//			}
-//		});
-//		RelativeLayout.LayoutParams clearBtnLP = new RelativeLayout.LayoutParams(
-//				RelativeLayout.LayoutParams.WRAP_CONTENT,
-//				RelativeLayout.LayoutParams.WRAP_CONTENT);
-//		y += buttonGap + DensityAdaptor.getDensityIndependentValue(8);
-//		clearBtnLP.topMargin = y;
-//		clearBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
-//		this.addView(clearBtn, clearBtnLP);
+							});
+				}
+			});
+			RelativeLayout.LayoutParams testTokenBtnLP = new RelativeLayout.LayoutParams(
+					RelativeLayout.LayoutParams.WRAP_CONTENT,
+					RelativeLayout.LayoutParams.WRAP_CONTENT);
+			y += buttonGap + DensityAdaptor.getDensityIndependentValue(8);
+			testTokenBtnLP.topMargin = y;
+			testTokenBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			this.addView(testTokenBtn, testTokenBtnLP);
+
+			this.addView(ControlFactory.createHoriSeparatorForRelativeLayout(
+					mContext, panelWidth, y + loginBtnLP.height + buttonGap));
+		}
 	}
 //	
 //	private void doAfterUplaod(int returnCode) {

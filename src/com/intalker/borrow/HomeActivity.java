@@ -78,7 +78,6 @@ public class HomeActivity extends Activity {
 		setContentView(initializeWithSlidingStyle());
 		this.mSlidingMenu.invalidate();
 		
-		//enable later
 		tryAutoLogin();
 	}
 	
@@ -251,6 +250,7 @@ public class HomeActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		StorageUtil.saveCachedBooks();
+		DBUtil.uninitialize();
 	}
 
 //	@Override
