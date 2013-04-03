@@ -3,6 +3,7 @@ package com.intalker.borrow.ui.book;
 import com.intalker.borrow.R;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -25,7 +26,8 @@ public class BookShelfItem extends RelativeLayout {
 			Bitmap coverImage = mInfo.getCoverImage();
 			if(null != coverImage)
 			{
-				mCoverImageView.setImageBitmap(coverImage);
+				setCoverImage(coverImage);
+				//mCoverImageView.setImageBitmap(coverImage);
 			}
 			else
 			{
@@ -56,6 +58,12 @@ public class BookShelfItem extends RelativeLayout {
 	}
 
 	public void setCoverImage(Bitmap coverImage) {
+		int w = coverImage.getWidth();
+		int h = coverImage.getHeight();
+		float ratio = (float) h / (float) w;
+		RelativeLayout.LayoutParams lp = (LayoutParams) mCoverImageView.getLayoutParams();
+		lp.height = (int) (lp.width * ratio);
+		mCoverImageView.setLayoutParams(lp);
 		mCoverImageView.setImageBitmap(coverImage);
 		mInfo.setCoverImage(coverImage);
 	}
@@ -73,19 +81,23 @@ public class BookShelfItem extends RelativeLayout {
 		RelativeLayout.LayoutParams coverImgaeViewLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		mCoverImageView.setScaleType(ScaleType.FIT_END);
 
-		double random = Math.random();
+		coverImgaeViewLP.width = LayoutUtil.getBookShelfItemWidth();
+		//coverImgaeViewLP.height = LayoutUtil.getBookShelfItemHeight();
+		
+		mCoverImageView.setScaleType(ScaleType.FIT_XY);
 
-		int resId = 0;
-		if (random < 0.3) {
-			resId = R.drawable.bookcover_test;
-		} else if (random < 0.7) {
-			resId = R.drawable.bookcover_test1;
-		} else {
-			resId = R.drawable.bookcover_test2;
-		}
-		mCoverImageView.setImageResource(resId);
+//		double random = Math.random();
+//
+//		int resId = 0;
+//		if (random < 0.3) {
+//			resId = R.drawable.bookcover_test;
+//		} else if (random < 0.7) {
+//			resId = R.drawable.bookcover_test1;
+//		} else {
+//			resId = R.drawable.bookcover_test2;
+//		}
+//		mCoverImageView.setImageResource(resId);
 
 		coverImgaeViewLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		coverImgaeViewLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
