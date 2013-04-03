@@ -8,7 +8,7 @@ public class LayoutUtil {
 	private static int shelfBookItemWidth = -1;
 	private static int shelfBookItemHeight = -1;
 	private static int shelfRowBoardHeight = -1;
-	private static int rowBookCount = 4;
+	private static int rowBookCount = 3;
 	private static int shelfBookGap = -1;
 	private static int shelfWidth = -1;
 	private static int shelfBookTopMargin = -1;
@@ -51,7 +51,7 @@ public class LayoutUtil {
 
 	public static int getShelfRowHeight() {
 		if (shelfRowHeight < 0) {
-			shelfRowHeight = DensityAdaptor.getScreenHeight() / 5;
+			shelfRowHeight = DensityAdaptor.getScreenHeight() / 4;
 		}
 		return shelfRowHeight;
 	}
@@ -72,7 +72,7 @@ public class LayoutUtil {
 	
 	public static int getBookShelfItemHeight() {
 		if (shelfBookItemHeight < 0) {
-			shelfBookItemHeight = getShelfRowHeight() * 3 / 5;
+			shelfBookItemHeight = getShelfRowHeight() * 4 / 5;
 		}
 		return shelfBookItemHeight;
 	}
