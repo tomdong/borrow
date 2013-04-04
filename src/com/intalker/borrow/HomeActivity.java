@@ -41,6 +41,8 @@ public class HomeActivity extends Activity {
 	private RegisterView mReg = null;
 
 	private SlidingMenu mSlidingMenu = null;
+	
+	private boolean mIsRegUIShown = false;
 
 	public void toggleLeftPanel() {
 		mSlidingMenu.toggleLeftView();
@@ -161,6 +163,7 @@ public class HomeActivity extends Activity {
 	}
 	
 	public void toggleSignUpPanel(boolean show) {
+		mIsRegUIShown = show;
 		if (show) {
 			mSlidingMenu.toggleLeftView();
 			mBookGallery.setVisibility(View.GONE);
@@ -255,6 +258,10 @@ public class HomeActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
+		if (mIsRegUIShown) {
+			toggleSignUpPanel(false);
+			return;
+		}
 		new AlertDialog.Builder(this)
 				.setTitle(R.string.quit_confirm)
 				.setIcon(R.drawable.question)
