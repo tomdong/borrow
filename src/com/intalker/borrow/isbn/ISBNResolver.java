@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
+import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.data.FriendInfo;
@@ -109,6 +110,7 @@ public class ISBNResolver {
 					lastBook.setCoverAsUnknown();
 				}
 				lastBook.show();
+				CloudAPI.sychronizeOwnedBooks(HomeActivity.getApp(), null);
 			}
 		}
 	}
