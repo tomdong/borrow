@@ -61,7 +61,9 @@ public class FriendItemUI extends RelativeLayout {
 		mOnClickListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				HomeActivity.getApp().getBookGallery().resetBookShelf();
+				HomeActivity app = HomeActivity.getApp();
+				app.getBookGallery().resetBookShelf();
+				app.toggleRightPanel();
 				CloudAPI.getBooksByOwner(v.getContext(), mInfo.getUserInfo()
 						.getId(), new ICloudAPITaskListener() {
 					@Override

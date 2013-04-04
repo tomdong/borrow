@@ -216,9 +216,6 @@ public class ISBNResolver {
 			}
 			mToProcessBookInfoList.clear();
 			
-			if (!mIsProcessOwnedBooks) {
-				HomeActivity.getApp().toggleRightPanel();
-			}
 //			Toast.makeText(mContext, "Synchronize done!", Toast.LENGTH_SHORT)
 //					.show();
 		}
