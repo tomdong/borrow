@@ -262,8 +262,11 @@ public class HomeActivity extends Activity {
 			toggleSignUpPanel(false);
 			return;
 		}
+		String confirm = this.getString(R.string.confirm);
+		String quitConfirm = this.getString(R.string.quit_confirm);
 		new AlertDialog.Builder(this)
-				.setTitle(R.string.quit_confirm)
+				.setTitle(confirm)
+				.setMessage(quitConfirm)
 				.setIcon(R.drawable.question)
 				.setPositiveButton(R.string.ok,
 						new DialogInterface.OnClickListener() {

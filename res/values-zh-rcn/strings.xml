@@ -34,6 +34,9 @@
     <string name="reg_agreement">同意注册条款</string>
     <string name="reg_commit">提交</string>
     <string name="invalid_isbn">无效的ISBN</string>
+    <string name="share_subject">分享一本书</string>
+    <string name="share_msg_prefix">我有一本《</string>
+    <string name="share_msg_suffix">》，有谁想看的话，来找我拿。</string>
     <string name="api_msg_login">登录中,请稍候.</string>
     <string name="api_msg_signup">注册中,请稍候.</string>
     <string name="api_msg_getuserinfo">获取用户信息,请稍候.</string>

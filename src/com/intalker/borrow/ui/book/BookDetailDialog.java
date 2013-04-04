@@ -14,6 +14,7 @@ import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
+import com.intalker.borrow.util.ShareUtil;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -48,6 +49,7 @@ public class BookDetailDialog extends Dialog {
 	private TextView mDescriptionTextView = null;
 	
 	private HaloButton mDeleteButton = null;
+	private HaloButton mShareButton = null;
 	private HaloButton mCloseButton = null;
 	
 	private FullSizeImageDialog mFullSizeImageDialog = null;
@@ -127,7 +129,7 @@ public class BookDetailDialog extends Dialog {
 				LayoutUtil.getDetailDialogWidth(),
 				separatorY + descriptionHeight + boundMargin - DensityAdaptor.getDensityIndependentValue(8)));
 
-		// Buttons
+		// Delete button.
 		mDeleteButton = new HaloButton(context, R.drawable.trash);
 		
 		RelativeLayout.LayoutParams deleteBtnLP = new RelativeLayout.LayoutParams(
@@ -140,7 +142,20 @@ public class BookDetailDialog extends Dialog {
 		
 		mLayout.addView(mDeleteButton, deleteBtnLP);
 		
-		//Close button.
+		// Share button.
+		mShareButton = new HaloButton(context, R.drawable.share);
+		
+		RelativeLayout.LayoutParams shareBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		shareBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		shareBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		shareBtnLP.rightMargin = boundMargin;
+		shareBtnLP.bottomMargin = boundMargin;
+		
+		mLayout.addView(mShareButton, shareBtnLP);
+		
+		// Close button.
 		mCloseButton = new HaloButton(context, R.drawable.close);
 		
 		RelativeLayout.LayoutParams closeBtnLP = new RelativeLayout.LayoutParams(
@@ -210,6 +225,14 @@ public class BookDetailDialog extends Dialog {
 									}
 								}).create();
 				alertDialog.show();
+			}
+		});
+		
+		mShareButton.setOnClickListener(new View.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				ShareUtil.fireShareIntent(mBookItem.getInfo());
 			}
 		});
 		
