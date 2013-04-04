@@ -231,6 +231,10 @@ public class HomeActivity extends Activity {
 							AppData.getInstance().addBook(bookInfo);
 							BookShelfView.getInstance().addBookByExistingInfo(
 									bookInfo);
+							
+							if (CloudUtility.isLoggedIn()) {
+								CloudAPI.sychronizeOwnedBooks(this, null);
+							}
 							break;
 						}
 					}
