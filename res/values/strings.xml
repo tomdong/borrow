@@ -36,7 +36,7 @@
     <string name="invalid_isbn">Invalid ISBN</string>
     <string name="share_subject">Share a book</string>
     <string name="share_msg_prefix">I have a book "</string>
-    <string name="share_msg_suffix">", if you want, come to take it.</string>
+    <string name="share_msg_suffix">" idle at home, if you want, come to take it.</string>
     <string name="api_msg_login">Login to cloud, please wait.</string>
     <string name="api_msg_signup">Signup to cloud, please wait.</string>
     <string name="api_msg_getuserinfo">Getting user info, please wait.</string>
