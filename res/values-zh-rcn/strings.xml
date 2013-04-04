@@ -2,6 +2,7 @@
 
     <string name="app_name">OpenShelf</string>
     <string name="hello_world">Hello world!</string>
+    <string name="quit_confirm">确定退出?</string>
     <string name="menu_settings">设置</string>
     <string name="title_activity_home">Open Shelf</string>
     <string name="please_wait">请稍候</string>

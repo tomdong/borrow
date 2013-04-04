@@ -253,6 +253,28 @@ public class HomeActivity extends Activity {
 		DBUtil.uninitialize();
 	}
 
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.quit_confirm)
+				.setIcon(R.drawable.question)
+				.setPositiveButton(R.string.ok,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								HomeActivity.getApp().finish();
+							}
+						})
+				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				}).show();
+	}
+
 //	@Override
 //	protected void onStop() {
 //		// TODO Auto-generated method stub
