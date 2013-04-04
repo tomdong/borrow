@@ -22,14 +22,12 @@ public class ShareUtil {
 		}
 		Context context = HomeActivity.getApp();
 		intent.putExtra("subject", context.getString(R.string.share_subject));
-		// intent.putExtra("sms_body", "test");
 		String bodyMsg = context.getString(R.string.share_msg_prefix)
 				+ bookInfo.getBookName()
 				+ context.getString(R.string.share_msg_suffix);
 		intent.putExtra(Intent.EXTRA_TEXT, bodyMsg);
+		intent.putExtra("sms_body", bodyMsg);
 		intent.setType("image/*");
-		// intent.setClassName("com.android.mms",
-		// "com.android.mms.ui.ComposeMessageActivity");
 		HomeActivity.getApp().startActivity(intent);
 	}
 }

@@ -340,8 +340,10 @@ public class BookDetailDialog extends Dialog {
 			
 			if (HomeActivity.getApp().getBookGallery().isMyGallery()) {
 				this.mDeleteButton.setVisibility(View.VISIBLE);
+				this.mShareButton.setVisibility(View.VISIBLE);
 			} else {
 				this.mDeleteButton.setVisibility(View.GONE);
+				this.mShareButton.setVisibility(View.GONE);
 			}
 		}
 	}
