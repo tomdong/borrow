@@ -158,7 +158,7 @@ public class NavigationPanel extends RelativeLayout{
 	private void doAfterGetUserInfoByToken(int returnCode) {
 		if (CloudAPI.isSuccessful(mContext, returnCode)) {
 			HomeActivity.getApp().getBookGallery()
-					.updateTopPanel(UserInfo.getCurLoggedinUser());
+					.updatePanels(UserInfo.getCurLoggedinUser());
 			HomeActivity.getApp().getSocialPanel().getFriendsView()
 					.refreshList();
 		}

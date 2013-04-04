@@ -131,7 +131,7 @@ public class HomeActivity extends Activity {
 
 	private void doAfterGetUserInfoByToken(int returnCode) {
 		if (CloudAPI.isSuccessful(this, returnCode)) {
-			mBookGallery.updateTopPanel(UserInfo.getCurLoggedinUser());
+			mBookGallery.updatePanels(UserInfo.getCurLoggedinUser());
 			mSocialPanel.getFriendsView().refreshList();
 
 			if (AppConfig.disableAutoLoadCache) {
@@ -198,7 +198,7 @@ public class HomeActivity extends Activity {
 			public void onSuccess() {
 				HomeActivity app = HomeActivity.getApp();
 				app.toggleSignUpPanel(false);
-				app.getBookGallery().updateTopPanel(UserInfo.getCurLoggedinUser());
+				app.getBookGallery().updatePanels(UserInfo.getCurLoggedinUser());
 				app.getSocialPanel().getFriendsView().refreshList();
 			}
 

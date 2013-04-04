@@ -144,7 +144,7 @@ public class ISBNResolver {
 				bookInfoList = AppData.getInstance().getOthersBooks();
 				curGalleryOwner = mFriendInfo.getUserInfo();
 			}
-			HomeActivity.getApp().getBookGallery().updateTopPanel(curGalleryOwner);
+			HomeActivity.getApp().getBookGallery().updatePanels(curGalleryOwner);
 			
 			int length = bookInfoList.size();
 

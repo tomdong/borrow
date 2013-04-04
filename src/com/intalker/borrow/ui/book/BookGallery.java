@@ -32,6 +32,7 @@ public class BookGallery extends RelativeLayout {
 	private HaloButton mToggleRightPanelBtn = null;
 	private HaloButton mRefreshBtn = null;
 	private HaloButton mClearBtn = null;
+	private HaloButton mScanBtn = null;
 	private UserInfo mCurOwner = null;
 	
 	public BookGallery(Context context) {
@@ -54,7 +55,7 @@ public class BookGallery extends RelativeLayout {
 		return true;
 	}
 	
-	public void updateTopPanel(UserInfo curOwner)
+	public void updatePanels(UserInfo curOwner)
 	{
 		mCurOwner = curOwner;
 		if (null != curOwner) {
@@ -65,8 +66,10 @@ public class BookGallery extends RelativeLayout {
 		}
 		
 		if (isMyGallery()) {
+			mScanBtn.setVisibility(VISIBLE);
 			mRefreshBtn.setButtonImage(R.drawable.refresh);
 		} else {
+			mScanBtn.setVisibility(GONE);
 			mRefreshBtn.setButtonImage(R.drawable.home);
 		}
 	}
@@ -174,8 +177,8 @@ public class BookGallery extends RelativeLayout {
 		imageBGLP.height = LayoutUtil.getGalleryBottomPanelHeight();
 		mBottomPanel.addView(imageBackground, imageBGLP);
 		
-		HaloButton scanBtn = new HaloButton(this.getContext(), R.drawable.scan_barcode);
-		scanBtn.setOnClickListener(new OnClickListener(){
+		mScanBtn = new HaloButton(this.getContext(), R.drawable.scan_barcode);
+		mScanBtn.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
@@ -188,7 +191,7 @@ public class BookGallery extends RelativeLayout {
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		scanBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		scanBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		mBottomPanel.addView(scanBtn, scanBtnLP);
+		mBottomPanel.addView(mScanBtn, scanBtnLP);
 		
 		//Toggle left-panel button
 		mToggleLeftPanelBtn = new HaloButton(this.getContext(), R.drawable.menu);

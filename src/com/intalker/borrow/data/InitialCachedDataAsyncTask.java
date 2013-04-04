@@ -32,7 +32,7 @@ public class InitialCachedDataAsyncTask extends AsyncTask<Void, Void, Void> {
 				public void onFinish(int returnCode) {
 					HomeActivity app = HomeActivity.getApp();
 					if (CloudAPI.isSuccessful(app, returnCode)) {
-						app.getBookGallery().updateTopPanel(UserInfo.getCurLoggedinUser());
+						app.getBookGallery().updatePanels(UserInfo.getCurLoggedinUser());
 						app.getSocialPanel().getFriendsView().refreshList();
 					}
 					mProgressDialog.dismiss();
