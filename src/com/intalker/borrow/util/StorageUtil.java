@@ -84,8 +84,9 @@ public class StorageUtil {
 			DBUtil.clearOwnedBooks();
 			ArrayList<BookInfo> ownedBooks = appData.getBooks();
 			DBUtil.saveOwnedBooks(ownedBooks);
+			DBUtil.saveBooksOfficialInfo(ownedBooks);
 			
-			ArrayList<BookInfo> othersBooks = appData.getBooks();
+			ArrayList<BookInfo> othersBooks = appData.getOthersBooks();
 			DBUtil.saveBooksOfficialInfo(othersBooks);
 		} else {
 			try {

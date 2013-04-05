@@ -47,12 +47,14 @@ public class BookDetailDialog extends Dialog {
 	private TextView mPageCountTextView = null;
 	private TextView mISBNTextView = null;
 	private TextView mDescriptionTextView = null;
-	
+
 	private HaloButton mDeleteButton = null;
 	private HaloButton mShareButton = null;
 	private HaloButton mCloseButton = null;
 	
 	private FullSizeImageDialog mFullSizeImageDialog = null;
+	
+	private boolean mHasCoverImage = false;
 	
 	private Bitmap mCoverImage = null;
 	private BookDetailDialog mDialog = null;
@@ -93,11 +95,9 @@ public class BookDetailDialog extends Dialog {
 		coverImageLP.leftMargin = boundMargin;
 		coverImageLP.topMargin = boundMargin;
 		mCoverImageView.setImageResource(R.drawable.bookcover_unknown);
-		//mCoverImage.setScaleType(ScaleType.FIT_START);
 		mCoverImageView.setScaleType(ScaleType.FIT_CENTER);
-		//mCoverImage.setBackgroundColor(Color.BLUE);
 		mLayout.addView(mCoverImageView, coverImageLP);
-		
+
 		mDetailInfoPanel = new RelativeLayout(context);
 		//mDetailInfoPanel.setBackgroundColor(Color.WHITE);
 		RelativeLayout.LayoutParams detailInfoPanelLP = new RelativeLayout.LayoutParams(
@@ -248,7 +248,12 @@ public class BookDetailDialog extends Dialog {
 
 			@Override
 			public void onClick(View v) {
-				mFullSizeImageDialog.show();
+				if (mHasCoverImage) {
+					mFullSizeImageDialog.show();
+				} else {
+					ISBNResolver.getInstance().refreshBookInfo(v.getContext(),
+							mBookItem);
+				}
 			}
 		});
 	}
@@ -320,17 +325,22 @@ public class BookDetailDialog extends Dialog {
 			BookInfo bookInfo = bookItem.getInfo();
 			if (null != bookInfo) {
 				mCoverImage = bookInfo.getCoverImage();
-				if(null != mCoverImage)
-				{
-				mCoverImageView.setImageBitmap(mCoverImage);
-				mFullSizeImageDialog.setImage(mCoverImage);
-				}
-				else
-				{
-					mCoverImageView.setImageResource(R.drawable.bookcover_unknown);
+				if (null != mCoverImage) {
+					mCoverImageView.setImageBitmap(mCoverImage);
+					mFullSizeImageDialog.setImage(mCoverImage);
+				} else {
+					mCoverImageView
+							.setImageResource(R.drawable.bookcover_unknown);
 					mFullSizeImageDialog.setImage(R.drawable.bookcover_unknown);
 				}
-				mNameTextView.setText(bookInfo.getBookName());
+				
+				String bookName = bookInfo.getBookName();
+				if (null == mCoverImage || bookName.length() < 1) {
+					mHasCoverImage = false;
+				} else {
+					mHasCoverImage = true;
+				}
+				mNameTextView.setText(bookName);
 				mAuthorTextView.setText(bookInfo.getAuthor());
 				mPublisherTextView.setText(bookInfo.getPublisher());
 				mPageCountTextView.setText(bookInfo.getPageCount());

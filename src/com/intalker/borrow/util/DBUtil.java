@@ -118,14 +118,16 @@ public class DBUtil {
 			return;
 		}
 
+		String isbn = bookInfo.getISBN();
 		ContentValues bookInfoVals = new ContentValues();
-		bookInfoVals.put("isbn", bookInfo.getISBN());
+		bookInfoVals.put("isbn", isbn);
 		bookInfoVals.put("bookname", bookInfo.getBookName());
 		bookInfoVals.put("publisher", bookInfo.getPublisher());
 		bookInfoVals.put("pagecount", bookInfo.getPageCount());
 		bookInfoVals.put("author", bookInfo.getAuthor());
 		bookInfoVals.put("summary", bookInfo.getSummary());
 		
+		db.delete("bookinfo", "isbn=?", new String[] { isbn });
 		db.insertWithOnConflict("bookinfo", null, bookInfoVals, SQLiteDatabase.CONFLICT_IGNORE);
 	}
 

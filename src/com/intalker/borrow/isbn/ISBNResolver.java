@@ -41,6 +41,11 @@ public class ISBNResolver {
 		GetBookInfoTask task = new GetBookInfoTask(context, isbn);
 		task.execute();
 	}
+	
+	public void refreshBookInfo(Context context, BookShelfItem item) {
+		GetBookInfoTask task = new GetBookInfoTask(context, item);
+		task.execute();
+	}
 
 	public void batchGetBookInfo(Context context, FriendInfo friendInfo) {
 		BatchGetBookInfoTask task = new BatchGetBookInfoTask(context, friendInfo);
@@ -62,9 +67,20 @@ public class ISBNResolver {
 	class GetBookInfoTask extends AsyncTask<String, Void, InputStream> {
 		private BookInfoParser isbnParser = null;
 		private TransparentProgressDialog mProgressDialog = null;
+		private BookShelfItem mBookShelfItem = null;
+		
+		public GetBookInfoTask(Context context, BookShelfItem bookShelfItem) {
+			super();
+			mBookShelfItem = bookShelfItem;
+			_constructor(context, bookShelfItem.getInfo().getISBN());
+		}
 
 		public GetBookInfoTask(Context context, String isbn) {
 			super();
+			_constructor(context, isbn);
+		}
+		
+		private void _constructor(Context context, String isbn) {
 			isbnParser = getParser();
 			isbnParser.reset(isbn);
 			mProgressDialog = new TransparentProgressDialog(context, false);
@@ -80,10 +96,12 @@ public class ISBNResolver {
 			super.onPreExecute();
 
 			// TODO: should change to use BookGallery later.
-			BookShelfView.getInstance().addBookForLoading();
-			BookShelfItem lastBook = BookShelfItem.lastBookForTest;
-			if (null != lastBook) {
-				lastBook.setISBN(isbnParser.getISBN());
+			if (null == mBookShelfItem) {
+				BookShelfView.getInstance().addBookForLoading();
+				BookShelfItem lastBook = BookShelfItem.lastBookForTest;
+				if (null != lastBook) {
+					lastBook.setISBN(isbnParser.getISBN());
+				}
 			}
 		}
 
@@ -99,6 +117,15 @@ public class ISBNResolver {
 		protected void onPostExecute(InputStream result) {
 			super.onPostExecute(result);
 			mProgressDialog.dismiss();
+			if (null != mBookShelfItem) {
+				mBookShelfItem.setCoverImage(isbnParser.getCoverImage());
+				mBookShelfItem.setDetailInfo(isbnParser.getBookName(),
+						isbnParser.getAuthor(), isbnParser.getPublisher(),
+						isbnParser.getPageCount(), isbnParser.getDescription());
+				HomeActivity.getApp().getBookGallery().getBookDetailDialog()
+						.setInfo(mBookShelfItem);
+				return;
+			}
 			BookShelfItem lastBook = BookShelfItem.lastBookForTest;
 			if (null != lastBook) {
 				Bitmap coverImage = isbnParser.getCoverImage();

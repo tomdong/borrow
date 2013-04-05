@@ -1,5 +1,6 @@
 package com.intalker.borrow.ui.book;
 
+import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
@@ -14,7 +15,6 @@ import android.widget.RelativeLayout;
 
 public class BookShelfItem extends RelativeLayout {
 	public static BookShelfItem lastBookForTest = null;
-	private BookDetailDialog detailDialog = null;
 	private ImageView mCoverImageView = null;
 	private BookInfo mInfo = null;
 
@@ -45,10 +45,8 @@ public class BookShelfItem extends RelativeLayout {
 				BookShelfItem item = (BookShelfItem) arg0;
 				if(null != item)
 				{
-					if(null == detailDialog)
-					{
-						detailDialog = new BookDetailDialog(arg0.getContext());
-					}
+					BookDetailDialog detailDialog = HomeActivity.getApp()
+							.getBookGallery().getBookDetailDialog();
 					detailDialog.setInfo(item);
 					detailDialog.show();
 				}

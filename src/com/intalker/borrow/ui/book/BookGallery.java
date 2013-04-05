@@ -34,11 +34,19 @@ public class BookGallery extends RelativeLayout {
 	private HaloButton mClearBtn = null;
 	private HaloButton mScanBtn = null;
 	private UserInfo mCurOwner = null;
+	private BookDetailDialog mDetailDialog = null;
 	
 	public BookGallery(Context context) {
 		super(context);
 		
 		createUI();
+	}
+	
+	public BookDetailDialog getBookDetailDialog() {
+		if (null == mDetailDialog) {
+			mDetailDialog = new BookDetailDialog(this.getContext());
+		}
+		return mDetailDialog;
 	}
 	
 	public UserInfo getCurOwner() {
