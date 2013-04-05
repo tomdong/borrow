@@ -55,7 +55,7 @@ public class BookGallery extends RelativeLayout {
 
 	public boolean isMyGallery() {
 		UserInfo loggedInUser = UserInfo.getCurLoggedinUser();
-		if (null != loggedInUser) {
+		if (null != loggedInUser && null != mCurOwner) {
 			if (mCurOwner.getId().compareTo(loggedInUser.getId()) != 0) {
 				return false;
 			}

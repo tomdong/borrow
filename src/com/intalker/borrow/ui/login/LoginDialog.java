@@ -177,10 +177,10 @@ public class LoginDialog extends Dialog {
 			if (null != userInfo) {
 				this.mEmailInput.setText(userInfo.getEmail());
 				this.mPasswordInput.setText("");
-			} else {
-				this.mEmailInput.setText("tom.dong@openlib.com");
-				this.mPasswordInput.setText("dong");
 			}
+		} else {
+			this.mEmailInput.setText("tom.dong@openlib.com");
+			this.mPasswordInput.setText("dong");
 		}
 	}
 
