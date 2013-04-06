@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
 import com.intalker.borrow.util.DBUtil;
 
 public class AppData {
-	private ArrayList<BookInfo> mBooks = null;
+	private ArrayList<BookInfo> mOwnedBooks = null;
 	private ArrayList<BookInfo> mOthersBooks = null;
 	private ArrayList<UserInfo> mAllUsersOnServer = null;
 	private ArrayList<FriendInfo> mFriends = null;
@@ -21,22 +21,22 @@ public class AppData {
 	}
 
 	public AppData() {
-		mBooks = new ArrayList<BookInfo>();
+		mOwnedBooks = new ArrayList<BookInfo>();
 		mOthersBooks = new ArrayList<BookInfo>();
 		mAllUsersOnServer = new ArrayList<UserInfo>();
 		mFriends = new ArrayList<FriendInfo>();
 	}
 	
 	public void initialize() {
-		mBooks.clear();
+		mOwnedBooks.clear();
 		mOthersBooks.clear();
 		mAllUsersOnServer.clear();
 		mFriends.clear();
 		DBUtil.initialize();
 	}
 
-	public ArrayList<BookInfo> getBooks() {
-		return mBooks;
+	public ArrayList<BookInfo> getOwnedBooks() {
+		return mOwnedBooks;
 	}
 	
 	public ArrayList<BookInfo> getOthersBooks() {
@@ -63,8 +63,8 @@ public class AppData {
 		return mFriends;
 	}
 
-	public void addBook(BookInfo bookInfo) {
-		mBooks.add(bookInfo);
+	public void addOwnedBook(BookInfo bookInfo) {
+		mOwnedBooks.add(bookInfo);
 	}
 
 	public void removeFriend(FriendInfo friendInfo) {
@@ -88,17 +88,17 @@ public class AppData {
 		}
 	}
 
-	public void removeBook(BookInfo bookInfo) {
-		if (mBooks.contains(bookInfo)) {
-			mBooks.remove(bookInfo);
+	public void removeOwnedBook(BookInfo bookInfo) {
+		if (mOwnedBooks.contains(bookInfo)) {
+			mOwnedBooks.remove(bookInfo);
 		}
 	}
 
-	public void removeBook(String isbn) {
+	public void removeOwnedBook(String isbn) {
 		int indexToRemove = -1;
-		int count = mBooks.size();
+		int count = mOwnedBooks.size();
 		for (int i = 0; i < count; ++i) {
-			BookInfo bookInfo = mBooks.get(i);
+			BookInfo bookInfo = mOwnedBooks.get(i);
 			if (isbn.compareTo(bookInfo.getISBN()) == 0) {
 				indexToRemove = i;
 				break;
@@ -106,7 +106,7 @@ public class AppData {
 		}
 
 		if (indexToRemove >= 0) {
-			mBooks.remove(indexToRemove);
+			mOwnedBooks.remove(indexToRemove);
 		}
 	}
 	
@@ -122,9 +122,9 @@ public class AppData {
 		}
 	}
 
-	public void clearBooks() {
-		recycleCoverImages(mBooks);
-		mBooks.clear();
+	public void clearOwnedBooks() {
+		recycleCoverImages(mOwnedBooks);
+		mOwnedBooks.clear();
 	}
 	
 	public void clearOthersBooks() {
@@ -140,9 +140,9 @@ public class AppData {
 		mFriends.clear();
 	}
 
-	// [TODO] User another implementation to improve the performance later
-	public boolean containsBook(String isbn) {
-		for (BookInfo bookInfo : mBooks) {
+	// [TODO] Use another implementation to improve the performance later
+	public boolean containsOwnedBook(String isbn) {
+		for (BookInfo bookInfo : mOwnedBooks) {
 			if (bookInfo.getISBN().compareTo(isbn) == 0) {
 				return true;
 			}

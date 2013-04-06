@@ -228,7 +228,7 @@ public class HomeActivity extends Activity {
 					{
 						BookInfo bookInfo = DBUtil.getBookInfo(isbn);
 						if (null != bookInfo) {
-							AppData.getInstance().addBook(bookInfo);
+							AppData.getInstance().addOwnedBook(bookInfo);
 							BookShelfView.getInstance().addBookByExistingInfo(
 									bookInfo);
 							

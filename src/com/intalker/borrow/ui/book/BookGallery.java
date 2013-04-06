@@ -279,7 +279,7 @@ public class BookGallery extends RelativeLayout {
 	public void resetBookShelf()
 	{
 		mShelfView.initializeShelfRows();
-		AppData.getInstance().clearBooks();
+		AppData.getInstance().clearOwnedBooks();
 		AppData.getInstance().clearOthersBooks();
 	}
 	
@@ -297,7 +297,7 @@ public class BookGallery extends RelativeLayout {
 	public void initialWithCachedData()
 	{
 		//mShelfView.clearShelfRows();
-		ArrayList<BookInfo> books = AppData.getInstance().getBooks();
+		ArrayList<BookInfo> books = AppData.getInstance().getOwnedBooks();
 		for(BookInfo bookInfo : books)
 		{
 			mShelfView.addBookByExistingInfo(bookInfo);

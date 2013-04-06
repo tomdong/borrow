@@ -170,7 +170,7 @@ public class ISBNResolver {
 			ArrayList<BookInfo> bookInfoList = null;
 			UserInfo curGalleryOwner = null;
 			if (mIsProcessOwnedBooks) {
-				bookInfoList = AppData.getInstance().getBooks();
+				bookInfoList = AppData.getInstance().getOwnedBooks();
 				curGalleryOwner = UserInfo.getCurLoggedinUser();
 			} else {
 				bookInfoList = AppData.getInstance().getOthersBooks();

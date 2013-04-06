@@ -17,7 +17,7 @@ public class JSONUtil {
 		JSONObject jsonData = new JSONObject();
 		try {
 			JSONArray jsonBookInfoList = new JSONArray();
-			ArrayList<BookInfo> bookInfoList = AppData.getInstance().getBooks();
+			ArrayList<BookInfo> bookInfoList = AppData.getInstance().getOwnedBooks();
 			for (BookInfo bookInfo : bookInfoList) {
 				JSONObject jsonBookInfo = new JSONObject();
 				jsonBookInfo.put(CloudConfig.DB_Book_ISBN, bookInfo.getISBN());
@@ -43,13 +43,13 @@ public class JSONUtil {
 			JSONArray jsonBookArray = new JSONArray(strJSON);
 			int length = jsonBookArray.length();
 			AppData appData = AppData.getInstance();
-			ArrayList<BookInfo> curBooks = appData.getBooks();
+			ArrayList<BookInfo> curBooks = appData.getOwnedBooks();
 			for (int i = 0; i < length; ++i) {
 				JSONObject jsonBookItem = (JSONObject) jsonBookArray.get(i);
 				if (null != jsonBookItem
 						&& jsonBookItem.has(CloudConfig.DB_Book_ISBN)) {
 					String isbn = jsonBookItem.getString(CloudConfig.DB_Book_ISBN);
-					if (null != isbn && !appData.containsBook(isbn)) {
+					if (null != isbn && !appData.containsOwnedBook(isbn)) {
 						BookInfo bookInfo = null;
 						if (AppConfig.useSQLiteForCache) {
 							bookInfo = DBUtil.getBookInfo(isbn);

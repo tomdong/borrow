@@ -35,7 +35,7 @@ public class BookShelfItem extends RelativeLayout {
 			}
 		} else {
 			mInfo = new BookInfo();
-			AppData.getInstance().addBook(mInfo);
+			AppData.getInstance().addOwnedBook(mInfo);
 		}
 		
 		this.setOnClickListener(new OnClickListener(){

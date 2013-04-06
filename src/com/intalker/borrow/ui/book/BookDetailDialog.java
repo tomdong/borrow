@@ -190,7 +190,7 @@ public class BookDetailDialog extends Dialog {
 									@Override
 									public void onClick(DialogInterface dialog,
 											int which) {
-										AppData.getInstance().removeBook(
+										AppData.getInstance().removeOwnedBook(
 												mBookItem.getInfo());
 										mBookItem.setVisibility(View.GONE);
 										mDialog.dismiss();

@@ -71,10 +71,10 @@ public class StorageUtil {
 		//DebugUtil.showTimeRecordResult(HomeActivity.getApp());
 
 		AppData appData = AppData.getInstance();
-		appData.clearBooks();
+		appData.clearOwnedBooks();
 		for(BookInfo bookInfo : cachedBooks)
 		{
-			appData.addBook(bookInfo);
+			appData.addOwnedBook(bookInfo);
 		}
 	}
 	
@@ -82,7 +82,7 @@ public class StorageUtil {
 		AppData appData = AppData.getInstance();
 		if (AppConfig.useSQLiteForCache) {
 			DBUtil.clearOwnedBooks();
-			ArrayList<BookInfo> ownedBooks = appData.getBooks();
+			ArrayList<BookInfo> ownedBooks = appData.getOwnedBooks();
 			DBUtil.saveOwnedBooks(ownedBooks);
 			DBUtil.saveBooksOfficialInfo(ownedBooks);
 			
@@ -92,7 +92,7 @@ public class StorageUtil {
 			try {
 				File file = new File(CacheBookIndexPath);
 				FileWriter fw = new FileWriter(file, false);
-				fw.write(XmlUtil.serializeCachedBooks(appData.getBooks()));
+				fw.write(XmlUtil.serializeCachedBooks(appData.getOwnedBooks()));
 				fw.close();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -100,7 +100,7 @@ public class StorageUtil {
 		}
 
 		//Save cover images
-		ArrayList<BookInfo> books = appData.getBooks();
+		ArrayList<BookInfo> books = appData.getOwnedBooks();
 		for(BookInfo bookInfo : books)
 		{
 			String isbn = bookInfo.getISBN();
@@ -124,7 +124,7 @@ public class StorageUtil {
 			}
 		}
 		
-		appData.clearBooks();
+		appData.clearOwnedBooks();
 		appData.clearOthersBooks();
 	}
 	
