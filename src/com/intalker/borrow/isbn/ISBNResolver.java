@@ -118,12 +118,20 @@ public class ISBNResolver {
 			super.onPostExecute(result);
 			mProgressDialog.dismiss();
 			if (null != mBookShelfItem) {
-				mBookShelfItem.setCoverImage(isbnParser.getCoverImage());
+				Bitmap coverImage = isbnParser.getCoverImage();
+				if (null != coverImage) {
+					mBookShelfItem.setCoverImage(coverImage);
+				} else {
+					mBookShelfItem.setCoverAsUnknown();
+				}
+//				mBookShelfItem.setCoverImage(isbnParser.getCoverImage());
 				mBookShelfItem.setDetailInfo(isbnParser.getBookName(),
 						isbnParser.getAuthor(), isbnParser.getPublisher(),
 						isbnParser.getPageCount(), isbnParser.getDescription());
 				HomeActivity.getApp().getBookGallery().getBookDetailDialog()
 						.setInfo(mBookShelfItem);
+				
+				mBookShelfItem.getInfo().cacheData();
 				return;
 			}
 			BookShelfItem lastBook = BookShelfItem.lastBookForTest;
@@ -141,6 +149,8 @@ public class ISBNResolver {
 				if (CloudUtility.isLoggedIn()) {
 					CloudAPI.sychronizeOwnedBooks(HomeActivity.getApp(), null);
 				}
+				
+				lastBook.getInfo().cacheData();
 			}
 		}
 	}

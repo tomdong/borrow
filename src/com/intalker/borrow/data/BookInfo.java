@@ -25,6 +25,27 @@ public class BookInfo {
 		setISBN(isbn);
 	}
 	
+	public BookInfo clone() {
+		BookInfo bookInfo = new BookInfo();
+		bookInfo.setISBN(mISBN);
+		bookInfo.setBookName(mName);
+		bookInfo.setAuthor(mAuthor);
+		bookInfo.setSummary(mSummary);
+		bookInfo.setPageCount(mPageCount);
+		bookInfo.setPublisher(mPublisher);
+		try {
+			if (null != mCoverImage) {
+				bookInfo.setCoverImage(mCoverImage.copy(
+						mCoverImage.getConfig(), true));
+			}
+		} catch (Exception ex) {
+
+		}
+		
+		//bookInfo.setInitialized(true);
+		return bookInfo;
+	}
+	
 	public void setFoundCacheData(boolean foundCacheData) {
 		mFoundCacheData = foundCacheData;
 	}
@@ -105,8 +126,7 @@ public class BookInfo {
 		return mQuantity;
 	}
 	
-	public void setData(BookInfoParser parser)
-	{
+	public void setData(BookInfoParser parser) {
 		setISBN(parser.getISBN());
 		setBookName(parser.getBookName());
 		setAuthor(parser.getAuthor());
@@ -115,5 +135,11 @@ public class BookInfo {
 		setPageCount(parser.getPageCount());
 		setPublisher(parser.getPublisher());
 		setInitialized(true);
+		
+		cacheData();
+	}
+
+	public void cacheData() {
+		CacheData.cacheBookInfo(this.clone());
 	}
 }

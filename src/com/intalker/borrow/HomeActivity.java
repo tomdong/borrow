@@ -7,6 +7,7 @@ import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.config.ResultCode;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.data.CacheData;
 import com.intalker.borrow.data.InitialCachedDataAsyncTask;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.isbn.ISBNResolver;
@@ -69,6 +70,7 @@ public class HomeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		app = this;
+		CacheData.initialize();
 		StorageUtil.initialize();
 		AppData.getInstance().initialize();
 		DensityAdaptor.init(this);

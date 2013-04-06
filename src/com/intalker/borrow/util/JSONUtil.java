@@ -9,6 +9,7 @@ import com.intalker.borrow.cloud.CloudConfig;
 import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.data.CacheData;
 import com.intalker.borrow.data.FriendInfo;
 import com.intalker.borrow.data.UserInfo;
 
@@ -50,18 +51,20 @@ public class JSONUtil {
 						&& jsonBookItem.has(CloudConfig.DB_Book_ISBN)) {
 					String isbn = jsonBookItem.getString(CloudConfig.DB_Book_ISBN);
 					if (null != isbn && !appData.containsOwnedBook(isbn)) {
-						BookInfo bookInfo = null;
-						if (AppConfig.useSQLiteForCache) {
+						BookInfo bookInfo = CacheData.getCachedBookInfo(isbn);
+
+						if (null == bookInfo && AppConfig.useSQLiteForCache) {
 							bookInfo = DBUtil.getBookInfo(isbn);
-							if (null != bookInfo) {
-								bookInfo.setFoundCacheData(true);
-							}
+						}
+
+						if (null != bookInfo) {
+							bookInfo.setFoundCacheData(true);
 						}
 
 						if (null == bookInfo) {
 							bookInfo = new BookInfo(isbn);
 						}
-						
+
 						bookInfo.setInitialized(false);
 						curBooks.add(bookInfo);
 					}
@@ -85,12 +88,14 @@ public class JSONUtil {
 						&& jsonBookItem.has(CloudConfig.DB_Book_ISBN)) {
 					String isbn = jsonBookItem.getString(CloudConfig.DB_Book_ISBN);
 					if (null != isbn && !appData.containsOthersBook(isbn)) {
-						BookInfo bookInfo = null;
-						if (AppConfig.useSQLiteForCache) {
+						BookInfo bookInfo = CacheData.getCachedBookInfo(isbn);
+						
+						if (null == bookInfo && AppConfig.useSQLiteForCache) {
 							bookInfo = DBUtil.getBookInfo(isbn);
-							if (null != bookInfo) {
-								bookInfo.setFoundCacheData(true);
-							}
+						}
+						
+						if (null != bookInfo) {
+							bookInfo.setFoundCacheData(true);
 						}
 
 						if (null == bookInfo) {

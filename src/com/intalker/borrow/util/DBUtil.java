@@ -1,8 +1,10 @@
 package com.intalker.borrow.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.data.CacheData;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -143,13 +145,13 @@ public class DBUtil {
 		}
 	}
 	
-	public static void saveBooksOfficialInfo(ArrayList<BookInfo> othersBooks)
+	public static void saveBooksOfficialInfo(Collection<BookInfo> books)
 	{
 		SQLiteDatabase db = null;
 		try {
 			db = openDatabase();
 
-			for (BookInfo bookInfo : othersBooks) {
+			for (BookInfo bookInfo : books) {
 				addBookOfficialInfo(bookInfo, db);
 			}
 		} catch (Exception ex) {
@@ -231,6 +233,8 @@ public class DBUtil {
 			bookInfo.setPageCount(pageCount);
 			bookInfo.setAuthor(author);
 			bookInfo.setSummary(summary);
+			
+			bookInfo.cacheData();
 			break;
 		}
 		cursor.close();

@@ -6,10 +6,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
+import com.intalker.borrow.data.CacheData;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -84,10 +86,13 @@ public class StorageUtil {
 			DBUtil.clearOwnedBooks();
 			ArrayList<BookInfo> ownedBooks = appData.getOwnedBooks();
 			DBUtil.saveOwnedBooks(ownedBooks);
-			DBUtil.saveBooksOfficialInfo(ownedBooks);
+			//DBUtil.saveBooksOfficialInfo(ownedBooks);
 			
-			ArrayList<BookInfo> othersBooks = appData.getOthersBooks();
-			DBUtil.saveBooksOfficialInfo(othersBooks);
+			//ArrayList<BookInfo> othersBooks = appData.getOthersBooks();
+			//DBUtil.saveBooksOfficialInfo(othersBooks);
+			
+			Collection<BookInfo> cachedBooks = CacheData.getCachedBooks();
+			DBUtil.saveBooksOfficialInfo(cachedBooks);
 		} else {
 			try {
 				File file = new File(CacheBookIndexPath);
@@ -100,7 +105,8 @@ public class StorageUtil {
 		}
 
 		//Save cover images
-		ArrayList<BookInfo> books = appData.getOwnedBooks();
+		//ArrayList<BookInfo> books = appData.getOwnedBooks();
+		Collection<BookInfo> books = CacheData.getCachedBooks();
 		for(BookInfo bookInfo : books)
 		{
 			String isbn = bookInfo.getISBN();
@@ -112,17 +118,18 @@ public class StorageUtil {
 			}
 		}
 		
-		books = AppData.getInstance().getOthersBooks();
-		for(BookInfo bookInfo : books)
-		{
-			String isbn = bookInfo.getISBN();
-			Bitmap coverImage = bookInfo.getCoverImage();
-			if(isbn.length() > 0 && null != coverImage)
-			{
-				String path = StorageUtil.CacheImagePath + "/" + isbn + ".png";
-				saveImage(path, coverImage);
-			}
-		}
+//		books = AppData.getInstance().getOthersBooks();
+//		for(BookInfo bookInfo : books)
+//		{
+//			String isbn = bookInfo.getISBN();
+//			Bitmap coverImage = bookInfo.getCoverImage();
+//			if(isbn.length() > 0 && null != coverImage)
+//			{
+//				String path = StorageUtil.CacheImagePath + "/" + isbn + ".png";
+//				saveImage(path, coverImage);
+//			}
+//		}
+		CacheData.clearCachedBooks();
 		
 		appData.clearOwnedBooks();
 		appData.clearOthersBooks();
