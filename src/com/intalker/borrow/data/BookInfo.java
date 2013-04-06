@@ -38,7 +38,7 @@ public class BookInfo {
 				bookInfo.setCoverImage(mCoverImage.copy(
 						mCoverImage.getConfig(), true));
 			}
-		} catch (Exception ex) {
+		} catch (Error err) {
 
 		}
 		
