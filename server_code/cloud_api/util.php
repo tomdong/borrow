@@ -300,6 +300,15 @@ function getAllUsers()
     return $result;
 }
 
+function getUsersByISBN($isbn)
+{
+	//select user.* from user, book where user.id = book.ownerid and book.isbn='9787533542016';
+	$sql = "select " . DB_TABLE_USER . ".* from " . DB_TABLE_USER . ", " . DB_TABLE_BOOK . " where " . DB_TABLE_USER . "." . DB_USER_REMARK . " is null and " . DB_TABLE_USER . "." . DB_USER_ID . "=" . DB_TABLE_BOOK . "." . DB_BOOK_OWNERID . " and " . DB_TABLE_BOOK . "." . DB_BOOK_ISBN . "=" . wrapStr($isbn);
+	//echo $sql;exit(0);
+	$result = mysql_query($sql);
+	return $result;
+}
+
 function getUserInfoByEmail($email)
 {
     $sql = "select * from " . DB_TABLE_USER . " where " . DB_USER_EMAIL . "=" . wrapStr($email);
