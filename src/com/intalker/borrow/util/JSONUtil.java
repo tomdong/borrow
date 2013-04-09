@@ -187,9 +187,7 @@ public class JSONUtil {
 					String permission = jsonFriendItem.getString(CloudConfig.DB_User_Permission);
 
 					UserInfo userInfo = new UserInfo(id, nickName, email, regTime, permission);
-					if (appData.isUnfollowed(id)) {
-						tempUsers.add(userInfo);
-					}
+					tempUsers.add(userInfo);
 				}
 			}
 		} catch (Exception ex) {

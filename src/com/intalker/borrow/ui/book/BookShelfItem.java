@@ -8,8 +8,10 @@ import com.intalker.borrow.util.LayoutUtil;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
@@ -53,6 +55,17 @@ public class BookShelfItem extends RelativeLayout {
 			}
 			
 		});
+		
+//		this.setOnLongClickListener(new OnLongClickListener(){
+//
+//			@Override
+//			public boolean onLongClick(View v) {
+//				// TODO Auto-generated method stub
+//				Toast.makeText(v.getContext(), "test", Toast.LENGTH_SHORT).show();
+//				return true;
+//			}
+//			
+//		});
 	}
 
 	public void setCoverImage(Bitmap coverImage) {

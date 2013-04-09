@@ -83,6 +83,15 @@ public class CloudAPI {
 		task.execute();
 	}
 	
+	public static void getUsersByISBN(Context context, String isbn,
+			ICloudAPITaskListener apiListener) {
+		String url = CloudConfig.API_BaseURL + CloudConfig.API_GetUsersByISBN
+				+ CloudConfig.API_ISBN + isbn;
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
+				CloudConfig.API_GetUsersByISBN, apiListener);
+		task.execute();
+	}
+	
 	public static void follow(Context context, String friendId,
 			ICloudAPITaskListener apiListener) {
 		String url = CloudConfig.API_BaseURL + CloudConfig.API_Follow + CloudConfig.API_TOKEN + CloudAPI.CloudToken + CloudConfig.API_FriendId + friendId;

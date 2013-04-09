@@ -308,10 +308,8 @@ public class CloudUtility {
 		}
 	}
 	
-	public static int _getUsersByISBN(String isbn) {
-		AppData.getInstance().clearAllUsers();
-		String url = CloudConfig.API_BaseURL + CloudConfig.API_GetUsersByISBN
-				+ CloudConfig.API_ISBN + isbn;
+	public static int _getUsersByISBN(String url) {
+		AppData.getInstance().clearTempUsers();
 		HttpGet getReq = new HttpGet(url);
 		try {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);

@@ -52,6 +52,8 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 			message = context.getString(R.string.api_msg_unfollow);
 		} else if (mOp.compareTo(CloudConfig.API_GetBooksByOwner) == 0) {
 			message = context.getString(R.string.api_msg_getbooksbyowner);
+		} else if (mOp.compareTo(CloudConfig.API_GetUsersByISBN) == 0) {
+			message = context.getString(R.string.api_msg_searchuserbyisbn);
 		} else {
 			message = mOp;
 		}
@@ -110,6 +112,8 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 			mReturnCode = CloudUtility._unFollow(mUrl);
 		} else if (mOp.compareTo(CloudConfig.API_GetBooksByOwner) == 0) {
 			mReturnCode = CloudUtility._getBooksByOwner(mUrl);
+		} else if (mOp.compareTo(CloudConfig.API_GetUsersByISBN) == 0) {
+			mReturnCode = CloudUtility._getUsersByISBN(mUrl);
 		}
 		
 		return null;

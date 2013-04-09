@@ -12,6 +12,7 @@ import com.intalker.borrow.ui.FullSizeImageDialog;
 import com.intalker.borrow.ui.UIConfig;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
+import com.intalker.borrow.ui.social.UsersDialog;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.ShareUtil;
@@ -51,6 +52,7 @@ public class BookDetailDialog extends Dialog {
 	private HaloButton mDeleteButton = null;
 	private HaloButton mShareButton = null;
 	private HaloButton mCloseButton = null;
+	private HaloButton mSearchButton = null;
 	
 	private FullSizeImageDialog mFullSizeImageDialog = null;
 	
@@ -167,6 +169,18 @@ public class BookDetailDialog extends Dialog {
 //		closeBtnLP.topMargin = boundMargin;
 		
 		mLayout.addView(mCloseButton, closeBtnLP);
+		
+		// Search button.
+		mSearchButton = new HaloButton(context, R.drawable.search);
+
+		RelativeLayout.LayoutParams searchBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		searchBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		searchBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		searchBtnLP.bottomMargin = boundMargin;
+
+		mLayout.addView(mSearchButton, searchBtnLP);
 	}
 	
 	private void addListeners() {
@@ -254,6 +268,24 @@ public class BookDetailDialog extends Dialog {
 					ISBNResolver.getInstance().refreshBookInfo(v.getContext(),
 							mBookItem);
 				}
+			}
+		});
+		
+		mSearchButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				CloudAPI.getUsersByISBN(v.getContext(), mBookItem.getInfo().getISBN(), new ICloudAPITaskListener(){
+
+					@Override
+					public void onFinish(int returnCode) {
+						// TODO Auto-generated method stub
+						UsersDialog usersDialog = new UsersDialog(HomeActivity.getApp());
+						usersDialog.show();
+					}
+					
+				});
 			}
 		});
 	}

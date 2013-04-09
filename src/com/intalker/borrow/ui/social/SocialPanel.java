@@ -4,6 +4,7 @@ import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
+import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.LayoutUtil;
 
@@ -111,7 +112,7 @@ public class SocialPanel extends RelativeLayout {
 								if (CloudAPI.isSuccessful(
 										HomeActivity.getApp(), returnCode)) {
 									turnOnUsersView();
-									mUsersView.refreshList();
+									mUsersView.refreshList(AppData.getInstance().getAllUsers());
 								}
 							}
 

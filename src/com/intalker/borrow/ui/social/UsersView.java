@@ -23,7 +23,7 @@ public class UsersView extends ScrollView {
 		this.addView(mUserList);
 	}
 
-	public void refreshList() {
+	public void refreshList(ArrayList<UserInfo> users) {
 		mUserList.removeAllViews();
 
 		LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
@@ -31,7 +31,7 @@ public class UsersView extends ScrollView {
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		itemLP.height = DensityAdaptor.getDensityIndependentValue(40);
 
-		ArrayList<UserInfo> users = AppData.getInstance().getAllUsers();
+		//ArrayList<UserInfo> users = AppData.getInstance().getAllUsers();
 		boolean isFirst = true;
 		for (UserInfo userInfo : users) {
 			if (!isFirst) {
