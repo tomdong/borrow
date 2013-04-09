@@ -16,6 +16,7 @@ public class CloudConfig {
 	public final static String API_Follow = "Follow";
 	public final static String API_UnFollow = "UnFollow";
 	public final static String API_GetBooksByOwner = "GetBooksByOwner";
+	public final static String API_GetUsersByISBN = "GetUsersByISBN";
 	
 	// API params
 	public final static String API_Email = "&email=";

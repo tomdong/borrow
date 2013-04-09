@@ -170,4 +170,30 @@ public class JSONUtil {
 			ex.printStackTrace();
 		}
 	}
+	
+	public static void parseTempUsersInfo(String strJSON) {
+		try {
+			JSONArray jsonFriendArray = new JSONArray(strJSON);
+			int length = jsonFriendArray.length();
+			AppData appData = AppData.getInstance();
+			ArrayList<UserInfo> tempUsers = appData.getTempUsers();
+			for (int i = 0; i < length; ++i) {
+				JSONObject jsonFriendItem = (JSONObject) jsonFriendArray.get(i);
+				if (null != jsonFriendItem) {
+					String id = jsonFriendItem.getString(CloudConfig.DB_User_Id);
+					String nickName = jsonFriendItem.getString(CloudConfig.DB_User_NickName);
+					String email = jsonFriendItem.getString(CloudConfig.DB_User_Email);
+					String regTime = jsonFriendItem.getString(CloudConfig.DB_User_RegTime);
+					String permission = jsonFriendItem.getString(CloudConfig.DB_User_Permission);
+
+					UserInfo userInfo = new UserInfo(id, nickName, email, regTime, permission);
+					if (appData.isUnfollowed(id)) {
+						tempUsers.add(userInfo);
+					}
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }

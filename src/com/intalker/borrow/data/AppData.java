@@ -10,6 +10,7 @@ public class AppData {
 	private ArrayList<BookInfo> mOwnedBooks = null;
 	private ArrayList<BookInfo> mOthersBooks = null;
 	private ArrayList<UserInfo> mAllUsersOnServer = null;
+	private ArrayList<UserInfo> mTempUsers = null;
 	private ArrayList<FriendInfo> mFriends = null;
 	private static AppData instance = null;
 
@@ -24,6 +25,7 @@ public class AppData {
 		mOwnedBooks = new ArrayList<BookInfo>();
 		mOthersBooks = new ArrayList<BookInfo>();
 		mAllUsersOnServer = new ArrayList<UserInfo>();
+		mTempUsers = new ArrayList<UserInfo>();
 		mFriends = new ArrayList<FriendInfo>();
 	}
 	
@@ -31,6 +33,7 @@ public class AppData {
 		mOwnedBooks.clear();
 		mOthersBooks.clear();
 		mAllUsersOnServer.clear();
+		mTempUsers.clear();
 		mFriends.clear();
 		DBUtil.initialize();
 	}
@@ -57,6 +60,10 @@ public class AppData {
 	
 	public ArrayList<UserInfo> getAllUsers() {
 		return mAllUsersOnServer;
+	}
+	
+	public ArrayList<UserInfo> getTempUsers() {
+		return mTempUsers;
 	}
 
 	public ArrayList<FriendInfo> getFriends() {
@@ -134,6 +141,10 @@ public class AppData {
 	
 	public void clearAllUsers() {
 		mAllUsersOnServer.clear();
+	}
+	
+	public void clearTempUsers() {
+		mTempUsers.clear();
 	}
 
 	public void clearFriends() {
