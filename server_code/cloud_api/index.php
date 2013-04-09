@@ -458,6 +458,13 @@ switch($op)
 			echo BAD_SESSION;
 		}
 		break;
+	case "GetUsersByISBN":
+		$con = connectDB();
+		$isbn = getValueFromRequest(DB_BOOK_ISBN);
+		$users = getUsersByISBN($isbn);
+		echo encodeUsersQueryResult($users);
+		disconnectDB($con);
+		break;
 	/*	
     case "Signup":
         $con = connectDB();
