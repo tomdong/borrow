@@ -96,6 +96,22 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
+#
+# Source for table "message"
+#
+
+CREATE TABLE `message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `replyid` int(11) DEFAULT NULL,
+  `hostid` int(11) DEFAULT NULL,
+  `friendid` int(11) DEFAULT NULL,
+  `isbn` varchar(20) DEFAULT NULL,
+  `message` varchar(255) DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'unread',
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

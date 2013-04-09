@@ -295,7 +295,7 @@ function getUserInfoById($uid)
 
 function getAllUsers()
 {
-    $sql = "select * from " . DB_TABLE_USER . " where 1=1";
+    $sql = "select * from " . DB_TABLE_USER . " where remark is null";
     $result = mysql_query($sql);
     return $result;
 }
@@ -464,6 +464,65 @@ function encodeUsersQueryResult($result)
     return $encodedStr;
 }
 
+function createMessage($hostId, $friendId, $isbn, $msg, $replyId)
+{
+	if(NULL != $hostId && NULL != $friendId)
+	{
+		$message[DB_MESSAGE_HOSTID] = $hostId;
+		$message[DB_MESSAGE_FRIENDID] = $friendId;
+		$message[DB_MESSAGE_ISBN] = $isbn;
+		$message[DB_MESSAGE_MESSAGE] = $msg;
+		$message[DB_MESSAGE_REPLYID] = $replyId;
+		insertRecord(DB_TABLE_MESSAGE, $message);
+		return SUCCESSFUL;
+	}
+	return UNKNOWN_ERROR;
+}
+
+function getOutComeMessages($myId)
+{
+    $sql = "select * from " . DB_TABLE_MESSAGE . " where " . DB_MESSAGE_HOSTID . "=" . wrapStr(myId);
+    $result = mysql_query($sql);
+    return $result;
+}
+
+function getInComeMessages($myId)
+{
+    $sql = "select * from " . DB_TABLE_MESSAGE . " where " . DB_MESSAGE_FRIENDID . "=" . wrapStr(myId);
+    $result = mysql_query($sql);
+    return $result;
+}
+
+function encodeMessagesQueryResult($result)
+{
+    $encodedStr = "";
+    if(mysql_num_rows($result) > 0)
+    {
+        $index = 0;
+        while($row = mysql_fetch_array($result))
+        {
+            unset($item);
+
+		$item[DB_MESSAGE_ID] = $item[DB_MESSAGE_ID];
+		$item[DB_MESSAGE_REPLYID] = $item[DB_MESSAGE_REPLYID];
+		$item[DB_MESSAGE_HOSTID] = $item[DB_MESSAGE_HOSTID];
+		$item[DB_MESSAGE_FRIENDID] = $item[DB_MESSAGE_FRIENDID];
+		$item[DB_MESSAGE_ISBN] = $item[DB_MESSAGE_ISBN];
+		$item[DB_MESSAGE_MESSAGE] = $item[DB_MESSAGE_MESSAGE];
+		$item[DB_MESSAGE_STATUS] = $item[DB_MESSAGE_STATUS];
+		$item[DB_MESSAGE_TIME] = $item[DB_MESSAGE_TIME];
+
+            $msgList[$index] = $item;
+            ++$index;
+        }
+        $encodedStr = json_encode($msgList);
+    }
+    else
+    {
+        $encodedStr = EMPTY_RESULT;
+    }
+    return $encodedStr;
+}
 //========================================================================
 //===========Below code is not necessary for current api script===========
 //==========================Intalker @ 2013===============================

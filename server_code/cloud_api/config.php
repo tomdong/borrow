@@ -74,6 +74,18 @@ define("DB_FRIEND_STATUS_NORMAL", "normal");
 define("DB_FRIEND_STATUS_CLOSE", "close");
 define("DB_FRIEND_STATUS_BLOCKED", "blocked");
 
+// Message
+define("DB_TABLE_MESSAGE", "message");
+
+define("DB_MESSAGE_ID", "id");
+define("DB_MESSAGE_REPLYID", "replyid");
+define("DB_MESSAGE_HOSTID", "hostid");
+define("DB_MESSAGE_FRIENDID", "friendid");
+define("DB_MESSAGE_ISBN", "isbn");
+define("DB_MESSAGE_MESSAGE", "message");
+define("DB_MESSAGE_STATUS", "status");
+define("DB_MESSAGE_TIME", "time");
+
 // Session
 define("DB_TABLE_SESSION", "session");
 

@@ -28,7 +28,7 @@ switch($op)
 		}
 		disconnectDB($con);
 		break;
-	case "GetUserInfoBySession":
+	case "GetUserInfo":
 		$con = connectDB();
 		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
 		if(NULL != $sessionId)
@@ -193,7 +193,9 @@ switch($op)
         	echo BAD_SESSION;
 			break;
         }
+
 		$bookUploadData = json_decode($GLOBALS["HTTP_RAW_POST_DATA"]);
+
 		$bookInfoList = $bookUploadData->bookinfolist;
 		if(empty($bookUploadData) || empty($bookInfoList))
 		{
@@ -227,7 +229,7 @@ switch($op)
 		disconnectDB($con);
 		echo SUCCESSFUL;
     	break;
-    case "GetBooksBySession":
+    case "GetOwnedBooks":
 		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
         if(NULL != $sessionId)
         {
@@ -263,7 +265,7 @@ switch($op)
         	echo BAD_SESSION;
         }
     	break;
-    case "GetFriendsBySession":
+    case "GetFollowings":
         $sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
         if(NULL != $sessionId)
         {
@@ -285,7 +287,7 @@ switch($op)
         	echo BAD_SESSION;
         }
         break;
-	case "DeleteBookByOwnerIdAndISBN":
+	case "DeleteBook":
 	    $sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
         if(NULL != $sessionId)
         {
@@ -308,7 +310,7 @@ switch($op)
         	echo BAD_SESSION;
         }
 		break;
-	case "MakeFriends":
+	case "Follow":
 		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
 		if(NULL != $sessionId)
 		{
@@ -382,8 +384,79 @@ switch($op)
         	echo BAD_SESSION;
         }
 		break;
+	case "GetBooksByOwner":
+	    $sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+        if(NULL != $sessionId)
+        {
+            $con = connectDB();
+            $hostId = getUserIdBySession($sessionId);
+            if(NULL != $hostId)
+            {
+            	$owner_id = getValueFromRequest(DB_BOOK_OWNERID);
+				$books = getBooksByOwner($owner_id);
+				echo encodeBooksQueryResult($books);
+            }
+            else
+            {
+                echo BAD_SESSION;
+            }
+            disconnectDB($con);
+        }
+        else
+        {
+        	echo BAD_SESSION;
+        }
+		break;
 	default:
 		echo UNKNOWN_ERROR;
+		break;
+	case "SendMessage":
+		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+		if(NULL != $sessionId)
+		{
+			$con = connectDB();
+			$hostId = getUserIdBySession($sessionId);
+			$friendId = getValueFromPOST(DB_MESSAGE_FRIENDID);
+			$replyId = getValueFromPOST(DB_MESSAGE_REPLYID);
+			$msg = getValueFromPOST(DB_MESSAGE_MESSAGE);
+			$isbn = getValueFromPOST(DB_MESSAGE_ISBN);
+			createMessage($hostId, $friendId, $isbn, $msg, $replyId);
+			disconnectDB($con);
+		}
+		else
+		{
+			echo BAD_SESSION;
+		}
+		break;
+	case "GetIncomeMessages":
+		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+		if(NULL != $sessionId)
+		{
+			$con = connectDB();
+			$myId = getUserIdBySession($sessionId);
+			$messages = getInComeMessages($myId);
+			echo encodeMessagesQueryResult($messages);
+			disconnectDB($con);
+		}
+		else
+		{
+			echo BAD_SESSION;
+		}
+		break;
+	case "GetIncomeMessages":
+		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
+		if(NULL != $sessionId)
+		{
+			$con = connectDB();
+			$myId = getUserIdBySession($sessionId);
+			$messages = getOutComeMessages($myId);
+			echo encodeMessagesQueryResult($messages);
+			disconnectDB($con);
+		}
+		else
+		{
+			echo BAD_SESSION;
+		}
 		break;
 	/*	
     case "Signup":
