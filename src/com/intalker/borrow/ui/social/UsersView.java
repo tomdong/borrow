@@ -23,7 +23,7 @@ public class UsersView extends ScrollView {
 		this.addView(mUserList);
 	}
 
-	public void refreshList(ArrayList<UserInfo> users, boolean isSimpleList) {
+	public void fillWithStrangersData(ArrayList<UserInfo> users) {
 		mUserList.removeAllViews();
 
 		LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
@@ -39,9 +39,31 @@ public class UsersView extends ScrollView {
 								this.getContext()));
 			}
 			isFirst = false;
-			UserItemUI userItemUI = new UserItemUI(this.getContext(), !isSimpleList);
+			UserItemUI userItemUI = new StrangerUserItemUI(this.getContext());
 			userItemUI.setInfo(userInfo);
 			mUserList.addView(userItemUI, itemLP);
+		}
+	}
+	
+	public void fillWithBookOwnersData(ArrayList<UserInfo> owners) {
+		mUserList.removeAllViews();
+
+		LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		itemLP.height = DensityAdaptor.getDensityIndependentValue(40);
+
+		//ArrayList<UserInfo> users = AppData.getInstance().getAllUsers();
+		boolean isFirst = true;
+		for (UserInfo ownerInfo : owners) {
+			if (!isFirst) {
+				mUserList.addView(ControlFactory.createHoriSeparatorForLinearLayout(
+								this.getContext()));
+			}
+			isFirst = false;
+			BookOwnerItemUI bookOwnerItemUI = new BookOwnerItemUI(this.getContext());
+			bookOwnerItemUI.setInfo(ownerInfo);
+			mUserList.addView(bookOwnerItemUI, itemLP);
 		}
 	}
 }

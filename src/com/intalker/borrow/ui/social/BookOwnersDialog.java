@@ -8,12 +8,11 @@ import com.intalker.borrow.util.LayoutUtil;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class UsersDialog extends Dialog {
+public class BookOwnersDialog extends Dialog {
 
 	private UsersView mUsersView = null;
 	private FrameLayout mContentView = null;
@@ -21,7 +20,7 @@ public class UsersDialog extends Dialog {
 	private TextView mTitle = null;
 	private int mainLayoutId = 1;
 	
-	public UsersDialog(Context context) {
+	public BookOwnersDialog(Context context) {
 		super(context, R.style.Theme_TransparentDialog);
 		createUI(context);
 	}
@@ -67,7 +66,7 @@ public class UsersDialog extends Dialog {
 	
 	@Override
 	public void show() {
-		mUsersView.refreshList(AppData.getInstance().getTempUsers(), true);
+		mUsersView.fillWithBookOwnersData(AppData.getInstance().getTempUsers());
 		super.show();
 	}
 }

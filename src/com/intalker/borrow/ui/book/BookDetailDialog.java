@@ -12,7 +12,7 @@ import com.intalker.borrow.ui.FullSizeImageDialog;
 import com.intalker.borrow.ui.UIConfig;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
-import com.intalker.borrow.ui.social.UsersDialog;
+import com.intalker.borrow.ui.social.BookOwnersDialog;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.ShareUtil;
@@ -281,7 +281,7 @@ public class BookDetailDialog extends Dialog {
 					@Override
 					public void onFinish(int returnCode) {
 						// TODO Auto-generated method stub
-						UsersDialog usersDialog = new UsersDialog(HomeActivity.getApp());
+						BookOwnersDialog usersDialog = new BookOwnersDialog(HomeActivity.getApp());
 						usersDialog.show();
 					}
 					

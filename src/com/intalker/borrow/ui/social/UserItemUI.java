@@ -1,14 +1,10 @@
 package com.intalker.borrow.ui.social;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
-import com.intalker.borrow.cloud.CloudAPI;
-import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.ui.UIConfig;
 import com.intalker.borrow.ui.control.HaloButton;
@@ -18,15 +14,14 @@ import com.intalker.borrow.util.LayoutUtil;
 public class UserItemUI extends RelativeLayout {
 
 	private HaloButton mAvatarBtn = null;
-	private HaloButton mFollowBtn = null;
 	private TextView mNameTextView = null;
-	private UserInfo mInfo = null;
-	private boolean mAdded = false;
-	private boolean mShowFollowBtn = true;
+	protected HaloButton mActionBtn = null;
+	protected UserInfo mInfo = null;
+	protected int mActionIconResId = 0;
 
-	public UserItemUI(Context context, boolean showFollowBtn) {
+	public UserItemUI(Context context, int iconResId) {
 		super(context);
-		mShowFollowBtn = showFollowBtn;
+		mActionIconResId = iconResId;
 		createUI();
 	}
 	
@@ -75,44 +70,30 @@ public class UserItemUI extends RelativeLayout {
 		mNameTextView.setLayoutParams(nameTextLP);
 
 		this.addView(mNameTextView);
-		
-		if (mShowFollowBtn) {
-			mFollowBtn = new HaloButton(this.getContext(), R.drawable.add);
 
-			RelativeLayout.LayoutParams followBtnLP = new RelativeLayout.LayoutParams(
-					RelativeLayout.LayoutParams.WRAP_CONTENT,
-					RelativeLayout.LayoutParams.WRAP_CONTENT);
-			followBtnLP.rightMargin = largeMargin;
-			followBtnLP.topMargin = margin;
-			followBtnLP.bottomMargin = margin;
-			followBtnLP.width = DensityAdaptor.getDensityIndependentValue(32);
-			followBtnLP.height = DensityAdaptor.getDensityIndependentValue(32);
-			followBtnLP.addRule(RelativeLayout.CENTER_VERTICAL);
-			followBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			mFollowBtn.setLayoutParams(followBtnLP);
-			this.addView(mFollowBtn);
+		mActionBtn = new HaloButton(this.getContext(), mActionIconResId);
 
-			mFollowBtn.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (mAdded) {
-						return;
-					}
-					CloudAPI.follow(v.getContext(), mInfo.getId(),
-							new ICloudAPITaskListener() {
+		RelativeLayout.LayoutParams followBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		followBtnLP.rightMargin = largeMargin;
+		followBtnLP.topMargin = margin;
+		followBtnLP.bottomMargin = margin;
+		followBtnLP.width = DensityAdaptor.getDensityIndependentValue(32);
+		followBtnLP.height = DensityAdaptor.getDensityIndependentValue(32);
+		followBtnLP.addRule(RelativeLayout.CENTER_VERTICAL);
+		followBtnLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		mActionBtn.setLayoutParams(followBtnLP);
+		this.addView(mActionBtn);
 
-								@Override
-								public void onFinish(int returnCode) {
-									if (CloudAPI.isSuccessful(
-											HomeActivity.getApp(), returnCode)) {
-										mFollowBtn.setVisibility(GONE);
-									}
-								}
-
-							});
-				}
-			});
-		}
+		mActionBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onActionButtonClick();
+			}
+		});
 	}
 
+	protected void onActionButtonClick() {
+	}
 }
