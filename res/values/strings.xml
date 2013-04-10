@@ -59,4 +59,6 @@
     <string name="api_error_badtoken">Please login.</string>
     <string name="api_error_networkerror">Network error.</string>
     <string name="api_error_unknownerror">Unknown error.</string>
+    
+    <string name="users_ownthisbook">Users own this book</string>
 </resources>

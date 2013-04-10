@@ -112,7 +112,7 @@ public class SocialPanel extends RelativeLayout {
 								if (CloudAPI.isSuccessful(
 										HomeActivity.getApp(), returnCode)) {
 									turnOnUsersView();
-									mUsersView.refreshList(AppData.getInstance().getAllUsers());
+									mUsersView.refreshList(AppData.getInstance().getAllUsers(), false);
 								}
 							}
 

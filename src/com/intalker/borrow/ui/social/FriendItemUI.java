@@ -7,6 +7,7 @@ import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.FriendInfo;
 import com.intalker.borrow.isbn.ISBNResolver;
+import com.intalker.borrow.ui.UIConfig;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -81,8 +82,8 @@ public class FriendItemUI extends RelativeLayout {
 		mAvatarBtn.setOnClickListener(mOnClickListener);
 
 		mNameTextView = new TextView(this.getContext());
-		mNameTextView.setTextSize(16.0f);
-		mNameTextView.setTextColor(Color.YELLOW);
+		mNameTextView.setTextSize(UIConfig.getUserLabelTextSize());
+		mNameTextView.setTextColor(UIConfig.getLightTextColor());
 
 		RelativeLayout.LayoutParams nameTextLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,

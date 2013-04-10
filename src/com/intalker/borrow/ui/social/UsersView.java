@@ -23,7 +23,7 @@ public class UsersView extends ScrollView {
 		this.addView(mUserList);
 	}
 
-	public void refreshList(ArrayList<UserInfo> users) {
+	public void refreshList(ArrayList<UserInfo> users, boolean isSimpleList) {
 		mUserList.removeAllViews();
 
 		LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(
@@ -39,7 +39,7 @@ public class UsersView extends ScrollView {
 								this.getContext()));
 			}
 			isFirst = false;
-			UserItemUI userItemUI = new UserItemUI(this.getContext());
+			UserItemUI userItemUI = new UserItemUI(this.getContext(), !isSimpleList);
 			userItemUI.setInfo(userInfo);
 			mUserList.addView(userItemUI, itemLP);
 		}
