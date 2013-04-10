@@ -12,6 +12,10 @@ public class AppData {
 	private ArrayList<UserInfo> mAllUsersOnServer = null;
 	private ArrayList<UserInfo> mTempUsers = null;
 	private ArrayList<FriendInfo> mFriends = null;
+	
+	private String mMessage = "";
+	private String mISBN = "";
+	
 	private static AppData instance = null;
 
 	public static AppData getInstance() {
@@ -149,6 +153,22 @@ public class AppData {
 
 	public void clearFriends() {
 		mFriends.clear();
+	}
+	
+	public String getMessage() {
+		return mMessage;
+	}
+	
+	public void setMessage(String str) {
+		mMessage = str;
+	}
+	
+	public String getISBN() {
+		return mISBN;
+	}
+	
+	public void setISBN(String str) {
+		mISBN = str;
 	}
 
 	// [TODO] Use another implementation to improve the performance later

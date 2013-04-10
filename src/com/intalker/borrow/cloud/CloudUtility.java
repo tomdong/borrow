@@ -158,7 +158,7 @@ public class CloudUtility {
 	public static int _uploadBooks() {
 		String url = CloudConfig.API_BaseURL + CloudConfig.API_UploadBooks
 				+ CloudConfig.API_TOKEN + CloudAPI.CloudToken;
-		;
+
 		String strResult;
 		HttpPost httpRequest = new HttpPost(url);
 		try {
@@ -190,7 +190,7 @@ public class CloudUtility {
 	public static int _getOwnedBooks() {
 		String url = CloudConfig.API_BaseURL + CloudConfig.API_GetOwnedBooks
 				+ CloudConfig.API_TOKEN + CloudAPI.CloudToken;
-		;
+
 		HttpGet getReq = new HttpGet(url);
 		try {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
@@ -223,7 +223,7 @@ public class CloudUtility {
 		AppData.getInstance().clearFriends();
 		String url = CloudConfig.API_BaseURL + CloudConfig.API_GetFollowings
 				+ CloudConfig.API_TOKEN + CloudAPI.CloudToken;
-		;
+		
 		HttpGet getReq = new HttpGet(url);
 		try {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
@@ -411,6 +411,35 @@ public class CloudUtility {
 				return CloudConfig.Return_NetworkError;
 			}
 		} catch (Exception e) {
+			return CloudConfig.Return_NetworkError;
+		}
+	}
+	
+	public static int _sendMessage(String url) {
+		String strResult;
+		HttpPost httpRequest = new HttpPost(url);
+		try {
+			AppData data = AppData.getInstance();
+			String msg = data.getMessage();
+			StringEntity se = new StringEntity(msg);
+			httpRequest.setEntity(se);
+			HttpResponse httpResponse = new DefaultHttpClient()
+					.execute(httpRequest);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				strResult = EntityUtils.toString(httpResponse.getEntity());
+				if (strResult
+						.compareTo(CloudConfig.ServerReturnCode_Successful) == 0) {
+					return CloudConfig.Return_OK;
+				} else if (strResult
+						.compareTo(CloudConfig.ServerReturnCode_BadSession) == 0) {
+					return CloudConfig.Return_BadToken;
+				} else {
+					return CloudConfig.Return_UnknownError;
+				}
+			} else {
+				return CloudConfig.Return_NetworkError;
+			}
+		} catch (Exception ex) {
 			return CloudConfig.Return_NetworkError;
 		}
 	}

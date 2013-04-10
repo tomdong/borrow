@@ -116,6 +116,14 @@ public class CloudAPI {
 		task.execute();
 	}
 	
+	public static void sendMessage(Context context, String friendId, String isbn,
+			ICloudAPITaskListener apiListener) {
+		String url = CloudConfig.API_BaseURL + CloudConfig.API_SendMessage + CloudConfig.API_TOKEN + CloudAPI.CloudToken + CloudConfig.API_FriendId + friendId + CloudConfig.API_ISBN + isbn;
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
+				CloudConfig.API_SendMessage, apiListener);
+		task.execute();
+	}
+	
 	public static boolean isSuccessful(Context context, int returnCode) {
 		String errorMsg = "";
 		switch (returnCode) {

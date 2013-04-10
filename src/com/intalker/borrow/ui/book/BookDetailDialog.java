@@ -378,6 +378,8 @@ public class BookDetailDialog extends Dialog {
 				mPageCountTextView.setText(bookInfo.getPageCount());
 				mISBNTextView.setText(bookInfo.getISBN());
 				mDescriptionTextView.setText(bookInfo.getSummary());
+				
+				AppData.getInstance().setISBN(bookInfo.getISBN());
 			}
 			
 			if (HomeActivity.getApp().getBookGallery().isMyGallery()) {

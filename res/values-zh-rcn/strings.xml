@@ -50,6 +50,7 @@
     <string name="api_msg_unfollow">正在删除关注,请稍候.</string>
     <string name="api_msg_getbooksbyowner">获取该用户书籍列表,请稍候.</string>
     <string name="api_msg_searchuserbyisbn">正在查找拥有这本书的用户.</string>
+    <string name="api_msg_sendingmessage">正在发送信息.</string>
 
     <string name="api_error_timeout">网络连接超时.</string>
     <string name="api_error_noconnection">网络未连接.</string>

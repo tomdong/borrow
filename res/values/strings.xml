@@ -50,6 +50,7 @@
     <string name="api_msg_unfollow">Removing friend, please wait.</string>
     <string name="api_msg_getbooksbyowner">Get book list, please wait.</string>
     <string name="api_msg_searchuserbyisbn">Searhing users own this book.</string>
+    <string name="api_msg_sendingmessage">Sending message.</string>
 
     <string name="api_error_timeout">Connection timeout.</string>
     <string name="api_error_noconnection">No network connection found.</string>
