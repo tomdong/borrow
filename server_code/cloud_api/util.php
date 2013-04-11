@@ -490,14 +490,15 @@ function createMessage($hostId, $friendId, $isbn, $msg, $replyId)
 
 function getOutComeMessages($myId)
 {
-    $sql = "select * from " . DB_TABLE_MESSAGE . " where " . DB_MESSAGE_HOSTID . "=" . wrapStr(myId);
+    $sql = "select * from " . DB_TABLE_MESSAGE . " where " . DB_MESSAGE_HOSTID . "=" . wrapStr($myId);
+	//echo $sql;exit(0);
     $result = mysql_query($sql);
     return $result;
 }
 
 function getInComeMessages($myId)
 {
-    $sql = "select * from " . DB_TABLE_MESSAGE . " where " . DB_MESSAGE_FRIENDID . "=" . wrapStr(myId);
+    $sql = "select * from " . DB_TABLE_MESSAGE . " where " . DB_MESSAGE_FRIENDID . "=" . wrapStr($myId);
     $result = mysql_query($sql);
     return $result;
 }
@@ -512,14 +513,14 @@ function encodeMessagesQueryResult($result)
         {
             unset($item);
 
-		$item[DB_MESSAGE_ID] = $item[DB_MESSAGE_ID];
-		$item[DB_MESSAGE_REPLYID] = $item[DB_MESSAGE_REPLYID];
-		$item[DB_MESSAGE_HOSTID] = $item[DB_MESSAGE_HOSTID];
-		$item[DB_MESSAGE_FRIENDID] = $item[DB_MESSAGE_FRIENDID];
-		$item[DB_MESSAGE_ISBN] = $item[DB_MESSAGE_ISBN];
-		$item[DB_MESSAGE_MESSAGE] = $item[DB_MESSAGE_MESSAGE];
-		$item[DB_MESSAGE_STATUS] = $item[DB_MESSAGE_STATUS];
-		$item[DB_MESSAGE_TIME] = $item[DB_MESSAGE_TIME];
+		$item[DB_MESSAGE_ID] = $row[DB_MESSAGE_ID];
+		$item[DB_MESSAGE_REPLYID] = $row [DB_MESSAGE_REPLYID];
+		$item[DB_MESSAGE_HOSTID] = $row[DB_MESSAGE_HOSTID];
+		$item[DB_MESSAGE_FRIENDID] = $row[DB_MESSAGE_FRIENDID];
+		$item[DB_MESSAGE_ISBN] = $row[DB_MESSAGE_ISBN];
+		$item[DB_MESSAGE_MESSAGE] = $row[DB_MESSAGE_MESSAGE];
+		$item[DB_MESSAGE_STATUS] = $row[DB_MESSAGE_STATUS];
+		$item[DB_MESSAGE_TIME] = $row[DB_MESSAGE_TIME];
 
             $msgList[$index] = $item;
             ++$index;

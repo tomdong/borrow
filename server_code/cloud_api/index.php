@@ -407,21 +407,20 @@ switch($op)
         	echo BAD_SESSION;
         }
 		break;
-	default:
-		echo UNKNOWN_ERROR;
-		break;
 	case "SendMessage":
 		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
 		if(NULL != $sessionId)
 		{
 			$con = connectDB();
 			$hostId = getUserIdBySession($sessionId);
-			$friendId = getValueFromPOST(DB_MESSAGE_FRIENDID);
-			$replyId = getValueFromPOST(DB_MESSAGE_REPLYID);
-			$msg = getValueFromPOST(DB_MESSAGE_MESSAGE);
-			$isbn = getValueFromPOST(DB_MESSAGE_ISBN);
+			$friendId = getValueFromRequest(DB_MESSAGE_FRIENDID);
+			$replyId = getValueFromRequest(DB_MESSAGE_REPLYID);
+			//var_dump($_REQUEST);
+			$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
+			$isbn = getValueFromRequest(DB_MESSAGE_ISBN);
 			createMessage($hostId, $friendId, $isbn, $msg, $replyId);
 			disconnectDB($con);
+			echo SUCCESSFUL;
 		}
 		else
 		{
@@ -443,7 +442,7 @@ switch($op)
 			echo BAD_SESSION;
 		}
 		break;
-	case "GetIncomeMessages":
+	case "GetOutcomeMessages":
 		$sessionId = getValueFromRequest(PARAM_KEY_SESSIONID);
 		if(NULL != $sessionId)
 		{
@@ -465,6 +464,9 @@ switch($op)
 		echo encodeUsersQueryResult($users);
 		disconnectDB($con);
 		break;
+	//default:
+	//	echo UNKNOWN_ERROR;
+	//	break;
 	/*	
     case "Signup":
         $con = connectDB();
