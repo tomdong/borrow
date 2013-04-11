@@ -62,4 +62,7 @@
     <string name="api_error_unknownerror">发生未知错误.</string>
     
     <string name="users_ownthisbook">拥有这本书的人</string>
+    <string name="i_want_yourbook">我想看这本书.</string>
+    <string name="please_input_sth">尚未输入任何信息.</string>
+    <string name="input_hint">请输入.</string>
 </resources>

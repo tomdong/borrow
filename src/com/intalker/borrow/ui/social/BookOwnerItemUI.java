@@ -5,6 +5,7 @@ import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.AppData;
+import com.intalker.borrow.ui.social.SendMessageDialog.ISendHandler;
 
 import android.content.Context;
 
@@ -21,8 +22,12 @@ public class BookOwnerItemUI extends UserItemUI {
 		if (mBorrowed) {
 			return;
 		}
-		AppData.getInstance().setMessage("I want your book");
-		CloudAPI.sendMessage(this.getContext(), mInfo.getId(), AppData.getInstance().getISBN(), 
+		SendMessageDialog dialog = new SendMessageDialog(this.getContext(), new ISendHandler(){
+
+			@Override
+			public void onSend(String msg) {
+				AppData.getInstance().setMessage(msg);
+				CloudAPI.sendMessage(HomeActivity.getApp(), mInfo.getId(), AppData.getInstance().getISBN(), 
 				new ICloudAPITaskListener() {
 
 					@Override
@@ -34,6 +39,10 @@ public class BookOwnerItemUI extends UserItemUI {
 					}
 
 				});
+			}
+			
+		});
+		dialog.show();
 	}
 
 }

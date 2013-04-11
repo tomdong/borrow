@@ -35,7 +35,7 @@ public class BookOwnersDialog extends Dialog {
 		RelativeLayout.LayoutParams mainLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		mainLP.width = DensityAdaptor.getDensityIndependentValue(200);
+		mainLP.width = LayoutUtil.getDetailDialogWidth();
 		mainLP.height = DensityAdaptor.getDensityIndependentValue(300);
 		mMainLayout.setLayoutParams(mainLP);
 		mContentView.addView(mMainLayout);

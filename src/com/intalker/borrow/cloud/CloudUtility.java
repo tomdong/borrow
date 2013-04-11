@@ -10,6 +10,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import android.util.Xml.Encoding;
+
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.util.DBUtil;
@@ -421,7 +423,7 @@ public class CloudUtility {
 		try {
 			AppData data = AppData.getInstance();
 			String msg = data.getMessage();
-			StringEntity se = new StringEntity(msg);
+			StringEntity se = new StringEntity(msg, "UTF-8");
 			httpRequest.setEntity(se);
 			HttpResponse httpResponse = new DefaultHttpClient()
 					.execute(httpRequest);

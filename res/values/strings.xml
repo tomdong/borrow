@@ -62,4 +62,7 @@
     <string name="api_error_unknownerror">Unknown error.</string>
     
     <string name="users_ownthisbook">Users own this book</string>
+    <string name="i_want_yourbook">I want to read this book.</string>
+    <string name="please_input_sth">Please input something.</string>
+    <string name="input_hint">Please input.</string>
 </resources>
