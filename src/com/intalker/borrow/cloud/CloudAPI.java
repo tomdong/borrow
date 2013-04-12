@@ -124,6 +124,13 @@ public class CloudAPI {
 		task.execute();
 	}
 	
+	public static void getIncomeMessages(Context context, ICloudAPITaskListener apiListener) {
+		String url = CloudConfig.API_BaseURL + CloudConfig.API_GetIncomeMessages + CloudConfig.API_TOKEN + CloudAPI.CloudToken;
+		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
+				CloudConfig.API_GetIncomeMessages, apiListener);
+		task.execute();
+	}
+	
 	public static boolean isSuccessful(Context context, int returnCode) {
 		String errorMsg = "";
 		switch (returnCode) {

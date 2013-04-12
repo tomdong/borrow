@@ -445,4 +445,33 @@ public class CloudUtility {
 			return CloudConfig.Return_NetworkError;
 		}
 	}
+	
+	public static int _getIncomeMessage(String url) {
+		HttpGet getReq = new HttpGet(url);
+		try {
+			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+				if (null != strResult && strResult.length() > 0) {
+					if (strResult
+							.compareTo(CloudConfig.ServerReturnCode_EmptyResult) == 0) {
+						return CloudConfig.Return_OK;
+					} else if (strResult
+							.compareTo(CloudConfig.ServerReturnCode_BadSession) == 0) {
+						return CloudConfig.Return_BadToken;
+					} else {
+						//JSONUtil.parseOthersBooksInfo(strResult);
+					}
+					return CloudConfig.Return_OK;
+				} else {
+					return CloudConfig.Return_UnknownError;
+				}
+			} else {
+				return CloudConfig.Return_NetworkError;
+			}
+		} catch (Exception e) {
+			return CloudConfig.Return_NetworkError;
+		}
+	}
 }

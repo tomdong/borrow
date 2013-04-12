@@ -56,7 +56,9 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 			message = context.getString(R.string.api_msg_searchuserbyisbn);
 		} else if (mOp.compareTo(CloudConfig.API_SendMessage) == 0) {
 			message = context.getString(R.string.api_msg_sendingmessage);
-		} else {
+		} else if (mOp.compareTo(CloudConfig.API_GetIncomeMessages) == 0) {
+			message = context.getString(R.string.api_msg_sync);
+		}  else {
 			message = mOp;
 		}
 		mProgressDialog.setMessage(message);
@@ -118,6 +120,8 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 			mReturnCode = CloudUtility._getUsersByISBN(mUrl);
 		} else if (mOp.compareTo(CloudConfig.API_SendMessage) == 0) {
 			mReturnCode = CloudUtility._sendMessage(mUrl);
+		} else if (mOp.compareTo(CloudConfig.API_GetIncomeMessages) == 0) {
+			mReturnCode = CloudUtility._getIncomeMessage(mUrl);
 		}
 		
 		return null;

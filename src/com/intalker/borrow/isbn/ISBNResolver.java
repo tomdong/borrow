@@ -146,9 +146,9 @@ public class ISBNResolver {
 					lastBook.setCoverAsUnknown();
 				}
 				lastBook.show();
-				if (CloudUtility.isLoggedIn()) {
-					CloudAPI.sychronizeOwnedBooks(HomeActivity.getApp(), null);
-				}
+//				if (CloudUtility.isLoggedIn()) {
+//					CloudAPI.sychronizeOwnedBooks(HomeActivity.getApp(), null);
+//				}
 				
 				lastBook.getInfo().cacheData();
 			}
@@ -260,6 +260,10 @@ public class ISBNResolver {
 			
 //			Toast.makeText(mContext, "Synchronize done!", Toast.LENGTH_SHORT)
 //					.show();
+			
+			if (this.mIsProcessOwnedBooks) {
+				CloudAPI.getIncomeMessages(mContext, null);
+			}
 		}
 	}
 }
