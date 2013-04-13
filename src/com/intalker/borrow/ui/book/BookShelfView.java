@@ -1,6 +1,8 @@
 package com.intalker.borrow.ui.book;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.intalker.borrow.R;
 import com.intalker.borrow.data.BookInfo;
 //import com.intalker.borrow.ui.control.DragRefreshScroll;
@@ -15,6 +17,7 @@ public class BookShelfView extends ScrollView {
 	private LinearLayout mScrollContent = null;
 	private ArrayList<BookShelfRow> mBookShelfRows = new ArrayList<BookShelfRow>();
 	private static BookShelfView instance = null;
+	private HashMap<String, BookShelfItem> mISBNUIMap = new HashMap<String, BookShelfItem>();
 
 	public static BookShelfView getInstance() {
 		return instance;
@@ -58,6 +61,7 @@ public class BookShelfView extends ScrollView {
 			mScrollContent.removeView(row);
 		}
 		mBookShelfRows.clear();
+		mISBNUIMap.clear();
 	}
 
 	public void initializeShelfRows() {
@@ -92,6 +96,11 @@ public class BookShelfView extends ScrollView {
 		if (lastRow.isFull()) {
 			lastRow = addRow(false);
 		}
-		lastRow.addBook(true, bookInfo);
+		BookShelfItem uiItem = lastRow.addBook(true, bookInfo);
+		mISBNUIMap.put(bookInfo.getISBN(), uiItem);
+	}
+	
+	public HashMap<String, BookShelfItem> getISBNUIMap() {
+		return mISBNUIMap;
 	}
 }

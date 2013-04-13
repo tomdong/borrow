@@ -446,7 +446,7 @@ public class CloudUtility {
 		}
 	}
 	
-	public static int _getIncomeMessage(String url) {
+	public static int _getIncomeMessages(String url) {
 		HttpGet getReq = new HttpGet(url);
 		try {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);
@@ -461,7 +461,9 @@ public class CloudUtility {
 							.compareTo(CloudConfig.ServerReturnCode_BadSession) == 0) {
 						return CloudConfig.Return_BadToken;
 					} else {
-						//JSONUtil.parseOthersBooksInfo(strResult);
+						AppData data = AppData.getInstance();
+						data.clearIncomeMessages();
+						JSONUtil.parseMessageInfos(strResult, data.getIncomeMessages());
 					}
 					return CloudConfig.Return_OK;
 				} else {

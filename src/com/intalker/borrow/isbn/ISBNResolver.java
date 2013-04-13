@@ -2,14 +2,17 @@ package com.intalker.borrow.isbn;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPI;
+import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.cloud.CloudUtility;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.data.FriendInfo;
+import com.intalker.borrow.data.MessageInfo;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.isbn.parser.DoubanBookInfoParser;
 import com.intalker.borrow.isbn.parser.BookInfoParser;
@@ -262,7 +265,28 @@ public class ISBNResolver {
 //					.show();
 			
 			if (this.mIsProcessOwnedBooks) {
-				CloudAPI.getIncomeMessages(mContext, null);
+				CloudAPI.getIncomeMessages(mContext,
+						new ICloudAPITaskListener() {
+
+							@Override
+							public void onFinish(int returnCode) {
+								if (CloudAPI
+										.isSuccessfulWithoutToast(returnCode)) {
+									ArrayList<MessageInfo> messages = AppData
+											.getInstance().getIncomeMessages();
+									HashMap<String, BookShelfItem> map = BookShelfView
+											.getInstance().getISBNUIMap();
+									for (MessageInfo msg : messages) {
+										BookShelfItem item = map.get(msg
+												.getISBN());
+										if (null != item) {
+											item.attachMessage(msg);
+										}
+									}
+								}
+							}
+
+						});
 			}
 		}
 	}

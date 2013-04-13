@@ -41,7 +41,7 @@ public class BookShelfRow extends RelativeLayout {
 		}
 	}
 	
-	public void addBook(boolean showAtOnce, BookInfo bookInfo) {
+	public BookShelfItem addBook(boolean showAtOnce, BookInfo bookInfo) {
 		int bookItemWidth = LayoutUtil.getBookShelfItemWidth();
 		int bookItemHeight = LayoutUtil.getBookShelfItemHeight();
 		int bookItemGap = LayoutUtil.getShelfBookGap();
@@ -61,6 +61,7 @@ public class BookShelfRow extends RelativeLayout {
 		}
 		this.addView(bookShelfItem, bookLP);
 		mBooks.add(bookShelfItem);
+		return bookShelfItem;
 	}
 	
 	public boolean isFull() {

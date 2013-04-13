@@ -13,6 +13,8 @@ import com.intalker.borrow.ui.UIConfig;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.ui.social.BookOwnersDialog;
+import com.intalker.borrow.ui.social.SendMessageDialog;
+import com.intalker.borrow.ui.social.SendMessageDialog.ISendHandler;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
 import com.intalker.borrow.util.ShareUtil;
@@ -53,6 +55,7 @@ public class BookDetailDialog extends Dialog {
 	private HaloButton mShareButton = null;
 	private HaloButton mCloseButton = null;
 	private HaloButton mSearchButton = null;
+	private HaloButton mBorrowButton = null;
 	
 	private FullSizeImageDialog mFullSizeImageDialog = null;
 	
@@ -181,6 +184,19 @@ public class BookDetailDialog extends Dialog {
 		searchBtnLP.bottomMargin = boundMargin;
 
 		mLayout.addView(mSearchButton, searchBtnLP);
+		
+		// Search button.
+		mBorrowButton = new HaloButton(context, R.drawable.borrow);
+
+		RelativeLayout.LayoutParams borrowBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		borrowBtnLP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		borrowBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		borrowBtnLP.bottomMargin = boundMargin;
+
+		mLayout.addView(mBorrowButton, borrowBtnLP);
+		mBorrowButton.setVisibility(View.GONE);
 	}
 	
 	private void addListeners() {
@@ -272,20 +288,43 @@ public class BookDetailDialog extends Dialog {
 		});
 		
 		mSearchButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				CloudAPI.getUsersByISBN(v.getContext(), mBookItem.getInfo().getISBN(), new ICloudAPITaskListener(){
+				CloudAPI.getUsersByISBN(v.getContext(), mBookItem.getInfo()
+						.getISBN(), new ICloudAPITaskListener() {
 
 					@Override
 					public void onFinish(int returnCode) {
 						// TODO Auto-generated method stub
-						BookOwnersDialog usersDialog = new BookOwnersDialog(HomeActivity.getApp());
+						BookOwnersDialog usersDialog = new BookOwnersDialog(
+								HomeActivity.getApp());
 						usersDialog.show();
 					}
+
+				});
+			}
+		});
+		
+		mBorrowButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				SendMessageDialog dialog = new SendMessageDialog(v.getContext(), new ISendHandler(){
+
+					@Override
+							public void onSend(String msg) {
+								AppData.getInstance().setMessage(msg);
+								CloudAPI.sendMessage(HomeActivity.getApp(),
+										HomeActivity.getApp().getBookGallery()
+												.getCurOwner().getId(), AppData
+												.getInstance().getISBN(), null);
+							}
 					
 				});
+				
+				dialog.show();
 			}
 		});
 	}
@@ -385,9 +424,13 @@ public class BookDetailDialog extends Dialog {
 			if (HomeActivity.getApp().getBookGallery().isMyGallery()) {
 				this.mDeleteButton.setVisibility(View.VISIBLE);
 				this.mShareButton.setVisibility(View.VISIBLE);
+				this.mSearchButton.setVisibility(View.VISIBLE);
+				this.mBorrowButton.setVisibility(View.GONE);
 			} else {
 				this.mDeleteButton.setVisibility(View.GONE);
 				this.mShareButton.setVisibility(View.GONE);
+				this.mSearchButton.setVisibility(View.GONE);
+				this.mBorrowButton.setVisibility(View.VISIBLE);
 			}
 		}
 	}

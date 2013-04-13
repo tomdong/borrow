@@ -131,6 +131,10 @@ public class CloudAPI {
 		task.execute();
 	}
 	
+	public static boolean isSuccessfulWithoutToast(int returnCode) {
+		return CloudConfig.Return_OK == returnCode;
+	}
+	
 	public static boolean isSuccessful(Context context, int returnCode) {
 		String errorMsg = "";
 		switch (returnCode) {

@@ -2,6 +2,7 @@ package com.intalker.borrow.ui.social;
 
 import com.intalker.borrow.HomeActivity;
 import com.intalker.borrow.R;
+import com.intalker.borrow.ui.UIConfig;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -9,16 +10,19 @@ import com.intalker.borrow.util.LayoutUtil;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SendMessageDialog extends Dialog {
 
 	private FrameLayout mContentView = null;
 	private RelativeLayout mMainLayout = null;
+	private TextView mTitleView = null;
 	private EditText mMessageInput = null;
 	private int mMainLayoutId = 1;
 	private ISendHandler mOnSendHander = null;
@@ -52,16 +56,32 @@ public class SendMessageDialog extends Dialog {
 		mMainLayout.setId(mMainLayoutId);
 		mContentView.addView(mMainLayout);
 		
+		mTitleView = new TextView(context);
+		mTitleView.setTextSize(UIConfig.getTitleTextSize());
+		mTitleView.setTextColor(UIConfig.getLightTextColor());
+		mTitleView.setText(R.string.borrow_thisbook);
+		RelativeLayout.LayoutParams titleLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		int smallMargin = LayoutUtil.getSmallMargin();
+		titleLP.topMargin = smallMargin;
+		titleLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		mTitleView.setLayoutParams(titleLP);
+		mMainLayout.addView(mTitleView);
+		
 		mMessageInput = new EditText(context);
 		mMessageInput.setBackgroundColor(Color.LTGRAY);
 		mMessageInput.setLines(20);
 		mMessageInput.setHint(R.string.input_hint);
+		mMessageInput.setGravity(Gravity.START);
 		mMessageInput.setText(R.string.i_want_yourbook);
 		RelativeLayout.LayoutParams msgInputLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.FILL_PARENT);
 		int midMargin = LayoutUtil.getMediumMargin();
-		msgInputLP.leftMargin = msgInputLP.rightMargin = msgInputLP.topMargin = midMargin;
+		int largeMargin = LayoutUtil.getLargeMargin();
+		msgInputLP.leftMargin = msgInputLP.rightMargin = midMargin;
+		msgInputLP.topMargin = largeMargin;
 		msgInputLP.bottomMargin = DensityAdaptor.getDensityIndependentValue(50);
 		mMessageInput.setLayoutParams(msgInputLP);
 		mMainLayout.addView(mMessageInput);

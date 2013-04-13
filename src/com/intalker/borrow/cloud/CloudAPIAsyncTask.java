@@ -121,7 +121,7 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 		} else if (mOp.compareTo(CloudConfig.API_SendMessage) == 0) {
 			mReturnCode = CloudUtility._sendMessage(mUrl);
 		} else if (mOp.compareTo(CloudConfig.API_GetIncomeMessages) == 0) {
-			mReturnCode = CloudUtility._getIncomeMessage(mUrl);
+			mReturnCode = CloudUtility._getIncomeMessages(mUrl);
 		}
 		
 		return null;

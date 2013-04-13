@@ -11,6 +11,7 @@ import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.data.CacheData;
 import com.intalker.borrow.data.FriendInfo;
+import com.intalker.borrow.data.MessageInfo;
 import com.intalker.borrow.data.UserInfo;
 
 public class JSONUtil {
@@ -188,6 +189,36 @@ public class JSONUtil {
 
 					UserInfo userInfo = new UserInfo(id, nickName, email, regTime, permission);
 					tempUsers.add(userInfo);
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void parseMessageInfos(String strJSON, ArrayList<MessageInfo> messages) {
+		try {
+			JSONArray jsonMessageArray = new JSONArray(strJSON);
+			int length = jsonMessageArray.length();
+			for (int i = 0; i < length; ++i) {
+				JSONObject jsonMessageItem = (JSONObject) jsonMessageArray.get(i);
+				if (null != jsonMessageItem) {
+					
+					String id = jsonMessageItem.getString(CloudConfig.DB_Message_Id);
+					String replyId = jsonMessageItem.getString(CloudConfig.DB_Message_ReplyId);
+					String hostId = jsonMessageItem.getString(CloudConfig.DB_Message_HostId);
+					String hostName = jsonMessageItem.getString(CloudConfig.DB_Message_HostName);
+					String friendId = jsonMessageItem.getString(CloudConfig.DB_Message_FriendId);
+					String friendName = jsonMessageItem.getString(CloudConfig.DB_Message_FriendName);
+					String isbn = jsonMessageItem.getString(CloudConfig.DB_Message_ISBN);
+					String message = jsonMessageItem.getString(CloudConfig.DB_Message_Message);
+					String status = jsonMessageItem.getString(CloudConfig.DB_Message_Status);
+					String time = jsonMessageItem.getString(CloudConfig.DB_Message_Time);
+
+					MessageInfo msgInfo = new MessageInfo(id, replyId, hostId,
+							hostName, friendId, friendName, isbn, message,
+							status, time);
+					messages.add(msgInfo);
 				}
 			}
 		} catch (Exception ex) {

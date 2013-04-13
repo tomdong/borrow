@@ -54,6 +54,18 @@ public class CloudConfig {
 	public final static String DB_Friend_Status = "status";
 	public final static String DB_Friend_ConnectTime = "connecttime";
 	
+	// Message
+	public final static String DB_Message_Id = "id";
+	public final static String DB_Message_ReplyId = "replyid";
+	public final static String DB_Message_HostId = "hostid";
+	public final static String DB_Message_HostName = "hostname";
+	public final static String DB_Message_FriendId = "friendid";
+	public final static String DB_Message_FriendName = "friendname";
+	public final static String DB_Message_ISBN = "isbn";
+	public final static String DB_Message_Message = "message";
+	public final static String DB_Message_Status = "status";
+	public final static String DB_Message_Time = "time";
+	
 	// Server Return code
 	public final static String ServerReturnCode_Successful = "Successful";
 	public final static String ServerReturnCode_NoSuchUser = "NoSuchUser";

@@ -65,4 +65,7 @@
     <string name="i_want_yourbook">I want to read this book.</string>
     <string name="please_input_sth">Please input something.</string>
     <string name="input_hint">Please input.</string>
+    <string name="says">Says:</string>
+    <string name="message_fromfriends">Messages from friends</string>
+    <string name="borrow_thisbook">Borrow this book</string>
 </resources>

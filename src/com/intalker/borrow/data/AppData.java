@@ -13,6 +13,8 @@ public class AppData {
 	private ArrayList<UserInfo> mTempUsers = null;
 	private ArrayList<FriendInfo> mFriends = null;
 	
+	private ArrayList<MessageInfo> mIncomeMessages = null;
+	
 	private String mMessage = "";
 	private String mISBN = "";
 	
@@ -31,6 +33,8 @@ public class AppData {
 		mAllUsersOnServer = new ArrayList<UserInfo>();
 		mTempUsers = new ArrayList<UserInfo>();
 		mFriends = new ArrayList<FriendInfo>();
+		
+		mIncomeMessages = new ArrayList<MessageInfo>();
 	}
 	
 	public void initialize() {
@@ -39,6 +43,8 @@ public class AppData {
 		mAllUsersOnServer.clear();
 		mTempUsers.clear();
 		mFriends.clear();
+		
+		mIncomeMessages.clear();
 		DBUtil.initialize();
 	}
 
@@ -153,6 +159,14 @@ public class AppData {
 
 	public void clearFriends() {
 		mFriends.clear();
+	}
+	
+	public void clearIncomeMessages() {
+		mIncomeMessages.clear();
+	}
+	
+	public ArrayList<MessageInfo> getIncomeMessages() {
+		return mIncomeMessages;
 	}
 	
 	public String getMessage() {

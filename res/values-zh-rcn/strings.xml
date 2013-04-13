@@ -65,4 +65,7 @@
     <string name="i_want_yourbook">我想看这本书.</string>
     <string name="please_input_sth">尚未输入任何信息.</string>
     <string name="input_hint">请输入.</string>
+    <string name="says">说:</string>
+    <string name="message_fromfriends">好友消息</string>
+    <string name="borrow_thisbook">借阅这本书</string>
 </resources>
