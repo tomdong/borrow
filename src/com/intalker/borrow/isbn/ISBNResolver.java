@@ -149,9 +149,9 @@ public class ISBNResolver {
 					lastBook.setCoverAsUnknown();
 				}
 				lastBook.show();
-//				if (CloudUtility.isLoggedIn()) {
-//					CloudAPI.sychronizeOwnedBooks(HomeActivity.getApp(), null);
-//				}
+				if (CloudUtility.isLoggedIn()) {
+					CloudAPI.sychronizeOwnedBooks(HomeActivity.getApp(), null);
+				}
 				
 				lastBook.getInfo().cacheData();
 			}
