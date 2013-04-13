@@ -503,6 +503,25 @@ function getInComeMessages($myId)
     return $result;
 }
 
+function getUserNameById($id)
+{
+	$sql = "select * from " . DB_TABLE_USER . " where " . DB_USER_ID . "=" . wrapStr($id);
+	$result = mysql_query($sql);
+	while($row = mysql_fetch_array($result))
+	{
+		if(NULL != $row)
+		{
+			$userName = $row[DB_USER_NICKNAME];
+			if(NULL == $userName)
+			{
+				$userName = $row[DB_USER_EMAIL];
+			}
+			return $userName;
+		}
+	}
+	return NULL;
+}
+
 function encodeMessagesQueryResult($result)
 {
     $encodedStr = "";
@@ -515,8 +534,12 @@ function encodeMessagesQueryResult($result)
 
 		$item[DB_MESSAGE_ID] = $row[DB_MESSAGE_ID];
 		$item[DB_MESSAGE_REPLYID] = $row [DB_MESSAGE_REPLYID];
-		$item[DB_MESSAGE_HOSTID] = $row[DB_MESSAGE_HOSTID];
-		$item[DB_MESSAGE_FRIENDID] = $row[DB_MESSAGE_FRIENDID];
+		$hostId = $row[DB_MESSAGE_HOSTID];
+		$item[DB_MESSAGE_HOSTID] = $hostId;
+		$item[DB_MESSAGE_HOSTNAME] = getUserNameById($hostId);
+		$friendId = $row[DB_MESSAGE_FRIENDID];
+		$item[DB_MESSAGE_FRIENDID] = $friendId ;
+		$item[DB_MESSAGE_FRIENDNAME] = getUserNameById($friendId);
 		$item[DB_MESSAGE_ISBN] = $row[DB_MESSAGE_ISBN];
 		$item[DB_MESSAGE_MESSAGE] = $row[DB_MESSAGE_MESSAGE];
 		$item[DB_MESSAGE_STATUS] = $row[DB_MESSAGE_STATUS];
