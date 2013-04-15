@@ -11,6 +11,12 @@ import com.intalker.borrow.data.CacheData;
 import com.intalker.borrow.data.InitialCachedDataAsyncTask;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.isbn.ISBNResolver;
+import com.intalker.borrow.services.BookInfoSearchContract;
+import com.intalker.borrow.services.IInProcessServiceInterface.IContract;
+import com.intalker.borrow.services.IInProcessServiceInterface.IInProcessClientInterface;
+import com.intalker.borrow.services.IInProcessServiceInterface.IInProcessPushMessage;
+import com.intalker.borrow.services.InProcessNotificationService;
+import com.intalker.borrow.services.InProcessNotificationService.LocalBinder;
 import com.intalker.borrow.services.NotificationServices;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
@@ -20,13 +26,18 @@ import com.intalker.borrow.ui.login.RegisterView;
 import com.intalker.borrow.ui.navigation.NavigationPanel;
 import com.intalker.borrow.ui.social.SocialPanel;
 import com.intalker.borrow.util.DBUtil;
+import com.intalker.borrow.util.Debug;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.StorageUtil;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
@@ -88,11 +99,45 @@ public class HomeActivity extends Activity {
 		startServices();
 	}
 	
+	private InProcessNotificationService mService = null;
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                IBinder service) {
+        	LocalBinder binder = (LocalBinder) service;
+            mService = binder.getService();
+            mService.setClient(new IInProcessClientInterface()
+            {
+
+				@Override
+				public void onResult(IContract c) {
+					Debug.toast(HomeActivity.this, c.getResult().toString());
+				}
+
+				@Override
+				public void onPushMessage(IInProcessPushMessage m) {
+					// TODO Auto-generated method stub
+					
+				}
+            	
+            });
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+        	mService = null;
+        }
+
+    };
 	private void startServices()
 	{
-		Intent intent = new Intent(this, NotificationServices.class);
-		startService(intent);
-	}
+		if(mService == null)
+		{
+			Intent intent = new Intent(this, InProcessNotificationService.class);
+	        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+		}
+    }
 	
 	private void tryAutoLogin() {
 		if (CloudUtility.setAccessToken(DBUtil.loadToken())) {
@@ -233,6 +278,9 @@ public class HomeActivity extends Activity {
 			switch (resultCode) {
 			case RESULT_OK:
 				String isbn = data.getStringExtra("SCAN_RESULT");
+				
+				mService.request(new BookInfoSearchContract());
+				
 				int length = isbn.length();
 				if (10 == length || 13 == length) {
 					if(AppConfig.useSQLiteForCache)
