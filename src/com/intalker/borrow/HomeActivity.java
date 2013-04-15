@@ -11,6 +11,7 @@ import com.intalker.borrow.data.CacheData;
 import com.intalker.borrow.data.InitialCachedDataAsyncTask;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.isbn.ISBNResolver;
+import com.intalker.borrow.services.NotificationServices;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.book.BookShelfView;
@@ -83,6 +84,14 @@ public class HomeActivity extends Activity {
 		this.mSlidingMenu.invalidate();
 		
 		tryAutoLogin();
+		
+		startServices();
+	}
+	
+	private void startServices()
+	{
+		Intent intent = new Intent(this, NotificationServices.class);
+		startService(intent);
 	}
 	
 	private void tryAutoLogin() {

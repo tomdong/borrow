@@ -37,6 +37,15 @@
 		        <data android:scheme="auth"/>  		
 		    </intent-filter>  
 		</activity>
+		
+        
+        <service android:enabled=false
+        		android:exported=false
+         		android:isolatedProcess=true
+         		android:label="borrow.services.NotificationServices"
+         		android:name="com.intalker.borrow.services.NotificationServices"
+         		android:process="com.intalker.borrow.services" >
+		</service>
     </application>
 
 </manifest>
