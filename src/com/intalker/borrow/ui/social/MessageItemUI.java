@@ -1,6 +1,8 @@
 package com.intalker.borrow.ui.social;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,11 +21,14 @@ public class MessageItemUI extends RelativeLayout {
 	protected MessageInfo mMessageInfo = null;
 	private int mNameViewId = 1;
 	private String mSays = "";
+	private MessageItemUI mInstance = null;
 
 	public MessageItemUI(Context context) {
 		super(context);
+		mInstance = this;
 		mSays = context.getString(R.string.says);
 		createUI();
+		addListeners();
 	}
 
 	public void setInfo(MessageInfo info) {
@@ -62,5 +67,36 @@ public class MessageItemUI extends RelativeLayout {
 
 		mMessageTextView.setLayoutParams(msgTextLP);
 		this.addView(mMessageTextView);
+	}
+	
+	private void addListeners()
+	{
+		this.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				MessageDetailDialog dlg = new MessageDetailDialog(v.getContext(), mMessageInfo);
+				dlg.show();
+			}
+		});
+		
+		this.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction())
+				{
+				case MotionEvent.ACTION_DOWN:
+					mInstance.setBackgroundColor(Color.LTGRAY);
+					break;
+				case MotionEvent.ACTION_CANCEL:
+				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_OUTSIDE:
+					mInstance.setBackgroundColor(Color.TRANSPARENT);
+					break;
+				}
+				return false;
+			}
+		});
 	}
 }

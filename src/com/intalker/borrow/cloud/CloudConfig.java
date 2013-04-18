@@ -29,6 +29,7 @@ public class CloudConfig {
 	public final static String API_ISBN = "&isbn=";
 	public final static String API_FriendId = "&friendid=";
 	public final static String API_OwnerId = "&ownerid=";
+	public final static String API_ReplyId = "&replyid=";
 	
 	public final static String API_POST_BookInfoList = "bookinfolist";
 	

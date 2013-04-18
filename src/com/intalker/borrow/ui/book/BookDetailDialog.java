@@ -317,6 +317,7 @@ public class BookDetailDialog extends Dialog {
 							public void onSend(String msg) {
 								AppData.getInstance().setMessage(msg);
 								CloudAPI.sendMessage(HomeActivity.getApp(),
+										"0",
 										HomeActivity.getApp().getBookGallery()
 												.getCurOwner().getId(), AppData
 												.getInstance().getISBN(), null);

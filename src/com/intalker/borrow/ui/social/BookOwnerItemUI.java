@@ -27,7 +27,7 @@ public class BookOwnerItemUI extends UserItemUI {
 			@Override
 			public void onSend(String msg) {
 				AppData.getInstance().setMessage(msg);
-				CloudAPI.sendMessage(HomeActivity.getApp(), mInfo.getId(), AppData.getInstance().getISBN(), 
+				CloudAPI.sendMessage(HomeActivity.getApp(), "0", mInfo.getId(), AppData.getInstance().getISBN(), 
 				new ICloudAPITaskListener() {
 
 					@Override

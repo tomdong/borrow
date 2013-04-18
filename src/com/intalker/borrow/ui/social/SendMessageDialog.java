@@ -108,6 +108,7 @@ public class SendMessageDialog extends Dialog {
 					Context context = HomeActivity.getApp();
 					String info = context.getString(R.string.please_input_sth);
 					Toast.makeText(context, info, Toast.LENGTH_SHORT).show();
+					return;
 				}
 				if (null != mOnSendHander) {
 					mOnSendHander.onSend(msg);

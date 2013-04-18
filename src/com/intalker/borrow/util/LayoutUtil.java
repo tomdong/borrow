@@ -24,6 +24,9 @@ public class LayoutUtil {
 	private static int galleryTopPanelHeight = -1;
 	private static int galleryBottomPanelHeight = -1;
 	
+	private static int bigUserViewItemWidth = -1;
+	private static int bigUserViewItemHeight = -1;
+	
 	//General parameters
 	private static int smallMargin = -1;
 	private static int mediumMargin = -1;
@@ -178,4 +181,18 @@ public class LayoutUtil {
 		return largeMargin;
 	}
 	
+	public static int getBigUserViewItemWidth() {
+		if(bigUserViewItemWidth < 0) {
+			bigUserViewItemWidth = DensityAdaptor.getDensityIndependentValue(64);
+		}
+		return bigUserViewItemWidth;
+	}
+	
+	public static int getBigUserViewItemHeight() {
+		if(bigUserViewItemHeight < 0) {
+			bigUserViewItemHeight = DensityAdaptor.getDensityIndependentValue(64);
+		}
+		return bigUserViewItemHeight;
+	}
+
 }
