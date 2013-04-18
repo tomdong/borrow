@@ -17,7 +17,6 @@ import com.intalker.borrow.services.IInProcessServiceInterface.IInProcessClientI
 import com.intalker.borrow.services.IInProcessServiceInterface.IInProcessPushMessage;
 import com.intalker.borrow.services.InProcessNotificationService;
 import com.intalker.borrow.services.InProcessNotificationService.LocalBinder;
-import com.intalker.borrow.services.NotificationServices;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.book.BookShelfView;

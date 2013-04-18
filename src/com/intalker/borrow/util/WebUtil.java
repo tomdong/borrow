@@ -18,6 +18,8 @@ public class WebUtil {
 			in.close();
 		} catch (Exception e) {
 			return null;
+		} catch (Error err) {
+			return null;
 		}
 		return bmp;
 	}
