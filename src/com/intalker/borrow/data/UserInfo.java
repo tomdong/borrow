@@ -14,6 +14,14 @@ public class UserInfo {
 	public static UserInfo getCurLoggedinUser() {
 		return mCurLoggedinUser;
 	}
+	
+	public static String getCurUserId() {
+		UserInfo userInfo = getCurLoggedinUser();
+		if(null != userInfo) {
+			return userInfo.getId();
+		}
+		return "";
+	}
 
 //	public static void setCurLoginUser(String id, String nickName,
 //			String email, String regTime, String permission) {

@@ -6,9 +6,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.intalker.borrow.R;
 import com.intalker.borrow.data.MessageInfo;
+import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.ui.UIConfig;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.util.DensityAdaptor;
@@ -20,20 +22,30 @@ public class MessageItemUI extends RelativeLayout {
 	private TextView mMessageTextView = null;
 	protected MessageInfo mMessageInfo = null;
 	private int mNameViewId = 1;
-	private String mSays = "";
+	private String mSaid = "";
+	private String mDontReplyToYourSelf = "";
 	private MessageItemUI mInstance = null;
+	private boolean mIsMine = false;
 
 	public MessageItemUI(Context context) {
 		super(context);
 		mInstance = this;
-		mSays = context.getString(R.string.says);
+		mSaid = context.getString(R.string.said);
+		mDontReplyToYourSelf = context.getString(R.string.dont_reply_to_yourself);
 		createUI();
 		addListeners();
 	}
 
 	public void setInfo(MessageInfo info) {
+		mIsMine = info.getHostId().compareTo(UserInfo.getCurUserId()) == 0;
 		mMessageInfo = info;
-		mNameTextView.setText(info.getHostName() + " " + mSays);
+		String displayName = "";
+		if (mIsMine) {
+			displayName = this.getContext().getString(R.string.i);
+		} else {
+			displayName = info.getHostName();
+		}
+		mNameTextView.setText(displayName + " " + mSaid);
 		mMessageTextView.setText(info.getMessage());
 	}
 
@@ -75,6 +87,10 @@ public class MessageItemUI extends RelativeLayout {
 			
 			@Override
 			public void onClick(View v) {
+				if(mIsMine) {
+					Toast.makeText(v.getContext(), mDontReplyToYourSelf, Toast.LENGTH_SHORT).show();
+					return;
+				}
 				MessageDetailDialog dlg = new MessageDetailDialog(v.getContext(), mMessageInfo);
 				dlg.show();
 			}

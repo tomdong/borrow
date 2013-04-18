@@ -167,12 +167,19 @@ public class ISBNResolver {
 		private int mCurProgress = 0;
 		private boolean mIsProcessOwnedBooks = true;
 		private FriendInfo mFriendInfo = null;
+		private String mCurOwnerId = "";
 
 		public BatchGetBookInfoTask(Context context, FriendInfo friendInfo) {
 			super();
 			mContext = context;
 			mFriendInfo = friendInfo;
 			mIsProcessOwnedBooks = null == mFriendInfo;
+
+			if (this.mIsProcessOwnedBooks) {
+				mCurOwnerId = UserInfo.getCurLoggedinUser().getId();
+			} else {
+				mCurOwnerId = this.mFriendInfo.getUserInfo().getId();
+			}
 		}
 
 		@Override
@@ -264,30 +271,28 @@ public class ISBNResolver {
 //			Toast.makeText(mContext, "Synchronize done!", Toast.LENGTH_SHORT)
 //					.show();
 			
-			if (this.mIsProcessOwnedBooks) {
-				CloudAPI.getIncomeMessages(mContext,
-						new ICloudAPITaskListener() {
+			CloudAPI.getAllMessages(mContext, new ICloudAPITaskListener() {
 
-							@Override
-							public void onFinish(int returnCode) {
-								if (CloudAPI
-										.isSuccessfulWithoutToast(returnCode)) {
-									ArrayList<MessageInfo> messages = AppData
-											.getInstance().getIncomeMessages();
-									HashMap<String, BookShelfItem> map = BookShelfView
-											.getInstance().getISBNUIMap();
-									for (MessageInfo msg : messages) {
-										BookShelfItem item = map.get(msg
-												.getISBN());
-										if (null != item) {
-											item.attachMessage(msg);
-										}
-									}
-								}
+				@Override
+				public void onFinish(int returnCode) {
+					if (CloudAPI.isSuccessfulWithoutToast(returnCode)) {
+						ArrayList<MessageInfo> messages = AppData.getInstance()
+								.getIncomeMessages();
+						HashMap<String, BookShelfItem> map = BookShelfView
+								.getInstance().getISBNUIMap();
+						for (MessageInfo msg : messages) {
+							BookShelfItem item = map.get(msg.getISBN());
+							if (null != item
+									&& ((mCurOwnerId.compareTo(msg.getFriendId()) == 0)
+											||(mCurOwnerId.compareTo(msg.getHostId()) == 0))
+									) {
+								item.attachMessage(msg);
 							}
+						}
+					}
+				}
 
-						});
-			}
+			});
 		}
 	}
 }

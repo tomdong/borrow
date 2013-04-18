@@ -446,7 +446,7 @@ public class CloudUtility {
 		}
 	}
 	
-	public static int _getIncomeMessages(String url) {
+	public static int _getAllMessages(String url) {
 		HttpGet getReq = new HttpGet(url);
 		try {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(getReq);

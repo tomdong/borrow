@@ -18,8 +18,7 @@ public class CloudConfig {
 	public final static String API_GetBooksByOwner = "GetBooksByOwner";
 	public final static String API_GetUsersByISBN = "GetUsersByISBN";
 	public final static String API_SendMessage = "SendMessage";
-	public final static String API_GetIncomeMessages = "GetIncomeMessages";
-	public final static String API_GetOutcomeMessages = "GetOutcomeMessages";
+	public final static String API_GetAllMessages = "GetAllMessages";
 	
 	// API params
 	public final static String API_Email = "&email=";
