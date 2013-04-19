@@ -176,7 +176,7 @@ public class ISBNResolver {
 			mIsProcessOwnedBooks = null == mFriendInfo;
 
 			if (this.mIsProcessOwnedBooks) {
-				mCurOwnerId = UserInfo.getCurLoggedinUser().getId();
+				mCurOwnerId = UserInfo.getCurUserId();
 			} else {
 				mCurOwnerId = this.mFriendInfo.getUserInfo().getId();
 			}
