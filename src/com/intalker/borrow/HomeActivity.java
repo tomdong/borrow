@@ -138,6 +138,12 @@ public class HomeActivity extends Activity {
 		}
     }
 	
+	private void endServices() {
+		if (null != mConnection) {
+			this.unbindService(mConnection);
+		}
+	}
+	
 	private void tryAutoLogin() {
 		if (CloudUtility.setAccessToken(DBUtil.loadToken())) {
 			CloudAPI.getLoggedInUserInfo(this, new ICloudAPITaskListener() {
@@ -316,6 +322,7 @@ public class HomeActivity extends Activity {
 		super.onDestroy();
 		StorageUtil.saveCachedBooks();
 		DBUtil.uninitialize();
+		endServices();
 	}
 
 	@Override
