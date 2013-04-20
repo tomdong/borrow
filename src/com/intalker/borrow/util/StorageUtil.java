@@ -109,13 +109,14 @@ public class StorageUtil {
 		Collection<BookInfo> books = CacheData.getCachedBooks();
 		for(BookInfo bookInfo : books)
 		{
-			String isbn = bookInfo.getISBN();
-			Bitmap coverImage = bookInfo.getCoverImage();
-			if(isbn.length() > 0 && null != coverImage)
-			{
-				String path = StorageUtil.CacheImagePath + "/" + isbn + ".png";
-				saveImage(path, coverImage);
-			}
+			saveCoverImage(bookInfo);
+//			String isbn = bookInfo.getISBN();
+//			Bitmap coverImage = bookInfo.getCoverImage();
+//			if(isbn.length() > 0 && null != coverImage)
+//			{
+//				String path = StorageUtil.CacheImagePath + "/" + isbn + ".png";
+//				saveImage(path, coverImage);
+//			}
 		}
 		
 //		books = AppData.getInstance().getOthersBooks();
@@ -135,9 +136,19 @@ public class StorageUtil {
 		appData.clearOthersBooks();
 	}
 	
+	public static void saveCoverImage(BookInfo bookInfo) {
+		String isbn = bookInfo.getISBN();
+		Bitmap coverImage = bookInfo.getCoverImage();
+		if(isbn.length() > 0 && null != coverImage)
+		{
+			String path = StorageUtil.CacheImagePath + "/" + isbn + ".png";
+			saveImage(path, coverImage);
+		}
+	}
+	
 	private static void saveImage(String path, Bitmap image) {
 		File file = new File(path);
-		if (file.exists()) {
+		if (file.exists() && file.length() > 50) {
 			return;
 		}
 		try {

@@ -12,6 +12,8 @@ import com.intalker.borrow.data.BookInfo;
 
 public class ShareUtil {
 	public static void fireShareIntent(BookInfo bookInfo) {
+		StorageUtil.saveCoverImage(bookInfo);
+		
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		File imageFile = new File(StorageUtil.getCoverImagePath(bookInfo
