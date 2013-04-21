@@ -10,7 +10,8 @@ import android.widget.ImageView.ScaleType;
 import com.intalker.borrow.R;
 
 public class ControlFactory {
-	public static View createHoriSeparatorForRelativeLayout(Context context, int w, int y) {
+	public static View createHoriSeparatorForRelativeLayout(Context context,
+			int w, int y) {
 		ImageView v = new ImageView(context);
 		v.setImageResource(R.drawable.hori_separator);
 		v.setScaleType(ScaleType.FIT_XY);
@@ -24,7 +25,7 @@ public class ControlFactory {
 		v.setLayoutParams(lp);
 		return v;
 	}
-	
+
 	public static View createHoriSeparatorForLinearLayout(Context context) {
 		ImageView v = new ImageView(context);
 		v.setImageResource(R.drawable.hori_separator);
@@ -32,6 +33,18 @@ public class ControlFactory {
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
+
+		v.setLayoutParams(lp);
+		return v;
+	}
+
+	public static View createVertSeparatorForRelativeLayout(Context context) {
+		ImageView v = new ImageView(context);
+		v.setImageResource(R.drawable.vert_separator);
+		v.setScaleType(ScaleType.FIT_XY);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.FILL_PARENT);
 
 		v.setLayoutParams(lp);
 		return v;

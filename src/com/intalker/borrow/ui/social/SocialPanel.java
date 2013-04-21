@@ -37,7 +37,7 @@ public class SocialPanel extends RelativeLayout {
 		this.addView(mMainLayout);
 		
 		mTopBanner = new RelativeLayout(this.getContext());
-		mTopBanner.setBackgroundResource(R.drawable.hori_bar_metal);
+		mTopBanner.setBackgroundResource(R.drawable.stone_bg);
 		RelativeLayout.LayoutParams topBannerLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -52,7 +52,7 @@ public class SocialPanel extends RelativeLayout {
 		mUsersView.setVisibility(INVISIBLE);
 		
 		mBottomBanner = new RelativeLayout(this.getContext());
-		mBottomBanner.setBackgroundResource(R.drawable.hori_bar_metal);
+		mBottomBanner.setBackgroundResource(R.drawable.stone_bg);
 		RelativeLayout.LayoutParams bottomBannerLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
