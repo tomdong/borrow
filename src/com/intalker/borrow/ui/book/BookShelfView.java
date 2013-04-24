@@ -103,4 +103,10 @@ public class BookShelfView extends ScrollView {
 	public HashMap<String, BookShelfItem> getISBNUIMap() {
 		return mISBNUIMap;
 	}
+	
+	public void clearMessages() {
+		for (BookShelfItem item : mISBNUIMap.values()) {
+			item.clearMessages();
+		}
+	}
 }

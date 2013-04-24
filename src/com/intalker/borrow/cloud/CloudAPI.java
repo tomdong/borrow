@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
+import com.intalker.borrow.data.UserInfo;
+import com.intalker.borrow.util.DBUtil;
 
 public class CloudAPI {
 
@@ -20,6 +22,12 @@ public class CloudAPI {
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url, CloudConfig.API_Login,
 				apiListener);
 		task.execute();
+	}
+	
+	public static void logout() {
+		DBUtil.deleteToken();
+		UserInfo.clearLoginStatus();
+		CloudToken = "";
 	}
 
 	public static void signUp(Context context, String email, String pwd,

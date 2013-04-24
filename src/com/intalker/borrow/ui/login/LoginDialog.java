@@ -150,6 +150,7 @@ public class LoginDialog extends Dialog {
 		if (CloudAPI.isSuccessful(this.getContext(), returnCode)) {
 			HomeActivity.getApp().getBookGallery().updatePanels(UserInfo.getCurLoggedinUser());
 			HomeActivity.getApp().getSocialPanel().getFriendsView().refreshList();
+			HomeActivity.getApp().getNavigationPanel().updateLoginStatus();
 			this.dismiss();
 			HomeActivity.getApp().toggleSignUpPanel(false);
 		}

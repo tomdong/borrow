@@ -22,6 +22,10 @@ public class UsersView extends ScrollView {
 		
 		this.addView(mUserList);
 	}
+	
+	public void clear() {
+		mUserList.removeAllViews();
+	}
 
 	public void fillWithStrangersData(ArrayList<UserInfo> users) {
 		mUserList.removeAllViews();

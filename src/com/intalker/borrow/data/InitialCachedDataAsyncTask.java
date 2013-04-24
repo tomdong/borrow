@@ -34,6 +34,7 @@ public class InitialCachedDataAsyncTask extends AsyncTask<Void, Void, Void> {
 					if (CloudAPI.isSuccessful(app, returnCode)) {
 						app.getBookGallery().updatePanels(UserInfo.getCurLoggedinUser());
 						app.getSocialPanel().getFriendsView().refreshList();
+						app.getNavigationPanel().updateLoginStatus();
 					}
 					mProgressDialog.dismiss();
 				}

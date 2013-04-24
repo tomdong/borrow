@@ -88,6 +88,11 @@ public class BookShelfItem extends RelativeLayout {
 		mMessageInfoList = new ArrayList<MessageInfo>();
 	}
 	
+	public void clearMessages() {
+		mMessageInfoList.clear();
+		mMessageBtn.setVisibility(GONE);
+	}
+	
 	public void attachMessage(MessageInfo msg) {
 		for (MessageInfo info : mMessageInfoList) {
 			if (info.getId().compareTo(msg.getId()) == 0) {

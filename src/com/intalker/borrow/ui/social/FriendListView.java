@@ -23,6 +23,10 @@ public class FriendListView extends ScrollView {
 
 		this.addView(mListView);
 	}
+	
+	public void clear() {
+		mListView.removeAllViews();
+	}
 
 	public void refreshList() {
 		mListView.removeAllViews();

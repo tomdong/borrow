@@ -6,10 +6,12 @@ import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.cloud.CloudUtility;
 import com.intalker.borrow.config.AppConfig;
+import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.ui.UIConfig;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
+import com.intalker.borrow.ui.control.SquareButton;
 import com.intalker.borrow.ui.login.LoginDialog;
 import com.intalker.borrow.util.DensityAdaptor;
 import com.intalker.borrow.util.LayoutUtil;
@@ -33,21 +35,22 @@ public class NavigationPanel extends RelativeLayout {
 	private RelativeLayout mBottomBanner = null;
 	private HaloButton mSignUpBtn = null;
 	private HaloButton mLoginBtn = null;
-	private HaloButton mLogOffBtn = null;
+	private HaloButton mLogoutBtn = null;
 
 	private HaloButton mAvatarBtn = null;
 	private TextView mNameTextView = null;
 	
-	private HaloButton mSearchBtn = null;
-	private HaloButton mGalleryBtn = null;
-	private HaloButton mMessageBtn = null;
-	private HaloButton mHelpBtn = null;
+	private SquareButton mSearchBtn = null;
+	private SquareButton mGalleryBtn = null;
+	private SquareButton mMessageBtn = null;
+	private SquareButton mHelpBtn = null;
 
 	public NavigationPanel(Context context) {
 		super(context);
 		mContext = context;
 		// createUI_OldStyle();
 		createUI(context);
+		addListeners();
 	}
 
 	private void createUI(Context context) {
@@ -110,7 +113,7 @@ public class NavigationPanel extends RelativeLayout {
 		separator.setLayoutParams(separatorLP);
 		mTopBanner.addView(separator);
 		
-		mLogOffBtn = new HaloButton(context, R.drawable.logout);
+		mLogoutBtn = new HaloButton(context, R.drawable.logout);
 		RelativeLayout.LayoutParams logoutLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -119,8 +122,58 @@ public class NavigationPanel extends RelativeLayout {
 		logoutLP.height = DensityAdaptor.getDensityIndependentValue(32);
 		logoutLP.addRule(RelativeLayout.CENTER_VERTICAL);
 		logoutLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		mLogOffBtn.setLayoutParams(logoutLP);
-		mTopBanner.addView(mLogOffBtn);
+		mLogoutBtn.setLayoutParams(logoutLP);
+		mTopBanner.addView(mLogoutBtn);
+		
+		mLoginBtn = new HaloButton(context, R.drawable.login);
+		RelativeLayout.LayoutParams loginLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		loginLP.rightMargin = midMargin;
+		loginLP.width = DensityAdaptor.getDensityIndependentValue(32);
+		loginLP.height = DensityAdaptor.getDensityIndependentValue(32);
+		loginLP.addRule(RelativeLayout.CENTER_VERTICAL);
+		loginLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		mLoginBtn.setLayoutParams(loginLP);
+		mTopBanner.addView(mLoginBtn);
+	}
+	
+	public void updateLoginStatus() {
+		UserInfo userInfo = UserInfo.getCurLoggedinUser();
+		if (null == userInfo) {
+			mNameTextView.setText(R.string.app_name);
+			HomeActivity app = HomeActivity.getApp();
+			app.getBookGallery().clearLoggedinStatus();
+			app.getSocialPanel().getFriendsView().clear();
+			app.getSocialPanel().getUsersView().clear();
+			
+			mLoginBtn.setVisibility(VISIBLE);
+			mLogoutBtn.setVisibility(GONE);
+		} else {
+			mNameTextView.setText(userInfo.getDisplayName());
+			mLoginBtn.setVisibility(GONE);
+			mLogoutBtn.setVisibility(VISIBLE);
+		}
+	}
+	
+	private void addListeners() {
+		mLogoutBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CloudAPI.logout();
+				updateLoginStatus();
+			}
+		});
+		
+		mLoginBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				LoginDialog loginDialog = new LoginDialog(v.getContext());
+				loginDialog.show();
+			}
+		});
 	}
 
 	private void createBottomBanner(Context context) {
@@ -238,9 +291,10 @@ public class NavigationPanel extends RelativeLayout {
 	
 	private void createButtons(Context context) {
 		int panelWidth = LayoutUtil.getNavigationPanelWidth();
-		int buttonSideLength = DensityAdaptor.getDensityIndependentValue(70);
-		int gap = (panelWidth - buttonSideLength * 2) / 4;
+		int smallMargin = DensityAdaptor.getDensityIndependentValue(1);
+		int buttonSideLength = (panelWidth - smallMargin * 3) / 2;
 		int topOffset = LayoutUtil.getGalleryTopPanelHeight();
+		
 		ImageView crossSeparator = new ImageView(context);
 		crossSeparator.setImageResource(R.drawable.cross_separator);
 		LayoutParams crossSeparatorLP = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -249,39 +303,43 @@ public class NavigationPanel extends RelativeLayout {
 		crossSeparator.setLayoutParams(crossSeparatorLP);
 		this.addView(crossSeparator);
 		
-		mSearchBtn = new HaloButton(context, R.drawable.search_140);
+		mSearchBtn = new SquareButton(context, R.drawable.search_140);
 		RelativeLayout.LayoutParams searchBtnLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		searchBtnLP.leftMargin = gap;
-		searchBtnLP.topMargin = topOffset + gap;
+		searchBtnLP.leftMargin = smallMargin;
+		searchBtnLP.topMargin = topOffset + smallMargin;
+		searchBtnLP.width = searchBtnLP.height = buttonSideLength;
 		mSearchBtn.setLayoutParams(searchBtnLP);
 		this.addView(mSearchBtn);
 		
-		mGalleryBtn = new HaloButton(context, R.drawable.gallery_browse_140);
+		mGalleryBtn = new SquareButton(context, R.drawable.gallery_browse_140);
 		RelativeLayout.LayoutParams galleryBtnLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		galleryBtnLP.leftMargin = gap * 3 + buttonSideLength;
-		galleryBtnLP.topMargin = topOffset + gap;
+		galleryBtnLP.leftMargin = smallMargin * 2 + buttonSideLength;
+		galleryBtnLP.topMargin = searchBtnLP.topMargin;
+		galleryBtnLP.width = galleryBtnLP.height = buttonSideLength;
 		mGalleryBtn.setLayoutParams(galleryBtnLP);
 		this.addView(mGalleryBtn);
 		
-		mMessageBtn = new HaloButton(context, R.drawable.message_140);
+		mMessageBtn = new SquareButton(context, R.drawable.message_140);
 		RelativeLayout.LayoutParams messageBtnLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		messageBtnLP.leftMargin = gap;
-		messageBtnLP.topMargin = topOffset + buttonSideLength + gap * 3;
+		messageBtnLP.leftMargin = searchBtnLP.leftMargin;
+		messageBtnLP.topMargin = topOffset + smallMargin * 2 + buttonSideLength;
+		messageBtnLP.width = messageBtnLP.height = buttonSideLength;
 		mMessageBtn.setLayoutParams(messageBtnLP);
 		this.addView(mMessageBtn);
 		
-		mHelpBtn = new HaloButton(context, R.drawable.question_140);
+		mHelpBtn = new SquareButton(context, R.drawable.question_140);
 		RelativeLayout.LayoutParams helpBtnLP = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		helpBtnLP.leftMargin = gap * 3 + buttonSideLength;
-		helpBtnLP.topMargin = topOffset + buttonSideLength + gap * 3;
+		helpBtnLP.leftMargin = galleryBtnLP.leftMargin;
+		helpBtnLP.topMargin = messageBtnLP.topMargin;
+		helpBtnLP.width = helpBtnLP.height = buttonSideLength;
 		mHelpBtn.setLayoutParams(helpBtnLP);
 		this.addView(mHelpBtn);
 	}

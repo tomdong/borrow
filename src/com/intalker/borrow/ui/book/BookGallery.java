@@ -63,6 +63,12 @@ public class BookGallery extends RelativeLayout {
 		return true;
 	}
 	
+	public void clearLoggedinStatus()
+	{
+		this.updatePanels(null);
+		this.mShelfView.clearMessages();
+	}
+	
 	public void updatePanels(UserInfo curOwner)
 	{
 		mCurOwner = curOwner;

@@ -59,6 +59,18 @@ public class DBUtil {
 			db.close();
 		}
 	}
+	
+	public static void deleteToken() {
+		SQLiteDatabase db = null;
+		try {
+			db = openDatabase();
+			db.delete("profile", null, null);
+		} catch (Exception ex) {
+		}
+		if (null != db && db.isOpen()) {
+			db.close();
+		}
+	}
 
 	public static void saveToken(String token) {
 		SQLiteDatabase db = null;

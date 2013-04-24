@@ -75,6 +75,10 @@ public class HomeActivity extends Activity {
 	public SocialPanel getSocialPanel() {
 		return mSocialPanel;
 	}
+	
+	public NavigationPanel getNavigationPanel() {
+		return mNavigationPanel;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -154,6 +158,8 @@ public class HomeActivity extends Activity {
 				}
 
 			});
+		} else {
+			mNavigationPanel.updateLoginStatus();
 		}
 	}
 
@@ -221,6 +227,7 @@ public class HomeActivity extends Activity {
 				alertDialog.show();
 			}
 		}
+		mNavigationPanel.updateLoginStatus();
 	}
 	
 	public void toggleSignUpPanel(boolean show) {
