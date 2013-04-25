@@ -7,6 +7,7 @@ import com.intalker.borrow.R;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.BookInfo;
 import com.intalker.borrow.data.MessageInfo;
+import com.intalker.borrow.notification.NotificationManager;
 import com.intalker.borrow.ui.control.HaloButton;
 import com.intalker.borrow.ui.social.BookOwnersDialog;
 import com.intalker.borrow.ui.social.IncomeMessagesDialog;
@@ -99,6 +100,7 @@ public class BookShelfItem extends RelativeLayout {
 				return;
 			}
 		}
+		NotificationManager.getInstance().markDirty();
 		mMessageInfoList.add(msg);
 		mMessageBtn.setVisibility(VISIBLE);
 		mMessageBtn.setText(String.valueOf(mMessageInfoList.size()));

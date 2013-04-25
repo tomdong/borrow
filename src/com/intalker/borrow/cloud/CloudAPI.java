@@ -12,6 +12,7 @@ public class CloudAPI {
 
 	// Token
 	public static String CloudToken = "";
+	public static boolean IsRunning = false;
 
 	public static void login(Context context, String email, String pwd,
 			ICloudAPITaskListener apiListener) {

@@ -10,6 +10,7 @@ import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.MessageInfo;
 import com.intalker.borrow.data.UserInfo;
+import com.intalker.borrow.notification.NotificationManager;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.book.BookShelfView;
 
@@ -23,6 +24,9 @@ public class MessageCheckTimeout implements IInProcessServiceInterface.ITimerTim
 
 	@Override
 	public void onTimeOut() {
+		if (CloudAPI.IsRunning) {
+			return;
+		}
 		CloudAPI.getAllMessages(mContext,false, new ICloudAPITaskListener() {
 
 			@Override
@@ -41,6 +45,7 @@ public class MessageCheckTimeout implements IInProcessServiceInterface.ITimerTim
 							item.attachMessage(msg);
 						}
 					}
+					NotificationManager.getInstance().fire();
 				}
 			}
 

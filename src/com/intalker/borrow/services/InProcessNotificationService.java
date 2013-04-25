@@ -9,6 +9,9 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.intalker.borrow.util.ConnectionUtil;
+
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -39,6 +42,16 @@ public class InProcessNotificationService extends Service implements IInProcessS
 	public void onCreate() {
 		mActive = true;
 		
+		int delay = 500;
+		int period = 600000;
+		if(ConnectionUtil.connectedAsGPRS())
+		{
+			period = 600000;
+		}
+		if(ConnectionUtil.connectedAsWifi())
+		{
+			period = 10000;
+		}
 		mTimerUtil = new Timer();
 		mTimerUtil.schedule(new TimerTask() {
 
@@ -47,7 +60,7 @@ public class InProcessNotificationService extends Service implements IInProcessS
 				onTimerTimeout();
 			}
 
-		}, 300, 6000);
+		}, delay, period);
     }
 	
 	@Override
@@ -60,6 +73,7 @@ public class InProcessNotificationService extends Service implements IInProcessS
 		return mBinder;
 	}
 
+	@TargetApi(9)
 	@Override
 	public void request(IExecuator c) {
 		synchronized(this.mContracts)
@@ -104,6 +118,7 @@ public class InProcessNotificationService extends Service implements IInProcessS
 		}
 	}
 
+	@TargetApi(9)
 	private void processContracts()
 	{
 		synchronized(this.mContracts)

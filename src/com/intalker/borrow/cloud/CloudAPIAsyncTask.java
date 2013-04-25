@@ -91,6 +91,7 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 
 	@Override
 	protected Void doInBackground(String... params) {
+		CloudAPI.IsRunning = true;
 		if (mOp.compareTo(CloudConfig.API_Login) == 0) {
 			mReturnCode = CloudUtility._login(mUrl);
 			if (CloudConfig.Return_OK == mReturnCode) {
@@ -152,5 +153,6 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 		if (null != mAPIListener) {
 			mAPIListener.onFinish(mReturnCode);
 		}
+		CloudAPI.IsRunning = false;
 	}
 }

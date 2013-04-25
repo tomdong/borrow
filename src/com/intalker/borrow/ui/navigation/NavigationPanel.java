@@ -8,6 +8,7 @@ import com.intalker.borrow.cloud.CloudUtility;
 import com.intalker.borrow.config.AppConfig;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.UserInfo;
+import com.intalker.borrow.notification.NotificationManager;
 import com.intalker.borrow.ui.UIConfig;
 import com.intalker.borrow.ui.control.ControlFactory;
 import com.intalker.borrow.ui.control.HaloButton;
@@ -172,6 +173,15 @@ public class NavigationPanel extends RelativeLayout {
 			public void onClick(View v) {
 				LoginDialog loginDialog = new LoginDialog(v.getContext());
 				loginDialog.show();
+			}
+		});
+		
+		mSearchBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				//NotificationManager.vibrate();
 			}
 		});
 	}
