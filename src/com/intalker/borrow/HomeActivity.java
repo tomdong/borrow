@@ -11,12 +11,10 @@ import com.intalker.borrow.data.CacheData;
 import com.intalker.borrow.data.InitialCachedDataAsyncTask;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.isbn.ISBNResolver;
-import com.intalker.borrow.services.BookInfoSearchContract;
-import com.intalker.borrow.services.IInProcessServiceInterface.IContract;
-import com.intalker.borrow.services.IInProcessServiceInterface.IInProcessClientInterface;
-import com.intalker.borrow.services.IInProcessServiceInterface.IInProcessPushMessage;
+import com.intalker.borrow.services.BookInfoSearchExecuator;
 import com.intalker.borrow.services.InProcessNotificationService;
 import com.intalker.borrow.services.InProcessNotificationService.LocalBinder;
+import com.intalker.borrow.services.MessageCheckTimeout;
 import com.intalker.borrow.ui.book.BookGallery;
 import com.intalker.borrow.ui.book.BookShelfItem;
 import com.intalker.borrow.ui.book.BookShelfView;
@@ -110,21 +108,8 @@ public class HomeActivity extends Activity {
                 IBinder service) {
         	LocalBinder binder = (LocalBinder) service;
             mService = binder.getService();
-            mService.setClient(new IInProcessClientInterface()
-            {
-
-				@Override
-				public void onResult(IContract c) {
-					Debug.toast(HomeActivity.this, c.getResult().toString());
-				}
-
-				@Override
-				public void onPushMessage(IInProcessPushMessage m) {
-					// TODO Auto-generated method stub
-					
-				}
-            	
-            });
+            
+            mService.requestTimeout(new MessageCheckTimeout(HomeActivity.this));
         }
 
         @Override
@@ -291,7 +276,7 @@ public class HomeActivity extends Activity {
 			case RESULT_OK:
 				String isbn = data.getStringExtra("SCAN_RESULT");
 				
-				mService.request(new BookInfoSearchContract());
+				//mService.request(new BookInfoSearchExecuator(this,isbn));
 				
 				int length = isbn.length();
 				if (10 == length || 13 == length) {

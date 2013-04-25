@@ -24,46 +24,63 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 		mUrl = url;
 		mOp = op;
 		mAPIListener = apiListener;
-		mProgressDialog = new TransparentProgressDialog(context, false);
-		mProgressDialog.setCancelable(false);
-
-		String message = "";
-		if (mOp.compareTo(CloudConfig.API_Login) == 0) {
-			message = context.getString(R.string.api_msg_login);
-		} else if (mOp.compareTo(CloudConfig.API_SignUp) == 0) {
-			message = context.getString(R.string.api_msg_signup);
-		} else if (mOp.compareTo(CloudConfig.API_GetUserInfo) == 0) {
-			message = context.getString(R.string.api_msg_getuserinfo);
-		} else if (mOp.compareTo(CloudConfig.API_UploadBooks) == 0) {
-			message = context.getString(R.string.api_msg_upload);
-		} else if (mOp.compareTo(CloudConfig.API_GetOwnedBooks) == 0) {
-			message = context.getString(R.string.api_msg_download);
-		} else if (mOp.compareTo(CloudConfig.API_SynchronizeOwnedBooks) == 0) {
-			message = context.getString(R.string.api_msg_sync);
-		} else if (mOp.compareTo(CloudConfig.API_GetFollowings) == 0) {
-			message = context.getString(R.string.api_msg_getfollowings);
-		} else if (mOp.compareTo(CloudConfig.API_DeleteBook) == 0) {
-			message = context.getString(R.string.api_msg_deletebook);
-		} else if (mOp.compareTo(CloudConfig.API_GetAllUsers) == 0) {
-			message = context.getString(R.string.api_msg_getallusers);
-		} else if (mOp.compareTo(CloudConfig.API_Follow) == 0) {
-			message = context.getString(R.string.api_msg_follow);
-		} else if (mOp.compareTo(CloudConfig.API_UnFollow) == 0) {
-			message = context.getString(R.string.api_msg_unfollow);
-		} else if (mOp.compareTo(CloudConfig.API_GetBooksByOwner) == 0) {
-			message = context.getString(R.string.api_msg_getbooksbyowner);
-		} else if (mOp.compareTo(CloudConfig.API_GetUsersByISBN) == 0) {
-			message = context.getString(R.string.api_msg_searchuserbyisbn);
-		} else if (mOp.compareTo(CloudConfig.API_SendMessage) == 0) {
-			message = context.getString(R.string.api_msg_sendingmessage);
-		} else if (mOp.compareTo(CloudConfig.API_GetAllMessages) == 0) {
-			message = context.getString(R.string.api_msg_sync);
-		}  else {
-			message = mOp;
-		}
-		mProgressDialog.setMessage(message);
+		init(context, true);
+	
+	}
+	public CloudAPIAsyncTask(Context context, String url, String op,
+			ICloudAPITaskListener apiListener,boolean showDialog) {
+		super();
+		mUrl = url;
+		mOp = op;
+		mAPIListener = apiListener;
+		init(context, showDialog);
 		
-		mProgressDialog.show();
+	}
+	
+	private void init(Context context, boolean showDialog)
+	{
+		if(showDialog)
+		{
+			mProgressDialog = new TransparentProgressDialog(context, false);
+			mProgressDialog.setCancelable(false);
+			String message = "";
+			if (mOp.compareTo(CloudConfig.API_Login) == 0) {
+				message = context.getString(R.string.api_msg_login);
+			} else if (mOp.compareTo(CloudConfig.API_SignUp) == 0) {
+				message = context.getString(R.string.api_msg_signup);
+			} else if (mOp.compareTo(CloudConfig.API_GetUserInfo) == 0) {
+				message = context.getString(R.string.api_msg_getuserinfo);
+			} else if (mOp.compareTo(CloudConfig.API_UploadBooks) == 0) {
+				message = context.getString(R.string.api_msg_upload);
+			} else if (mOp.compareTo(CloudConfig.API_GetOwnedBooks) == 0) {
+				message = context.getString(R.string.api_msg_download);
+			} else if (mOp.compareTo(CloudConfig.API_SynchronizeOwnedBooks) == 0) {
+				message = context.getString(R.string.api_msg_sync);
+			} else if (mOp.compareTo(CloudConfig.API_GetFollowings) == 0) {
+				message = context.getString(R.string.api_msg_getfollowings);
+			} else if (mOp.compareTo(CloudConfig.API_DeleteBook) == 0) {
+				message = context.getString(R.string.api_msg_deletebook);
+			} else if (mOp.compareTo(CloudConfig.API_GetAllUsers) == 0) {
+				message = context.getString(R.string.api_msg_getallusers);
+			} else if (mOp.compareTo(CloudConfig.API_Follow) == 0) {
+				message = context.getString(R.string.api_msg_follow);
+			} else if (mOp.compareTo(CloudConfig.API_UnFollow) == 0) {
+				message = context.getString(R.string.api_msg_unfollow);
+			} else if (mOp.compareTo(CloudConfig.API_GetBooksByOwner) == 0) {
+				message = context.getString(R.string.api_msg_getbooksbyowner);
+			} else if (mOp.compareTo(CloudConfig.API_GetUsersByISBN) == 0) {
+				message = context.getString(R.string.api_msg_searchuserbyisbn);
+			} else if (mOp.compareTo(CloudConfig.API_SendMessage) == 0) {
+				message = context.getString(R.string.api_msg_sendingmessage);
+			} else if (mOp.compareTo(CloudConfig.API_GetAllMessages) == 0) {
+				message = context.getString(R.string.api_msg_sync);
+			}  else {
+				message = mOp;
+			}
+			mProgressDialog.setMessage(message);
+			
+			mProgressDialog.show();
+		}
 	}
 
 	@Override
@@ -130,7 +147,8 @@ public class CloudAPIAsyncTask extends AsyncTask<String, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		mProgressDialog.dismiss();
+		if(mProgressDialog!=null)
+			mProgressDialog.dismiss();
 		if (null != mAPIListener) {
 			mAPIListener.onFinish(mReturnCode);
 		}

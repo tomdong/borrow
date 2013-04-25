@@ -1,7 +1,11 @@
 package com.intalker.borrow.services;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -13,11 +17,14 @@ import android.os.Binder;
 import android.os.IBinder;
 
 public class InProcessNotificationService extends Service implements IInProcessServiceInterface{
-	private IInProcessServiceInterface.IInProcessClientInterface mClient = null; // for now , we only allow one Client!!
 	private IBinder mBinder = new LocalBinder();
 	
-	private Deque<IContract> mContracts = new LinkedList<IContract>();
+	private Deque<IExecuator> mContracts = new LinkedList<IExecuator>();
 	private ExecutorService  mContractExecutes = Executors.newSingleThreadExecutor();
+	
+	private List<ITimerTimeout> mTimeout = new ArrayList<ITimerTimeout>();
+	
+	private Timer mTimerUtil = null;
 	
 	private boolean mActive = false;
 	
@@ -31,6 +38,16 @@ public class InProcessNotificationService extends Service implements IInProcessS
 	@Override
 	public void onCreate() {
 		mActive = true;
+		
+		mTimerUtil = new Timer();
+		mTimerUtil.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				onTimerTimeout();
+			}
+
+		}, 300, 6000);
     }
 	
 	@Override
@@ -42,14 +59,9 @@ public class InProcessNotificationService extends Service implements IInProcessS
 	public IBinder onBind(Intent intent) {
 		return mBinder;
 	}
-	
-	@Override
-	public void setClient(IInProcessClientInterface i) {
-		mClient = i;
-	}
 
 	@Override
-	public void request(IContract c) {
+	public void request(IExecuator c) {
 		synchronized(this.mContracts)
 		{
 			mContracts.push(c);
@@ -63,17 +75,43 @@ public class InProcessNotificationService extends Service implements IInProcessS
 			}
 		});
 	}
+	
+	@Override
+	public void requestTimeout(ITimerTimeout t) {
+		synchronized(this.mTimeout)
+		{
+			this.mTimeout.add(t);
+		}
+	}
+
+	@Override
+	public void removeTimeout(ITimerTimeout t) {
+		synchronized(this.mTimeout)
+		{
+			this.mTimeout.remove(t);
+		}
+	}	
+	
+	private void onTimerTimeout()
+	{
+		synchronized(this.mTimeout)
+		{
+			int n = mTimeout.size();
+			for(int i=0;i<n;i++)
+			{
+				mTimeout.get(i).onTimeOut();
+			}
+		}
+	}
 
 	private void processContracts()
 	{
 		synchronized(this.mContracts)
 		{
-			IContract front = mContracts.poll(); // we now process the contracts accroding to FIFO!
+			IExecuator front = mContracts.poll(); // we now process the contracts accroding to FIFO!
 			if(front!=null)
 			{
 				front.process();
-				if(null!=mClient)
-					mClient.onResult(front);
 			}
 		}
 	}
@@ -94,5 +132,7 @@ public class InProcessNotificationService extends Service implements IInProcessS
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		return START_STICKY;
-	}	
+	}
+
+	
 }

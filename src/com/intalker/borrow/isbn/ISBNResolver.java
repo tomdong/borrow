@@ -271,7 +271,7 @@ public class ISBNResolver {
 //			Toast.makeText(mContext, "Synchronize done!", Toast.LENGTH_SHORT)
 //					.show();
 			
-			CloudAPI.getAllMessages(mContext, new ICloudAPITaskListener() {
+			CloudAPI.getAllMessages(mContext,true, new ICloudAPITaskListener() {
 
 				@Override
 				public void onFinish(int returnCode) {

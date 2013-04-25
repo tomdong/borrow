@@ -132,10 +132,10 @@ public class CloudAPI {
 		task.execute();
 	}
 	
-	public static void getAllMessages(Context context, ICloudAPITaskListener apiListener) {
+	public static void getAllMessages(Context context,boolean showDialog, ICloudAPITaskListener apiListener) {
 		String url = CloudConfig.API_BaseURL + CloudConfig.API_GetAllMessages + CloudConfig.API_TOKEN + CloudAPI.CloudToken;
 		CloudAPIAsyncTask task = new CloudAPIAsyncTask(context, url,
-				CloudConfig.API_GetAllMessages, apiListener);
+				CloudConfig.API_GetAllMessages, apiListener,showDialog);
 		task.execute();
 	}
 	
