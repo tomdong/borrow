@@ -353,6 +353,24 @@ public class NavigationPanel extends RelativeLayout {
 		helpBtnLP.width = helpBtnLP.height = buttonSideLength;
 		mHelpBtn.setLayoutParams(helpBtnLP);
 		this.addView(mHelpBtn);
+		
+		// Sign up
+		mSignUpBtn = new HaloButton(mContext, R.drawable.register);
+		mSignUpBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				HomeActivity.getApp().toggleSignUpPanel(true);
+			}
+		});
+
+		RelativeLayout.LayoutParams regBtnLP = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+		regBtnLP.topMargin = DensityAdaptor.getDensityIndependentValue(150);
+		regBtnLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		this.addView(mSignUpBtn, regBtnLP);
 	}
 	
 	private void doAfterGetUserInfoByToken(int returnCode) {

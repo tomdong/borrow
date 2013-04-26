@@ -7,6 +7,7 @@ import android.content.Context;
 
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
+import com.intalker.borrow.cloud.CloudUtility;
 import com.intalker.borrow.data.AppData;
 import com.intalker.borrow.data.MessageInfo;
 import com.intalker.borrow.data.UserInfo;
@@ -24,10 +25,10 @@ public class MessageCheckTimeout implements IInProcessServiceInterface.ITimerTim
 
 	@Override
 	public void onTimeOut() {
-		if (CloudAPI.IsRunning) {
+		if (!CloudUtility.isLoggedIn() && CloudAPI.IsRunning) {
 			return;
 		}
-		CloudAPI.getAllMessages(mContext,false, new ICloudAPITaskListener() {
+		CloudAPI.getAllMessages(mContext, false, new ICloudAPITaskListener() {
 
 			@Override
 			public void onFinish(int returnCode) {
@@ -39,9 +40,10 @@ public class MessageCheckTimeout implements IInProcessServiceInterface.ITimerTim
 					for (MessageInfo msg : messages) {
 						BookShelfItem item = map.get(msg.getISBN());
 						if (null != item
-								&& ((UserInfo.getCurUserId().compareTo(msg.getFriendId()) == 0)
-										||(UserInfo.getCurUserId().compareTo(msg.getHostId()) == 0))
-								) {
+								&& ((UserInfo.getCurUserId().compareTo(
+										msg.getFriendId()) == 0) || (UserInfo
+										.getCurUserId().compareTo(
+												msg.getHostId()) == 0))) {
 							item.attachMessage(msg);
 						}
 					}
