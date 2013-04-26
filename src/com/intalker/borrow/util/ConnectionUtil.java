@@ -16,6 +16,9 @@ public class ConnectionUtil {
 		cm = (ConnectivityManager) app
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetInfo = cm.getActiveNetworkInfo();
+		if(null == activeNetInfo) {
+			return false;
+		}
 		switch (activeNetInfo.getType()) {
 		case ConnectivityManager.TYPE_MOBILE:
 		case ConnectivityManager.TYPE_MOBILE_DUN:
@@ -37,6 +40,9 @@ public class ConnectionUtil {
 		cm = (ConnectivityManager) app
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetInfo = cm.getActiveNetworkInfo();
+		if(null == activeNetInfo) {
+			return false;
+		}
 		switch (activeNetInfo.getType()) {
 		case ConnectivityManager.TYPE_WIFI:
 			return true;

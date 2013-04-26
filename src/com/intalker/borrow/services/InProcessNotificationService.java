@@ -43,14 +43,15 @@ public class InProcessNotificationService extends Service implements IInProcessS
 		mActive = true;
 		
 		int delay = 500;
-		int period = 600000;
-		if(ConnectionUtil.connectedAsGPRS())
-		{
+		int period = -1;
+		if (ConnectionUtil.connectedAsGPRS()) {
 			period = 600000;
 		}
-		if(ConnectionUtil.connectedAsWifi())
-		{
+		if (ConnectionUtil.connectedAsWifi()) {
 			period = 10000;
+		}
+		if (period < 0) {
+			return;
 		}
 		mTimerUtil = new Timer();
 		mTimerUtil.schedule(new TimerTask() {
