@@ -9,8 +9,9 @@ import android.media.MediaPlayer;
 import android.os.Vibrator;
 
 public class NotificationManager {
+	private boolean mIsInitializing = false;
 	private boolean mDirty = false;
-	private boolean mViaSound = false;
+	private boolean mViaSound = true;
 	private boolean mViaVibrate = true;
 	private static NotificationManager mInstance = null;
 
@@ -21,7 +22,14 @@ public class NotificationManager {
 		return mInstance;
 	}
 
+	public void setIsInitializing(boolean val) {
+		mIsInitializing = val;
+	}
+	
 	public void markDirty() {
+		if(mIsInitializing) {
+			return;
+		}
 		mDirty = true;
 	}
 

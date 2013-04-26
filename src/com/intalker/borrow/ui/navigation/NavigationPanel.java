@@ -181,7 +181,8 @@ public class NavigationPanel extends RelativeLayout {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//NotificationManager.vibrate();
+//				NotificationManager.getInstance().markDirty();
+//				NotificationManager.getInstance().fire();
 			}
 		});
 	}
@@ -305,13 +306,13 @@ public class NavigationPanel extends RelativeLayout {
 		int buttonSideLength = (panelWidth - smallMargin * 3) / 2;
 		int topOffset = LayoutUtil.getGalleryTopPanelHeight();
 		
-		ImageView crossSeparator = new ImageView(context);
-		crossSeparator.setImageResource(R.drawable.cross_separator);
-		LayoutParams crossSeparatorLP = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		crossSeparatorLP.leftMargin = (panelWidth - DensityAdaptor.getDensityIndependentValue(100)) / 2;
-		crossSeparatorLP.topMargin = DensityAdaptor.getDensityIndependentValue(120);
-		crossSeparator.setLayoutParams(crossSeparatorLP);
-		this.addView(crossSeparator);
+//		ImageView crossSeparator = new ImageView(context);
+//		crossSeparator.setImageResource(R.drawable.cross_separator);
+//		LayoutParams crossSeparatorLP = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//		crossSeparatorLP.leftMargin = (panelWidth - DensityAdaptor.getDensityIndependentValue(100)) / 2;
+//		crossSeparatorLP.topMargin = DensityAdaptor.getDensityIndependentValue(120);
+//		crossSeparator.setLayoutParams(crossSeparatorLP);
+//		this.addView(crossSeparator);
 		
 		mSearchBtn = new SquareButton(context, R.drawable.search_140);
 		RelativeLayout.LayoutParams searchBtnLP = new RelativeLayout.LayoutParams(
