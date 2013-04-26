@@ -25,7 +25,7 @@ public class MessageCheckTimeout implements IInProcessServiceInterface.ITimerTim
 
 	@Override
 	public void onTimeOut() {
-		if (!CloudUtility.isLoggedIn() && CloudAPI.IsRunning) {
+		if (!CloudUtility.isLoggedIn() || CloudAPI.IsRunning) {
 			return;
 		}
 		CloudAPI.getAllMessages(mContext, false, new ICloudAPITaskListener() {
