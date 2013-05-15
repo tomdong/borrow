@@ -1,7 +1,7 @@
 package com.intalker.borrow.cloud;
 
 public class CloudConfig {
-	public final static String API_BaseURL = "http://services.sketchbook.cn/test/openshelf/api/index.php?op=";
+	public final static String API_BaseURL = "http://www.gokaven.com/cloud_api/index.php?op=";
 
 	// API operations
 	public final static String API_Login = "Login";
