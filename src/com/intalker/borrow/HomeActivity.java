@@ -11,6 +11,7 @@ import com.intalker.borrow.data.CacheData;
 import com.intalker.borrow.data.InitialCachedDataAsyncTask;
 import com.intalker.borrow.data.UserInfo;
 import com.intalker.borrow.isbn.ISBNResolver;
+import com.intalker.borrow.notification.iGeTuiUtil;
 import com.intalker.borrow.services.BookInfoSearchExecuator;
 import com.intalker.borrow.services.InProcessNotificationService;
 import com.intalker.borrow.services.InProcessNotificationService.LocalBinder;
@@ -98,6 +99,8 @@ public class HomeActivity extends Activity {
 		tryAutoLogin();
 		
 		startServices();
+		
+		iGeTuiUtil.iniGexin(this);
 	}
 	
 	private InProcessNotificationService mService = null;
