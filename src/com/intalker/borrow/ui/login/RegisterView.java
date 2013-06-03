@@ -5,10 +5,14 @@ import com.intalker.borrow.R;
 import com.intalker.borrow.cloud.CloudAPI;
 import com.intalker.borrow.cloud.CloudAPIAsyncTask.ICloudAPITaskListener;
 import com.intalker.borrow.ui.control.HaloButton;
+import com.intalker.borrow.util.Debug;
 import com.intalker.borrow.util.LayoutUtil;
+import com.intalker.tencentinterface.TencentConnection;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -23,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -47,6 +52,8 @@ public class RegisterView extends LinearLayout implements OnClickListener{
 	private CheckBox mAgreementCheck = null;
 	
 	private Button 	 mRegisterButton = null;
+	private ImageView mQQBtn = null;
+	private TencentConnection mQQInterface = null;
 	
 	private String mName = "";
 	private String mPassword = "";
@@ -56,6 +63,27 @@ public class RegisterView extends LinearLayout implements OnClickListener{
 	public RegisterView(Context context) {
 		super(context);
 		
+		mQQInterface = new TencentConnection(context);
+		mQQInterface.regEventHandler(new Handler()
+		{
+			public void handleMessage(Message msg) {
+				switch(msg.what)
+				{
+				case TencentConnection.TENCENT_LOGIN_SUCC:
+					Debug.toast(RegisterView.this.getContext(), mQQInterface.getOpenId());
+					mQQInterface.requestUserInfo();
+					break;
+				case TencentConnection.TENCENT_GETUSERINFO_SUCC:
+					Debug.toast(RegisterView.this.getContext(), mQQInterface.getUserInfo().getNickName());
+					Debug.toast(RegisterView.this.getContext(), mQQInterface.getUserInfo().getIcon_100());
+					mQQInterface.requestUserProfile();
+					break;
+				case TencentConnection.TENCENT_GETUSERPROFILE_SUCC:
+					Debug.toast(RegisterView.this.getContext(), mQQInterface.getUserProfile().getRealName());
+					break;
+				}
+		    }
+		});
 		init(context);
 	}
 	
@@ -254,6 +282,23 @@ public class RegisterView extends LinearLayout implements OnClickListener{
 		mRegisterButton.setOnClickListener(this);
 		mRegisterButton.setEnabled(false);
 		this.addView(mRegisterButton);
+		
+		RelativeLayout qqLayout = new RelativeLayout(c);
+		qqLayout.setBackgroundResource(R.drawable.black_halo_bg);
+		mQQBtn = new ImageView(c);
+		mQQBtn.setImageDrawable(mQQInterface.getLoginButton(0));
+		qqLayout.addView(mQQBtn, rpwwc);
+		qqLayout.setOnClickListener(new OnClickListener()
+		{
+
+			@Override
+			public void onClick(View v) {
+				mQQInterface.populateLogin();
+			}
+			
+		});
+		
+		this.addView(qqLayout, lpfw);
 	}
 	
 	private boolean isValidName(String s)

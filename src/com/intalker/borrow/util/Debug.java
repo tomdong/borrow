@@ -1,11 +1,12 @@
 package com.intalker.borrow.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Toast;
 
 public class Debug {
-	public static void toast(Activity container, String message) {
-		container.runOnUiThread(new ToastHelper(container, message));
+	public static void toast(Context container, String message) {
+		((Activity) container).runOnUiThread(new ToastHelper((Activity) container, message));
 
 	}
 }

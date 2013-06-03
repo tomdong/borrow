@@ -39,11 +39,11 @@ public class TencentConnection {
 	// The connection can only be used in an
 	// activiy now and the activity must
 	// implment some defined behavior. TODO: abstract
-	private Activity mParent = null;
+	private Context mParent = null;
 
 	private String mAppid = "100347785";// "222222";//
 
-	private String mScope = "get_user_info,get_user_profile,add_share,add_topic,list_album,upload_pic,add_album";// 授权范围
+	private String mScope = "get_simple_userinfo,get_user_profile,add_share,add_topic,list_album,upload_pic,add_album";// 授权范围
 	private AuthReceiver mReceiver;
 
 	private String mAccessToken, mOpenId, mErrorReturn, mErrorDes, mExpireInfo,
@@ -54,7 +54,7 @@ public class TencentConnection {
 	// TODO: add support for multiple handler!
 	private ArrayList<Handler> mTencentEventHandlers = new ArrayList<Handler>();
 
-	public TencentConnection(Activity parent) {
+	public TencentConnection(Context parent) {
 		mAccessToken = "";
 		mOpenId = "";
 		mErrorReturn = "";
